@@ -1,0 +1,30 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Logs
+*.log
+
+# Build directories
+dist/
+build/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# VSCode settings
+.vscode/
+
+# Environment variables
+.env
+
+# Ignore video files
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+/Day05AirportsJavaSwingClient/nbproject/private/
