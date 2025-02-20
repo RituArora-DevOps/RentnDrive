@@ -34,3 +34,29 @@ Example entries for one day, both team members:
 - asfdasfd
 3. Need assistance / figure things out
 - laksdjfl
+
+
+
+2025/02/21 Ritu Arora
+1. Done since last scrum
+
+2. Plan until next Scrum
+
+3. Need assistance / figure things out
+
+2025/02/21 Wang Haitao
+1. Done since last scrum
+
+2. Plan until next Scrum
+
+3. Need assistance / figure things out
+
+
+2025/02/21 Aliev Khadis
+1. Done since last scrum
+
+2. Plan until next Scrum
+
+3. Need assistance / figure things out
+
+

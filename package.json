@@ -1,0 +1,12 @@
+{
+  "name": "rentndrive-main",
+  "version": "1.0.0",
+  "description": "Online Booking System for Car Rental",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
