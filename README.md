@@ -147,6 +147,22 @@ payment_date: DATETIME (Date and time of payment)
 payment_method: ENUM('credit_card', 'debit_card', 'paypal', 'bank_transfer') (Payment method used)
 status: ENUM('pending', 'completed', 'failed') (Payment status)
 
+Merging booking_payments
+The booking_payments table is designed to store comprehensive information about car rental bookings and their associated payments. It includes the following fields:
+
+id (Primary Key, auto-increment): A unique identifier for each booking and payment entry.
+user_id (Foreign Key): Links to the users table, identifying the customer who made the booking.
+car_id (Foreign Key): Links to the cars table, referencing the specific car being rented.
+start_date (DATE): The start date of the car rental.
+end_date (DATE): The end date of the car rental.
+total_amount (DECIMAL): The total price for the booking, including any extra features.
+status (ENUM: 'pending', 'confirmed', 'cancelled', 'completed'): The current status of the booking.
+payment_status (ENUM: 'pending', 'completed', 'failed'): The status of the payment for the booking.
+payment_method (ENUM: 'credit_card', 'debit_card', 'paypal', 'bank_transfer'): The payment method used by the customer.
+payment_date (DATETIME): The date and time when the payment was made.
+extra_features (JSON or VARCHAR): A field storing any extra services or features opted for by the customer, such as GPS, additional drivers, or insurance.
+
+
 Relationships:
 Users ↔ Bookings: One user (customer) can have multiple bookings. Each booking is linked to a single user (customer).
 Cars ↔ Bookings: One car can be associated with multiple bookings over time. Each booking corresponds to one car.
