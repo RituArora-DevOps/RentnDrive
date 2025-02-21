@@ -46,10 +46,13 @@ Example entries for one day, both team members:
 
 2025/02/21 Wang Haitao
 1. Done since last scrum
+backend for admin
 
 2. Plan until next Scrum
+frontend for admin
 
 3. Need assistance / figure things out
+connect to azure database
 
 
 2025/02/21 Aliev Khadis
