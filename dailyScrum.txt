@@ -69,6 +69,7 @@ watched day07.mp4
 
 2. Plan until next Scrum
 frontend for admin
+push my codes to github
 
 3. Need assistance / figure things out
 connect to azure database
