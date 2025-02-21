@@ -59,7 +59,13 @@ has context menu
 
 2025/02/21 Wang Haitao
 1. Done since last scrum
-backend for admin
+backend for admin:
+manage cars
+manage customers
+manage bookings
+tested successfully locally
+submitedd project proposal
+watched day07.mp4
 
 2. Plan until next Scrum
 frontend for admin
