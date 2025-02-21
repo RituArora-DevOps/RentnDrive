@@ -1,4 +1,4 @@
-car-rental-system/
+RentnDrive/
 ├── backend/                           # Backend related files
 │   ├── config/                        # Configuration files for database, JWT, etc.
 │   │   ├── database.js                # Sequelize database connection setup
@@ -42,4 +42,7 @@ car-rental-system/
 ├── .env                               # Environment variables (DB credentials, JWT secret, etc.)
 ├── .gitignore                         # Git ignore file (to exclude unnecessary files)
 ├── package.json                       # Node.js project configuration (dependencies, scripts, etc.)
-└── README.md                          # Project documentation (description, setup, etc.)
+└── projectStructure.txt                         # Project documentation (description, setup, etc.)
+└── mysql-script.txt
+└── dailyScrum.txt
+└── Proposal.txt
