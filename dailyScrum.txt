@@ -39,10 +39,23 @@ Example entries for one day, both team members:
 
 2025/02/21 Ritu Arora
 1. Done since last scrum
+  Watched day07.mp4. Created Azure account and succesfully deployed Azure MySQL DB.
+  Started day08.mp4 but could not finish it.
+  Created Scrum board, and assigned epics and user stories to the team mates.
+  Discussion with the team and planning of the project.
+  Finalized Approval and submitted it on Omnivox.
+  Created github rep for the project, sent invites, updated .gitignore.
+  Guided team members from time to time.
+  * the required invites were also sent to senditaway@hotmail.com
 
 2. Plan until next Scrum
-
+  Watch day08 and day09 videos.
+  Start with my first epic (Car booking and payment) and related user stories.
+  Try to finish atleast backend today.   
+* the required invites were also sent to senditaway@hotmail.com (check with Gregory if he received the invite)
+ 
 3. Need assistance / figure things out
+has context menu
 
 2025/02/21 Wang Haitao
 1. Done since last scrum
