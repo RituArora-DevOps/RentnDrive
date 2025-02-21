@@ -123,8 +123,9 @@ model: VARCHAR(255) (Car's model, e.g., Corolla, Focus)
 year: INT (Year of manufacture)
 price_per_day: DECIMAL(10,2) (Price per day for renting the car)
 status: ENUM('available', 'booked', 'maintenance') (Current status of the car)
+types: VARCHAR(255)
 
-3. Bookings Table
+4. Bookings Table
 This table stores booking details, including rental dates, customer information, and car booked.
 Table: bookings
 id: INT (Primary Key, auto-incrementing ID)
@@ -137,7 +138,7 @@ status: ENUM('pending', 'confirmed', 'cancelled', 'completed') (Booking status)
 created_at: DATETIME (Timestamp when the booking was created)
 updated_at: DATETIME (Timestamp when the booking was last updated)
 
-4. Payments Table
+5. Payments Table
 This table stores payment information related to bookings.
 Table: payments
 id: INT (Primary Key, auto-incrementing ID)
