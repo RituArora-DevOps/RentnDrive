@@ -32,6 +32,7 @@ RentnDrive/
 │   │   │   └── style.css              # General styles for the website
 │   │   ├── js/
 │   │   │   └── main.js                # JavaScript file for handling frontend logic (AJAX, form validation, etc.)
+│   │   │   └── imageUpload.js         # JavaScript file for handling image upload and resizing images
 │   │   └── images/                    # Folder for storing images (e.g., car images)
 │   ├── pages/                         # HTML pages
 │   │   ├── index.html                 # Home page

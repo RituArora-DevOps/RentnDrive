@@ -35,7 +35,7 @@ Example entries for one day, both team members:
 3. Need assistance / figure things out
 - laksdjfl
 
-
+===============================================
 
 2025/02/21 Ritu Arora
 1. Done since last scrum
@@ -52,11 +52,11 @@ Example entries for one day, both team members:
   Watch day08 and day09 videos.
   Start with my first epic (Car booking and payment) and related user stories.
   Try to finish atleast backend today.   
-* the required invites were also sent to senditaway@hotmail.com (check with Gregory if he received the invite)
+
  
 3. Need assistance / figure things out
 has context menu
-
+-----------------------------------------------------
 2025/02/21 Wang Haitao
 1. Done since last scrum
 backend for admin:
@@ -74,7 +74,7 @@ push my codes to github
 3. Need assistance / figure things out
 connect to azure database
 
-
+---------------------------------------------------
 2025/02/21 Aliev Khadis
 1. Done since last scrum
 
@@ -82,4 +82,133 @@ connect to azure database
 
 3. Need assistance / figure things out
 
+============================================================
+
+2025/02/22 
+
+Ritu Arora
+1. Done/not done since last scrum
+Watched Day09-.mp4
+Tried to link github with Heroku- github did not approve my request because I do not have an photo id (requested one from JAC)
+Updates project projectStructureresolved conflicts on github
+Guidance to the team members
+
+2. Plan until next Scrum
+Booking-payment epic
+Figure out- Azure Blob Storage and image resizing
+watch day09-auth.mp4
+
+3. Need assistance / figure things out
+
+
+-----------------------------------------------
+Wang Haitao
+1. Done since last scrum
+
+2. Plan until next Scrum
+
+3. Need assistance / figure things out
+
+
+-----------------------------------------------
+Aliev Khadis
+1. Done since last scrum
+
+2. Plan until next Scrum
+
+3. Need assistance / figure things out
+
+
+=============================================================
+
+2025/02/23 
+
+Ritu Arora
+1. Done/not done since last scrum
+
+2. Plan until next Scrum
+
+3. Need assistance / figure things out
+
+
+-----------------------------------------------
+Wang Haitao
+1. Done since last scrum
+
+2. Plan until next Scrum
+
+3. Need assistance / figure things out
+
+
+-----------------------------------------------
+Aliev Khadis
+1. Done since last scrum
+
+2. Plan until next Scrum
+
+3. Need assistance / figure things out
+
+=============================================================
+
+2025/02/24 
+
+Ritu Arora
+1. Done/not done since last scrum
+
+2. Plan until next Scrum
+
+3. Need assistance / figure things out
+
+
+-----------------------------------------------
+Wang Haitao
+1. Done since last scrum
+
+2. Plan until next Scrum
+
+3. Need assistance / figure things out
+
+
+-----------------------------------------------
+Aliev Khadis
+1. Done since last scrum
+
+2. Plan until next Scrum
+
+3. Need assistance / figure things out
+
+
+=============================================================
+
+2025/02/25 
+
+Ritu Arora
+1. Done/not done since last scrum
+
+2. Plan until next Scrum
+
+3. Need assistance / figure things out
+
+
+-----------------------------------------------
+Wang Haitao
+1. Done since last scrum
+
+2. Plan until next Scrum
+
+3. Need assistance / figure things out
+
+
+-----------------------------------------------
+Aliev Khadis
+1. Done since last scrum
+
+2. Plan until next Scrum
+
+3. Need assistance / figure things out
+
+
+=============================================================
+
+2025/02/26 Presentation Day
 
