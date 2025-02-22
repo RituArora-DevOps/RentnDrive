@@ -81,6 +81,3 @@ CREATE TABLE booking_payments (
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (car_id) REFERENCES cars(id)
 );
-
-
-
