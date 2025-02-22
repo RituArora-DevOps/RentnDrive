@@ -1,10 +1,10 @@
 require("dotenv").config();
 
 module.exports = {
-  HOST: process.env.DB_HOST || "localhost",
-  USER: process.env.DB_USER || "CarRentalSystem",
-  PASSWORD: process.env.DB_PASSWORD || "m09^aa63zRXR",
-  DB: process.env.DB_NAME || "CarRentalSystem",
+  HOST: process.env.DB_HOST || "fsd25rha.mysql.database.azure.com",
+  USER: process.env.DB_USER || "dbadmin",
+  PASSWORD: process.env.DB_PASSWORD || "UFmqgheOMHXP6Miu",
+  DB: process.env.DB_NAME || "fsd25rha",
   dialect: process.env.DB_DIALECT || "mysql",
 
   pool: {

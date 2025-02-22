@@ -125,6 +125,7 @@ Aliev Khadis
 
 Ritu Arora
 1. Done/not done since last scrum
+Resolved ssl encryption issue by disabling encryption (though not the best practice)
 
 2. Plan until next Scrum
 
