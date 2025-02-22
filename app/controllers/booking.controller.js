@@ -1,0 +1,124 @@
+const db = require("../models/db");
+const Car = require("../models/car.model");
+const Rental = require("../models/rental.model"); // Assuming you renamed booking-payment.model.js to rental.model.js
+const log = require("../../logger");
+const { Op } = require("sequelize");
+
+// Check car availability
+exports.checkAvailability = async (req, res) => {
+    try {
+        const { startDate, endDate } = req.query;
+
+        if (!startDate || !endDate) {
+            return res.status(400).json({ message: "Start and end dates are required." });
+        }
+
+        const availableCars = await Car.findAll({
+            where: {
+                status: "available",
+                id: {
+                    [Op.notIn]: db.literal(`
+                        SELECT car_id FROM booking_payments
+                        WHERE (start_date <= '${endDate}' AND end_date >= '${startDate}')
+                    `)
+                }
+            }
+        });
+
+        res.json(availableCars);
+    } catch (error) {
+        log.error(`Error checking availability: ${error.message}`);
+        res.status(500).json({ message: "Internal server error." });
+    }
+};
+
+// Create a new booking
+exports.createBooking = async (req, res) => {
+    try {
+        const { carId, startDate, endDate, paymentMethod, amount, extra } = req.body;
+        const userId = req.user.id; // Assuming your auth middleware adds user info to req.user
+
+        if (!carId || !startDate || !endDate || !paymentMethod || !amount) {
+            return res.status(400).json({ message: "Missing required fields." });
+        }
+
+        const car = await Car.findByPk(carId);
+        if (!car || car.status !== "available") {
+            return res.status(400).json({ message: "Car is not available." });
+        }
+
+        const overlappingBooking = await Rental.findOne({
+            where: {
+                car_id: carId,
+                [Op.or]: [
+                    {
+                        start_date: { [Op.lte]: endDate },
+                        end_date: { [Op.gte]: startDate }
+                    }
+                ]
+            }
+        });
+
+        if (overlappingBooking) {
+            return res.status(400).json({ message: "Car is already booked for the selected dates." });
+        }
+
+        // Calculate total amount (You can add more complex calculation logic here)
+        const days = (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24) + 1;
+        const totalAmount = car.price_per_day * days;
+
+        if (totalAmount !== amount) {
+            return res.status(400).json({message: "Amount is incorrect."})
+        }
+
+        // Create the booking
+        const booking = await Rental.create({
+            user_id: userId,
+            car_id: carId,
+            start_date: startDate,
+            end_date: endDate,
+            total_amount: totalAmount,
+            status: "pending",
+            payment_method: paymentMethod,
+            payment_status: "pending",
+            amount: amount,
+            extra: extra,
+            created_at: new Date(),
+            updated_at: new Date()
+        });
+
+        // Update car status to booked
+        await car.update({ status: "booked" });
+
+        res.status(201).json(booking);
+    } catch (error) {
+        log.error(`Error creating booking: ${error.message}`);
+        res.status(500).json({ message: "Internal server error." });
+    }
+};
+// Inside booking.controller.js, within the createBooking function:
+
+// ... (previous code)
+
+// Simulate payment processing (replace with actual gateway integration)
+const paymentSuccessful = await processPayment(amount, paymentMethod); // Replace with your payment gateway logic
+
+if (paymentSuccessful) {
+    await booking.update({ payment_status: "completed", status: "confirmed", payment_date: new Date() });
+    await car.update({status: "booked"});
+    res.status(201).json(booking);
+} else {
+    await booking.update({ payment_status: "failed", status: "failed" });
+    await car.update({status:"available"});
+    res.status(400).json({message: "Payment failed."});
+}
+
+// ... (rest of the code)
+
+// Placeholder for payment processing (replace with your gateway logic)
+async function processPayment(amount, paymentMethod) {
+    // Replace with your payment gateway integration logic
+    // Return true if payment is successful, false otherwise
+    // Example:
+    return Math.random() < 0.8; // 80% chance of success (for testing)
+}

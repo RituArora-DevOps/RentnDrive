@@ -22,7 +22,7 @@ app.use("/api", adminRoutes);
 app.use(express.static(path.join(__dirname, "client")));
 
 // Set the server port from environment variables or default to 8088
-const PORT = process.env.PORT || 8088;
+const PORT = process.env.PORT || 3000;
 
 // Synchronize the database and start the server
 async function startServer() {
