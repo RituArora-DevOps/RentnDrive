@@ -1,30 +1,32 @@
 RentnDrive/
-├── backend/                           # Backend related files
+├── app/                           # Backend related files
 │   ├── config/                        # Configuration files for database, JWT, etc.
-│   │   ├── database.js                # Sequelize database connection setup
+│   │   ├── db.config.js                # Sequelize database connection setup
 │   │   ├── dotenv.js                  # Environment variables setup
 │   │   └── jwt.js                     # JWT configuration for token generation/verification
 │   ├── controllers/                   # Controller files for business logic
-│   │   ├── authController.js          # Handles authentication (login, register)
-│   │   ├── carController.js           # Handles car management (add, update, delete)
-│   │   ├── bookingController.js       # Handles booking management
-│   │   └── paymentController.js       # Handles payment processing
+│   │   ├── auth.controller.js          # Handles authentication (login, register)
+│   │   ├── car.controller.js           # Handles car management (add, update, delete)
+│   │   ├── booking.controller.js       # Handles booking management
+│   │   └── payment.controller.js       # Handles payment processing
 │   ├── middleware/                    # Custom middlewares for authentication, validation, etc.
 │   │   └── auth.js                    # JWT authentication middleware
 │   ├── models/                        # Sequelize models for database tables
-│   │   ├── User.js                    # User model (Users table)
-│   │   ├── Car.js                     # Car model (Cars table)
-│   │   └── BookingPayment.js          # BookingPayment model (Bookings and Payments table)
+│   │   ├── user.js                    # User model (Users table)
+│   │   ├── car.model.js                     # Car model (Cars table)
+│   │   ├── booking-payment.model.js          # BookingPayment model (Bookings and Payments table)
+│   │   ├── db.js                    # User model (Users table)
+│   │   ├── rental.model.js                     # Car model (Cars table)
+│   │   └── user.model.js          # BookingPayment model (Bookings and Payments table)
 │   ├── routes/                        # API route files
-│   │   ├── authRoutes.js              # Routes for authentication (login, register)
-│   │   ├── carRoutes.js               # Routes for managing cars
-│   │   ├── bookingRoutes.js           # Routes for handling bookings
-│   │   └── paymentRoutes.js           # Routes for payment processing
+│   │   ├── admin.routes.js              # Routes for authentication (login, register)
+│   │   ├── auth.routes.js              # Routes for authentication (login, register)
+│   │   ├── car.routes.js               # Routes for managing cars
+│   │   ├── booking.routes.js           # Routes for handling bookings
+│   │   └── payment.routes.js           # Routes for payment processing
 │   ├── utils/                         # Utility files (helpers, services, etc.)
 │   │   └── helpers.js                 # Helper functions (e.g., formatting dates, calculating costs)
-│   ├── app.js                         # Main Express application setup
-│   └── server.js                      # Server entry point
-├── frontend/                          # Frontend related files
+├── client/                          # Frontend related files
 │   ├── assets/                        # Static assets like images, fonts, etc.
 │   │   ├── css/
 │   │   │   └── style.css              # General styles for the website
@@ -46,3 +48,4 @@ RentnDrive/
 └── mysql-script.txt
 └── dailyScrum.txt
 └── Proposal.txt
+└── server.js                      # Server entry point and Main Express application setup
