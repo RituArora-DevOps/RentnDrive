@@ -1,3 +1,6 @@
+# Ignore the images folder in the client/assets directory
+/client/assets/images/
+
 # Node.js
 node_modules/
 dist/
