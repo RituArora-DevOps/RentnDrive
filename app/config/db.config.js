@@ -4,7 +4,7 @@ module.exports = {
   HOST: process.env.DB_HOST || "fsd25rha.mysql.database.azure.com",
   USER: process.env.DB_USER || "dbadmin",
   PASSWORD: process.env.DB_PASSWORD || "UFmqgheOMHXP6Miu",
-  DB: process.env.DB_NAME || "fsd25rha",
+  DB: process.env.DB_NAME || "rentndrive",
   dialect: process.env.DB_DIALECT || "mysql",
 
   pool: {

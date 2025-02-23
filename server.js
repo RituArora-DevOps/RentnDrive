@@ -1,43 +1,44 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const log = require("./logger"); // Import npmlog logger
-const db = require("./app/models/db"); // Import database configuration
-require("dotenv").config(); // Load environment variables
+const log = require("./logger");
+const db = require("./app/models/db");
+require("dotenv").config();
 
-const app = express(); // Create an Express application
+const app = express();
 
-// Enable Cross-Origin Resource Sharing (CORS)
 app.use(cors());
-
-// Middleware to parse incoming requests with JSON and URL-encoded data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Import and set up routes for admin-related functionality
+// Import routes
 const adminRoutes = require("./app/routes/admin.routes.js");
-app.use("/api", adminRoutes);
+const authRoutes = require("./app/routes/auth.routes.js");
+const carRoutes = require("./app/routes/car.routes.js");
+const bookingRoutes = require("./app/routes/booking.routes.js");
 
-// Serve static files from the 'client' folder (e.g., frontend assets)
+// Use routes
+app.use("/api", adminRoutes);
+app.use("/api", authRoutes);
+app.use("/api", carRoutes);
+app.use("/api", bookingRoutes);
+
 app.use(express.static(path.join(__dirname, "client")));
 
-// Set the server port from environment variables or default to 8088
 const PORT = process.env.PORT || 3000;
 
-// Synchronize the database and start the server
 async function startServer() {
-  try {
-    await db.sync(); // Ensure the database is synchronized before starting the server
-    log.info("Database", "Database synchronized successfully.");
+    try {
+        await db.sync();
+        log.info("Database", "Database synchronized successfully.");
 
-    app.listen(PORT, () => {
-      log.info("Server", `Server is running on port ${PORT}`);
-    });
-  } catch (error) {
-    log.error("Database", ` Database sync failed: ${error.message}`);
-    process.exit(1); // Exit the process if the database fails to sync
-  }
+        app.listen(PORT, () => {
+            log.info("Server", `Server is running on port ${PORT}`);
+        });
+    } catch (error) {
+        log.error("Database", `Database sync failed: ${error.message}`);
+        process.exit(1);
+    }
 }
 
-// Start the server
 startServer();
