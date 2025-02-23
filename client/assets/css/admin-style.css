@@ -1,0 +1,416 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f7fa;
+}
+
+.admin-container {
+  display: flex;
+  width: 100%;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #c53e93;
+  padding: 20px;
+}
+
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 500;
+}
+
+.sidebar nav ul {
+  list-style-type: none;
+}
+
+.sidebar nav ul li {
+  margin: 15px 0;
+}
+
+.sidebar nav ul li a {
+  text-decoration: none;
+  font-weight: 500;
+  padding-left: 24px;
+}
+
+.sidebar nav ul li a:hover {
+  color: #3498db;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 30px;
+}
+
+header h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.dashboard-summary {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.summary-card {
+  background-color: #c53e93;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 30%;
+}
+
+.summary-card h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.summary-card p {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.list {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 93%;
+}
+
+.list table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.list table th,
+.list table td {
+  padding: 12px;
+  text-align: left;
+}
+
+.list table th {
+  background-color: #c53e93;
+}
+
+.list table td {
+  background-color: #f9f9f9;
+}
+
+.list table tr:nth-child(even) td {
+  background-color: #ecf0f1;
+}
+
+.list table button {
+  padding: 6px;
+  background-color: #c53e93;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.list table button:hover {
+  background-color: #2980b9;
+}
+
+
+button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+button:disabled {
+  background: #ccc !important;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+#delete {
+  background: #dc3545;
+}
+
+#delete:hover {
+  background: #b52b38;
+}
+
+#cancel {
+  background: #6c757d;
+}
+
+#cancel:hover {
+  background: #545b62;
+}
+
+#listTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background: white;
+}
+
+#listTable th,
+#listTable td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+#listTable th {
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+#listTable tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+#listTable tr:hover {
+  background: #d9eaff;
+  cursor: pointer;
+}
+
+#viewAddEditPane {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  padding: 40px 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  width: 40%;
+  text-align: left;
+}
+
+#id {
+  display: flex;
+  justify-content: center;
+}
+
+#viewAddEditPane input {
+  width: 90%;
+  padding: 6px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+#buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+#buttons button {
+  min-width: 100px;
+}
+
+.sidebar {
+  min-width: 200px;
+  max-width: 250px;
+  flex-shrink: 0;
+}
+
+.main-content {
+  flex-grow: 1;
+  overflow-x: auto;
+}
+
+
+#car-table {
+  max-width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+#car-table th,
+#car-table td {
+  padding: 4px;
+  text-align: center;
+
+}
+
+#car-table th:first-child,
+#car-table td:first-child {
+  text-align: left;
+  padding-left: 20px;
+}
+
+/* 设置列宽比例 */
+#car-table th:nth-child(1),
+/* Select */
+#car-table td:nth-child(1) {
+  width: 6%;
+}
+
+#car-table th:nth-child(2),
+/* ID */
+#car-table td:nth-child(2) {
+  width: 12%;
+}
+
+#car-table th:nth-child(3),
+/* Make */
+#car-table td:nth-child(3) {
+  width: 12%;
+}
+
+/* 保持 Model, Year, Price Per Day, Status, Type 之间间距相等 */
+#car-table th:nth-child(4),
+/* Model */
+#car-table td:nth-child(4),
+#car-table th:nth-child(5),
+/* Year */
+#car-table td:nth-child(5),
+#car-table th:nth-child(6),
+/* Price Per Day */
+#car-table td:nth-child(6),
+#car-table th:nth-child(7),
+/* Status */
+#car-table td:nth-child(7),
+#car-table th:nth-child(8),
+/* Type */
+#car-table td:nth-child(8) {
+  width: 16%;
+}
+
+#car-form input,
+#car-form select {
+  width: 100%;
+  height: 36px;
+  /* 统一高度 */
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+  /* 防止内边距影响宽度 */
+}
+
+/* 背景蒙层 */
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* 半透明黑色背景 */
+  display: none;
+  /* 初始不显示 */
+  z-index: 999;
+  /* 确保蒙层覆盖所有内容 */
+}
+
+/* 弹出框样式 */
+#car-form {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  /* 可以根据需要调整宽度 */
+  max-width: 500px;
+  /* 最宽的弹窗 */
+  z-index: 1000;
+  /* 确保弹窗在蒙层之上 */
+  display: none;
+  /* 初始不显示 */
+}
+
+/* 显示时 */
+#car-form.show,
+#overlay.show {
+  display: block;
+}
+
+#viewAddEditPane {
+  width: 100%;
+}
+
+/* 输入框和下拉框样式 */
+#car-form input[type="text"],
+#car-form input[type="number"],
+#car-form select {
+  width: 100%;
+  /* 使输入框和下拉框占满父容器的宽度 */
+  padding: 8px;
+  /* 增加内边距，使文本框更宽敞 */
+  margin: 5px 0 10px;
+  /* 上下间距 */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  /* 确保宽度包含内边距和边框 */
+}
+
+/* 确保按钮样式与输入框一致 */
+#car-form button {
+  width: 48%;
+  /* 按钮宽度调整为输入框宽度的一半 */
+  padding: 10px;
+  margin: 10px 1% 0 0;
+  /* 右边距确保按钮之间有间隙 */
+  border: none;
+  background-color: #c53e93;
+  /* 与设计保持一致 */
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+#car-form button:hover {
+  background-color: #A00A6D;
+  /* 按钮悬停效果 */
+}
+
+#viewAddEditPane input[readonly] {
+  background-color: #f4f7fa;
+  cursor: not-allowed;
+}
+
+#car-form input[type="text"],
+#car-form input[type="number"],
+#car-form select {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* 禁止编辑的ID框样式 */
+#car-id {
+  background-color: #f4f7fa;
+  cursor: not-allowed;
+}
