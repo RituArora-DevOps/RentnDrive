@@ -125,7 +125,6 @@ header h1 {
   background-color: #2980b9;
 }
 
-
 button {
   background: #007bff;
   color: white;
@@ -239,7 +238,6 @@ button:disabled {
   overflow-x: auto;
 }
 
-
 #car-table {
   max-width: 100%;
   table-layout: fixed;
@@ -250,7 +248,6 @@ button:disabled {
 #car-table td {
   padding: 4px;
   text-align: center;
-
 }
 
 #car-table th:first-child,
@@ -259,7 +256,7 @@ button:disabled {
   padding-left: 20px;
 }
 
-/* 设置列宽比例 */
+/* Set column width proportions */
 #car-table th:nth-child(1),
 /* Select */
 #car-table td:nth-child(1) {
@@ -278,7 +275,7 @@ button:disabled {
   width: 12%;
 }
 
-/* 保持 Model, Year, Price Per Day, Status, Type 之间间距相等 */
+/* Maintain equal spacing between Model, Year, Price Per Day, Status, and Type */
 #car-table th:nth-child(4),
 /* Model */
 #car-table td:nth-child(4),
@@ -301,16 +298,16 @@ button:disabled {
 #car-form select {
   width: 100%;
   height: 36px;
-  /* 统一高度 */
+  /* Uniform height */
   padding: 6px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
   box-sizing: border-box;
-  /* 防止内边距影响宽度 */
+  /* Prevent padding from affecting width */
 }
 
-/* 背景蒙层 */
+/* Background overlay */
 #overlay {
   position: fixed;
   top: 0;
@@ -318,14 +315,14 @@ button:disabled {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  /* 半透明黑色背景 */
+  /* Semi-transparent black background */
   display: none;
-  /* 初始不显示 */
+  /* Initially hidden */
   z-index: 999;
-  /* 确保蒙层覆盖所有内容 */
+  /* Ensure the overlay covers all content */
 }
 
-/* 弹出框样式 */
+/* Popup form style */
 #car-form {
   position: fixed;
   top: 50%;
@@ -336,16 +333,16 @@ button:disabled {
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 80%;
-  /* 可以根据需要调整宽度 */
+  /* Width can be adjusted as needed */
   max-width: 500px;
-  /* 最宽的弹窗 */
+  /* Maximum popup width */
   z-index: 1000;
-  /* 确保弹窗在蒙层之上 */
+  /* Ensure the popup is above the overlay */
   display: none;
-  /* 初始不显示 */
+  /* Initially hidden */
 }
 
-/* 显示时 */
+/* Displayed state */
 #car-form.show,
 #overlay.show {
   display: block;
@@ -355,32 +352,32 @@ button:disabled {
   width: 100%;
 }
 
-/* 输入框和下拉框样式 */
+/* Input and dropdown styles */
 #car-form input[type="text"],
 #car-form input[type="number"],
 #car-form select {
   width: 100%;
-  /* 使输入框和下拉框占满父容器的宽度 */
+  /* Make inputs and dropdowns occupy full width of the parent container */
   padding: 8px;
-  /* 增加内边距，使文本框更宽敞 */
+  /* Add padding to make the text box more spacious */
   margin: 5px 0 10px;
-  /* 上下间距 */
+  /* Vertical spacing */
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
-  /* 确保宽度包含内边距和边框 */
+  /* Ensure width includes padding and border */
 }
 
-/* 确保按钮样式与输入框一致 */
+/* Ensure button styles are consistent with input fields */
 #car-form button {
   width: 48%;
-  /* 按钮宽度调整为输入框宽度的一半 */
+  /* Adjust button width to half of the input field's width */
   padding: 10px;
   margin: 10px 1% 0 0;
-  /* 右边距确保按钮之间有间隙 */
+  /* Right margin to ensure spacing between buttons */
   border: none;
   background-color: #c53e93;
-  /* 与设计保持一致 */
+  /* Consistent with the design */
   color: white;
   font-size: 16px;
   cursor: pointer;
@@ -390,7 +387,7 @@ button:disabled {
 
 #car-form button:hover {
   background-color: #A00A6D;
-  /* 按钮悬停效果 */
+  /* Button hover effect */
 }
 
 #viewAddEditPane input[readonly] {
@@ -409,7 +406,7 @@ button:disabled {
   box-sizing: border-box;
 }
 
-/* 禁止编辑的ID框样式 */
+/* Style for non-editable ID input box */
 #car-id {
   background-color: #f4f7fa;
   cursor: not-allowed;
