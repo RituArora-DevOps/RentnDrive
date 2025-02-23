@@ -1,7 +1,7 @@
 const db = require("../models/db");
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs"); // For password hashing
-const jwt = require("jsonwebtoken"); // For JWT generation
+const jwt = require("../config/jwt"); // For JWT generation
 const log = require("../../logger");
 
 // User registration
@@ -60,7 +60,7 @@ exports.login = async (req, res) => {
 
         // Generate a JWT token
         const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
-            expiresIn: "1h", // Token expires in 1 hour
+            expiresIn: jwtConfig.expiresIn, algorithm: jwtConfig.algorithm
         });
 
         res.json({ token, role: user.role, username: user.username, id: user.id });

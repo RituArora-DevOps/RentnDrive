@@ -7,4 +7,4 @@ DB_NAME=rentndrive
 DB_DIALECT=mysql
 DB_SSL=false
 LOG_LEVEL=debug  // Set log level for npmlog 
-JWT_SECRET=mysecretkey12345 // we might have to update this latter
+JWT_SECRET=f2f3832157dda80cd458c94bf974554f8d46a1434546fc900a9f84c1e4a1c0ae3b3671e886b88921176d28af48f27dcfed531c48644bd808398f5e9602b2c407 
