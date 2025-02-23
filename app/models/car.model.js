@@ -1,3 +1,4 @@
+// Defines the Sequelize model for the cars table.
 const { DataTypes } = require("sequelize");
 const db = require("./db");
 
