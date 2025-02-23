@@ -104,10 +104,21 @@ watch day09-auth.mp4
 -----------------------------------------------
 Wang Haitao
 1. Done since last scrum
-
+Frontend for admin:
+Add cars
+Update cars
+Delete cars
+View all cars
+Fetch API from backend
+ 
 2. Plan until next Scrum
-
-3. Need assistance / figure things out
+Frontend for manage bookings
+Frontend for manage customers
+Fetch api from backend for bookings and customers
+Test frontend features
+ 
+3. Need assistance / figure things out 
+ 
 
 
 -----------------------------------------------
@@ -126,6 +137,8 @@ Aliev Khadis
 Ritu Arora
 1. Done/not done since last scrum
 Resolved ssl encryption issue by disabling encryption (though not the best practice)
+Watched reamining video, still half left
+worked on backend for user
 
 2. Plan until next Scrum
 
@@ -137,6 +150,11 @@ Wang Haitao
 1. Done since last scrum
 
 2. Plan until next Scrum
+Insert data in the tables 
+After Ritu and Haitao pushed the Backend code, test it using Postman.
+Test the validation.
+Work on static files- html and css. (Check the styling from Haitao's file)
+
 
 3. Need assistance / figure things out
 

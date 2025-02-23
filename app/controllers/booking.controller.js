@@ -1,6 +1,6 @@
 const db = require("../models/db");
 const Car = require("../models/car.model");
-const Rental = require("../models/rental.model"); // Assuming you renamed booking-payment.model.js to rental.model.js
+const Rental = require("../models/rental.model");
 const log = require("../../logger");
 const { Op } = require("sequelize");
 
@@ -33,10 +33,12 @@ exports.checkAvailability = async (req, res) => {
 };
 
 // Create a new booking
+// The payment processing logic (the processPayment call and the if/else block) should be placed inside the createBooking function, after the Rental.create call, but before the final res.status call. This ensures that the booking record is created before attempting payment, and the car status is updated after payment.
+// The payment processing logic is integrated directly into the createBooking function within our booking.controller.js
 exports.createBooking = async (req, res) => {
     try {
         const { carId, startDate, endDate, paymentMethod, amount, extra } = req.body;
-        const userId = req.user.id; // Assuming your auth middleware adds user info to req.user
+        const userId = req.user.id;
 
         if (!carId || !startDate || !endDate || !paymentMethod || !amount) {
             return res.status(400).json({ message: "Missing required fields." });
@@ -63,15 +65,14 @@ exports.createBooking = async (req, res) => {
             return res.status(400).json({ message: "Car is already booked for the selected dates." });
         }
 
-        // Calculate total amount (You can add more complex calculation logic here)
         const days = (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24) + 1;
         const totalAmount = car.price_per_day * days;
 
         if (totalAmount !== amount) {
-            return res.status(400).json({message: "Amount is incorrect."})
+            return res.status(400).json({ message: "Amount is incorrect." });
         }
 
-        // Create the booking
+        // Create the booking (initial state)
         const booking = await Rental.create({
             user_id: userId,
             car_id: carId,
@@ -87,38 +88,26 @@ exports.createBooking = async (req, res) => {
             updated_at: new Date()
         });
 
-        // Update car status to booked
-        await car.update({ status: "booked" });
+        // Simulate payment processing (replace with actual gateway integration)
+        const paymentSuccessful = await processPayment(amount, paymentMethod);
 
-        res.status(201).json(booking);
+        if (paymentSuccessful) {
+            await booking.update({ payment_status: "completed", status: "confirmed", payment_date: new Date() });
+            await car.update({ status: "booked" });
+            res.status(201).json(booking);
+        } else {
+            await booking.update({ payment_status: "failed", status: "failed" });
+            await car.update({ status: "available" });
+            res.status(400).json({ message: "Payment failed." });
+        }
+
     } catch (error) {
         log.error(`Error creating booking: ${error.message}`);
         res.status(500).json({ message: "Internal server error." });
     }
 };
-// Inside booking.controller.js, within the createBooking function:
-
-// ... (previous code)
-
-// Simulate payment processing (replace with actual gateway integration)
-const paymentSuccessful = await processPayment(amount, paymentMethod); // Replace with your payment gateway logic
-
-if (paymentSuccessful) {
-    await booking.update({ payment_status: "completed", status: "confirmed", payment_date: new Date() });
-    await car.update({status: "booked"});
-    res.status(201).json(booking);
-} else {
-    await booking.update({ payment_status: "failed", status: "failed" });
-    await car.update({status:"available"});
-    res.status(400).json({message: "Payment failed."});
-}
-
-// ... (rest of the code)
 
 // Placeholder for payment processing (replace with your gateway logic)
 async function processPayment(amount, paymentMethod) {
-    // Replace with your payment gateway integration logic
-    // Return true if payment is successful, false otherwise
-    // Example:
     return Math.random() < 0.8; // 80% chance of success (for testing)
 }

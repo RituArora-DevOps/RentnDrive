@@ -16,3 +16,21 @@ router.get("/bookings/:id", authMiddleware.verifyToken, bookingController.getBoo
 router.get("/bookings/user", authMiddleware.verifyToken, bookingController.getUserBookings);
 
 module.exports = router;
+
+
+/*
+ Notes of me:
+Explanation of Routes:
+
+/cars/available (GET):
+Checks car availability for a given date range.
+/bookings (POST):
+Creates a new booking and processes the payment.
+Requires authentication.
+/bookings/:id (GET):
+Retrieves details of a specific booking.
+Requires authentication.
+/bookings/user (GET):
+Retrieves all bookings for the authenticated user.
+Requires authentication.
+ */
