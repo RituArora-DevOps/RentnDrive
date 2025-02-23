@@ -1,6 +1,9 @@
 # Ignore the images folder in the client/assets directory
 /client/assets/images/
 
+# Ignore the utilities folder in the app
+/app/utilities/
+
 # Node.js
 node_modules/
 dist/
