@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <div class="admin-container">
+    <aside class="sidebar">
+      <h2>Admin Dashbord</h2>
+      <nav>
+        <ul>
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="#" id="manage-cars">Manage Cars</a></li>
+          <li><a href="#">Manage Bookings</a></li>
+          <li><a href="#">Manage Customers</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <section class="dashboard-summary">
+        <div class="summary-card" id="total-cars">
+          <h3>Total Cars</h3>
+          <p></p>
+        </div>
+        <div class="summary-card" id="total-bookings">
+          <h3>Total Bookings</h3>
+          <p>10</p>
+        </div>
+        <div class="summary-card" id="total-customers">
+          <h3>Total Customers</h3>
+          <p>150</p>
+        </div>
+      </section>
+
+      <section class="list" id="car-list" style="display: none;">
+        <h2>Car List</h2>
+        <table id="car-table">
+          <!-- Car rows will be populated here dynamically -->
+        </table>
+
+        <div id="car-actions">
+          <button id="add-car">Add</button>
+          <button id="update-car" disabled>Update</button>
+          <button id="delete-car" disabled>Delete</button>
+          <button id="cancel-car">Cancel</button>
+        </div>
+
+        <div id="overlay"></div>
+
+        <!-- Update/Add Car Form -->
+        <div id="car-form" style="display: none;">
+          <div id="viewAddEditPane">
+            <label for="car-id">ID:</label>
+            <input type="text" id="car-id" readonly><br>
+
+            <label for="car-make">Make:</label>
+            <input type="text" id="car-make" required><br>
+
+            <label for="car-model">Model:</label>
+            <input type="text" id="car-model" required><br>
+
+            <label for="car-year">Year:</label>
+            <input type="number" id="car-year" required><br>
+
+            <label for="car-price">Price Per Day:</label>
+            <input type="number" step="0.01" id="car-price" required><br>
+
+            <label for="car-status">Status:</label>
+            <select id="car-status" required>
+              <option value="available">Available</option>
+              <option value="booked">Booked</option>
+              <option value="maintenance">Maintenance</option>
+            </select><br>
+
+            <label for="car-type">Type:</label>
+            <input type="text" id="car-type" required><br>
+
+            <div id="buttons">
+              <button id="submit-car" type="submit">Submit</button>
+              <button id="cancel-form" type="button">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+
+
+
+      </section>
+
+      <section class="list" id="booking-list" style="display: none;">
+        <h2>Booking List</h2>
+        <table id="booking-table"></table>
+      </section>
+
+      <section class="list" id="customer-list" style="display: none;">
+        <h2>Customer List</h2>
+        <table id="customer-table"></table>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+
+</html>
