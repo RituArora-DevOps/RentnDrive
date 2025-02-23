@@ -3,7 +3,6 @@ DB_USER=dbadmin
 DB_PASSWORD=UFmqgheOMHXP6Miu
 DB_NAME=rentndrive
 DB_PORT=3306
-DB_NAME=rentndrive
 DB_DIALECT=mysql
 DB_SSL=false
 LOG_LEVEL=debug  // Set log level for npmlog 
