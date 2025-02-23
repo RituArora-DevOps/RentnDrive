@@ -118,9 +118,12 @@ exports.updateCar = async (req, res) => {
 };
 
 // Delete a car (only by ID, at least one car must remain)
+// Delete a car (only by ID, at least one car must remain)
 exports.deleteCar = async (req, res) => {
   try {
     const { id } = req.params;
+
+    log.info(`Admin requested to delete car ID ${id}`);
 
     const car = await Car.findByPk(id);
     if (!car) {
@@ -128,15 +131,20 @@ exports.deleteCar = async (req, res) => {
       return res.status(404).json({ message: "Car not found." });
     }
 
+    log.debug(`Found car: ${JSON.stringify(car)}`);
+
     const carCount = await Car.count();
     if (carCount <= 1) {
       log.warn("Car deletion failed: Cannot delete the last remaining car.");
       return res.status(400).json({ message: "Cannot delete the last remaining car." });
     }
 
-    log.info(`Admin is attempting to delete car ID ${id}.`);
+    log.info(`Deleting related rentals for car ID ${id}`);
+    await Rental.destroy({ where: { car_id: id } });
 
-    await car.destroy();
+    log.info(`Deleting car ID ${id}`);
+    await car.destroy({ force: true });
+
     log.info(`Car ID ${id} deleted successfully.`);
     res.status(200).json({ message: "Car deleted successfully." });
   } catch (error) {
@@ -144,6 +152,7 @@ exports.deleteCar = async (req, res) => {
     res.status(500).json({ message: "Failed to delete car." });
   }
 };
+
 
 // Retrieve all orders (with sorting support)
 exports.getAllOrders = async (req, res) => {
