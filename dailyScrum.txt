@@ -176,10 +176,13 @@ Aliev Khadis
 Ritu Arora
 1. Done/not done since last scrum
 Completed server side configuration 
+
 Tested using Postman
 2. Plan until next Scrum
 Fix View booking by dates
 Configure frontend for booking and payment
+- Add frontend Booking Wizard page and connect to backend 
+Booking Calender
 
 3. Need assistance / figure things out
 Heroku
@@ -190,8 +193,15 @@ JSDoc
 -----------------------------------------------
 Wang Haitao
 1. Done since last scrum
+Frontend for admin working succesfully
 
 2. Plan until next Scrum
+Test admin dashboard using endpoints
+Configure home page and dashboard
+- Add main page with cards like grid (optional)
+add image to the home page may be as a Jumbotron using Bootstrap (optional)
+Add car grid
+
 
 3. Need assistance / figure things out
 
@@ -203,12 +213,13 @@ Aliev Khadis
 - Test endpoints/routes/handlers - done.
 - Add frontend with validation for Sign In(Register) - done.
 - Add frontend with validation for Login - done.
-- Add frontend Booking Wizard page and connect to backend - not done yet.
+
  
 2. Plan until next Scrum:
-- Add frontend Booking Wizard page and connect to backend
-- Add frontend for booking / payment confirmation page
-- Add main page with cards like grid
+Fix registration and user authentication page 
+
+
+Test static page using endpoints
 
 =============================================================
 
@@ -218,6 +229,7 @@ Ritu Arora
 1. Done/not done since last scrum
 
 2. Plan until next Scrum
+
 
 3. Need assistance / figure things out
 
