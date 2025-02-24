@@ -105,6 +105,9 @@ function selectCar(index) {
 
 // Event listener for "Add Car" button
 document.getElementById('add-car').addEventListener('click', () => {
+
+  selectedCarId = null;
+
   // Display the add/update form and overlay
   document.getElementById('car-form').style.display = 'block';
   document.getElementById('overlay').style.display = 'block';
@@ -223,9 +226,9 @@ document.getElementById('overlay').addEventListener('click', () => {
 
 // Event listener for submitting the car form (for both add and update)
 document.getElementById('submit-car').addEventListener('click', (event) => {
-  event.preventDefault(); // Prevent default form submission behavior
+  event.preventDefault(); // 阻止默认提交
 
-  // Retrieve and trim input values from the form
+  // 获取输入值
   const make = document.getElementById('car-make').value.trim();
   const model = document.getElementById('car-model').value.trim();
   const year = document.getElementById('car-year').value.trim();
@@ -233,15 +236,15 @@ document.getElementById('submit-car').addEventListener('click', (event) => {
   const type = document.getElementById('car-type').value.trim();
   const status = document.getElementById('car-status').value;
 
-  // Get the current year for validation
+  // 获取当前年份
   const currentYear = new Date().getFullYear();
 
-  // Remove any previous error messages
+  // 清除所有之前的错误信息
   document.querySelectorAll('.error-message').forEach(el => el.remove());
 
   let isValid = true;
 
-  // Validate "Make" input
+  // 验证 Make
   if (!make) {
     showError('car-make', 'Make is required.');
     isValid = false;
@@ -250,7 +253,7 @@ document.getElementById('submit-car').addEventListener('click', (event) => {
     isValid = false;
   }
 
-  // Validate "Model" input
+  // 验证 Model
   if (!model) {
     showError('car-model', 'Model is required.');
     isValid = false;
@@ -259,7 +262,7 @@ document.getElementById('submit-car').addEventListener('click', (event) => {
     isValid = false;
   }
 
-  // Validate "Year" input
+  // 验证 Year
   if (!year) {
     showError('car-year', 'Year is required.');
     isValid = false;
@@ -271,7 +274,7 @@ document.getElementById('submit-car').addEventListener('click', (event) => {
     isValid = false;
   }
 
-  // Validate "Price Per Day" input
+  // 验证 Price Per Day
   if (!price) {
     showError('car-price', 'Price per day is required.');
     isValid = false;
@@ -280,7 +283,7 @@ document.getElementById('submit-car').addEventListener('click', (event) => {
     isValid = false;
   }
 
-  // Validate "Type" input
+  // 验证 Type
   if (!type) {
     showError('car-type', 'Type is required.');
     isValid = false;
@@ -289,64 +292,66 @@ document.getElementById('submit-car').addEventListener('click', (event) => {
     isValid = false;
   }
 
-  // If any validation fails, do not proceed with form submission
-  if (!isValid) return;
+  // 只有在所有验证通过时才提交表单
+  if (isValid) {
+    const carData = {
+      make,
+      model,
+      year,
+      price_per_day: price,
+      status: status,
+      type
+    };
 
-  // Construct the data object to be submitted
-  const carData = {
-    make,
-    model,
-    year,
-    price_per_day: price,
-    status,
-    type
-  };
+    if (selectedCarId === null) {
+      // 添加新车辆 (POST)
+      fetch('http://localhost:8088/api/cars', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(carData)
+      })
+        .then(response => response.json())
+        .then(result => {
+          // 如果返回结果中有 car 属性，则提取实际数据，否则直接使用返回结果
+          const newCar = result.car ? result.car : result;
+          carList.push(newCar); // 将新车添加到数组中，新车会出现在数组的最后一项
+          alert('Car added successfully');
+          updateCarList(); // 重新渲染车辆列表，立即显示新添加的车辆
+        })
+        .catch(error => {
+          console.error('Error adding car:', error);
+        });
+    } else {
+      // 更新车辆 (PUT)
+      fetch(`http://localhost:8088/api/cars/${carList[selectedCarId].id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(carData)
+      })
+        .then(response => response.json())
+        .then(result => {
+          const updatedCar = result.car ? result.car : result;
+          carList[selectedCarId] = updatedCar;
+          alert('Car updated successfully');
+          updateCarList();
+        })
+        .catch(error => {
+          console.error('Error updating car:', error);
+        });
+    }
 
-  if (selectedCarId === null) {
-    // Add a new car (POST request)
-    fetch('http://localhost:8088/api/cars', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(carData)
-    })
-      .then(response => response.json())
-      .then(newCar => {
-        carList.push(newCar); // Add the new car to the car array
-        alert('Car added successfully');
-        updateCarList(); // Refresh the car list in the UI
-        resetCarForm();  // Clear the form fields
-      })
-      .catch(error => {
-        console.error('Error adding car:', error);
-      });
-  } else {
-    // Update an existing car (PUT request)
-    fetch(`http://localhost:8088/api/cars/${carList[selectedCarId].id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(carData)
-    })
-      .then(response => response.json())
-      .then(updatedCar => {
-        carList[selectedCarId] = updatedCar; // Update the selected car in the array
-        alert('Car updated successfully');
-        updateCarList(); // Refresh the car list in the UI
-        resetCarForm();  // Clear the form fields
-      })
-      .catch(error => {
-        console.error('Error updating car:', error);
-      });
+    // 关闭表单和 overlay
+    document.getElementById('car-form').style.display = 'none';
+    document.getElementById('car-actions').style.display = 'block';
+    document.getElementById('overlay').style.display = 'none';
   }
-
-  // Close the form and overlay after submission
-  document.getElementById('car-form').style.display = 'none';
-  document.getElementById('car-actions').style.display = 'block';
-  document.getElementById('overlay').style.display = 'none';
 });
+
+
 
 // Function to display error messages next to form inputs
 function showError(inputId, message) {
@@ -557,4 +562,172 @@ document.getElementById('cancel-booking').addEventListener('click', async () => 
     console.error('Error deleting booking:', error);
     alert('An error occurred while deleting the booking.');
   }
+});
+
+
+//manage customers
+document.getElementById('manage-customers').addEventListener('click', () => {
+  // Show the customer list section and hide other sections
+  document.getElementById('customer-list').style.display = 'block';
+  document.getElementById('car-list').style.display = 'none';
+  document.getElementById('booking-list').style.display = 'none';
+
+  // Fetch customer data and update the list
+  fetchCustomers();
+
+  // Reset selected customer
+  selectedCustomerId = null;
+  document.getElementById('delete-customer').disabled = true;
+});
+
+let selectedCustomerId = null;
+const customerList = [];
+
+// Fetch customer data
+function fetchCustomers() {
+  fetch('http://localhost:8088/api/customers')
+    .then(response => response.json())
+    .then(data => {
+      customerList.length = 0; // Clear the array
+      customerList.push(...data); // Refill with new data
+      updateCustomerList(); // Update the customer list on the page
+
+      // Update "Total Customers" count (assuming <p> tag is inside Total Customers section)
+      document.getElementById('total-customers').querySelector('p').textContent = customerList.length;
+    })
+    .catch(error => {
+      console.error('Error fetching customers:', error);
+    });
+}
+
+// Render the customer list
+function updateCustomerList() {
+  const customerTable = document.getElementById('customer-table');
+  customerTable.innerHTML = ''; // Clear table content
+
+  // Add table header
+  const headerRow = document.createElement('tr');
+  headerRow.innerHTML = `
+    <th>Select</th>
+    <th>ID</th>
+    <th>Username</th>
+    <th>Email</th>
+    <th>Phone</th>
+    <th>Created At</th>
+    <th>Updated At</th>
+  `;
+  customerTable.appendChild(headerRow);
+
+  // Populate table with customer data
+  customerList.forEach((customer, index) => {
+    const row = document.createElement('tr');
+    const radioCell = document.createElement('td');
+    const idCell = document.createElement('td');
+    const usernameCell = document.createElement('td');
+    const emailCell = document.createElement('td');
+    const phoneCell = document.createElement('td');
+    const createdAtCell = document.createElement('td');
+    const updatedAtCell = document.createElement('td');
+
+    const radioButton = document.createElement('input');
+    radioButton.type = 'radio';
+    radioButton.name = 'customer-select';
+    radioButton.addEventListener('click', () => selectCustomer(index));
+
+    radioCell.appendChild(radioButton);
+    idCell.textContent = customer.id;
+    usernameCell.textContent = customer.username;
+    emailCell.textContent = customer.email;
+    phoneCell.textContent = customer.phone;
+    createdAtCell.textContent = formatDate(customer.created_at);
+    updatedAtCell.textContent = formatDate(customer.updated_at);
+
+    row.appendChild(radioCell);
+    row.appendChild(idCell);
+    row.appendChild(usernameCell);
+    row.appendChild(emailCell);
+    row.appendChild(phoneCell);
+    row.appendChild(createdAtCell);
+    row.appendChild(updatedAtCell);
+
+    customerTable.appendChild(row);
+  });
+}
+
+// Select a customer
+function selectCustomer(index) {
+  selectedCustomerId = index;
+  document.getElementById('delete-customer').disabled = false;
+}
+
+// Delete a customer
+document.getElementById('delete-customer').addEventListener('click', async () => {
+  const confirmDelete = confirm('Are you sure you want to delete this customer?');
+  if (!confirmDelete) return;
+
+  try {
+    const response = await fetch(`http://localhost:8088/api/customers/${customerList[selectedCustomerId].id}`, {
+      method: 'DELETE'
+    });
+    if (response.ok) {
+      customerList.splice(selectedCustomerId, 1);
+      alert('Customer deleted successfully');
+      updateCustomerList();
+      document.getElementById('total-customers').querySelector('p').textContent = customerList.length;
+    } else {
+      const errorData = await response.json();
+      alert(`Failed to delete customer: ${errorData.error}`);
+    }
+  } catch (error) {
+    console.error('Error deleting customer:', error);
+    alert('An error occurred while deleting the customer.');
+  }
+});
+
+// Helper function: Format date to "yyyy-mm-dd"
+function formatDate(dateStr) {
+  if (!dateStr) return "";
+  const date = new Date(dateStr);
+  return date.toISOString().slice(0, 10);
+}
+
+// Update summary-card data when the page loads
+window.addEventListener('load', updateSummaryCounts);
+
+function updateSummaryCounts() {
+  // Fetch the total number of cars
+  fetch('http://localhost:8088/api/cars')
+    .then(response => response.json())
+    .then(data => {
+      // Assuming the response is an array
+      document.getElementById('total-cars').querySelector('p').textContent = data.length;
+    })
+    .catch(error => {
+      console.error('Error fetching cars count:', error);
+    });
+
+  // Fetch the total number of bookings
+  fetch('http://localhost:8088/api/orders')
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('total-bookings').querySelector('p').textContent = data.length;
+    })
+    .catch(error => {
+      console.error('Error fetching bookings count:', error);
+    });
+
+  // Fetch the total number of customers
+  fetch('http://localhost:8088/api/customers')
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('total-customers').querySelector('p').textContent = data.length;
+    })
+    .catch(error => {
+      console.error('Error fetching customers count:', error);
+    });
+}
+
+// Add click event to the Dashboard button (assuming it's the first <a> element in the sidebar)
+document.querySelectorAll('.sidebar nav ul li a')[0].addEventListener('click', () => {
+  window.location.reload();
 });
