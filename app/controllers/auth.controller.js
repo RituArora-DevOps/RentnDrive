@@ -1,11 +1,10 @@
-const db = require("../models/db");
+const sequelize = require("../models/db");
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs"); // For password hashing
 const jwt = require("jsonwebtoken"); // Import jsonwebtoken library
 const log = require("../../logger");
 const { Op } = require("sequelize");
 const jwtConfig = require("../config/jwt");
-
 
 // User registration
 exports.register = async (req, res) => {

@@ -1,8 +1,8 @@
 // Defines the Sequelize model for the cars table.
 const { DataTypes } = require("sequelize");
-const db = require("./db");
+const sequelize = require("./db");
 
-const Car = db.define("Car", {
+const Car = sequelize.define("Car", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,

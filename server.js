@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const log = require("./logger");
-const db = require("./app/models/db");
+const sequelize = require("./app/models/db");
 require("dotenv").config();
 
 const app = express();
@@ -29,7 +29,8 @@ const PORT = process.env.PORT || 3000;
 
 async function startServer() {
     try {
-        await db.sync();
+        await sequelize.sync();
+        console.log("Database synced successfully");
         log.info("Database", "Database synchronized successfully.");
 
         app.listen(PORT, () => {

@@ -195,6 +195,7 @@ Heroku
 Blob
 Session storage
 JSDoc
+Hashing Password
 
 -----------------------------------------------
 Wang Haitao

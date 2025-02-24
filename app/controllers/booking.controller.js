@@ -1,9 +1,10 @@
-const db = require("../models/db");
+// const db = require("../models/db");
+const sequelize = require("../models/db"); 
 const Car = require("../models/car.model");
 const Rental = require("../models/rental.model");
 const log = require("../../logger");
 const { Op } = require("sequelize");
-const { sequelize } = require("../models/db"); // Import sequelize instance
+// const { sequelize } = require("../models/db"); // Import sequelize instance
 
 // Check car availability
 exports.checkAvailability = async (req, res) => {
@@ -14,11 +15,17 @@ exports.checkAvailability = async (req, res) => {
             return res.status(400).json({ message: "Start and end dates are required." });
         }
 
+        if (isNaN(Date.parse(startDate)) || isNaN(Date.parse(endDate))) {
+            return res.status(400).json({ message: "Invalid date format." });
+        }
+
+        console.log('Using sequelize:', sequelize);  // Debug log
+        
         const availableCars = await Car.findAll({
             where: {
                 status: "available",
                 id: {
-                    [Op.notIn]: db.literal(`
+                    [Op.notIn]: sequelize.literal(`
                         SELECT car_id FROM rentals
                         WHERE (start_date <= '${endDate}' AND end_date >= '${startDate}')
                     `)
@@ -35,6 +42,7 @@ exports.checkAvailability = async (req, res) => {
 
 // Create a new booking
 exports.createBooking = async (req, res) => {
+    console.log(sequelize); 
     const transaction = await sequelize.transaction(); // Start transaction
     try {
         const { carId, startDate, endDate, paymentMethod, amount, extra } = req.body;

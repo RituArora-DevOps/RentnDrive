@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
-const db = require("./db");
+const sequelize = require("./db");
 
-const Rental = db.define("Rental", {
+const Rental = sequelize.define("Rental", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -61,14 +61,10 @@ const Rental = db.define("Rental", {
   extra: {
     type: DataTypes.TEXT,
   },
-  created_at: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-  },
-  updated_at: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-  },
+}, {
+  timestamps: true, // This ensures that Sequelize adds created_at and updated_at automatically
+  createdAt: 'created_at',  // Map the Sequelize default 'createdAt' to 'created_at'
+  updatedAt: 'updated_at',  // Map the Sequelize default 'updatedAt' to 'updated_at'
 });
 
 module.exports = Rental;
