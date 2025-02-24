@@ -3,23 +3,44 @@ const dbConfig = require("../config/db.config.js");
 const log = require("npmlog");
 require("dotenv").config(); // Load environment variables from .env file
 
-// Set npmlog logging level (default to 'info' if not set in .env)
+/**
+ * Database connection module using Sequelize.
+ * @module Database
+ */
+
+/**
+ * Sets the logging level for npmlog. Defaults to 'info' if not set in .env.
+ */
 log.level = process.env.LOG_LEVEL || "info";
 
-// Ensure 'debug' level is available for npmlog
-log.addLevel('debug', 1500, { fg: 'blue', bold: true });
+/**
+ * Ensures 'debug' level logging is available in npmlog.
+ */
+log.addLevel("debug", 1500, { fg: "blue", bold: true });
 
-// Log the current logging level to confirm it's set correctly
+/**
+ * Logs the current logging level for confirmation.
+ */
 log.info("Logging Level", `Current logging level: ${log.level}`);
 
-// Create a new Sequelize instance to connect to the MySQL database (without SSL)
+/**
+ * Sequelize instance for connecting to the MySQL database.
+ * Configures the database connection using credentials from `dbConfig`.
+ * @constant {Sequelize}
+ */
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
-  logging: (msg) => log.debug("SQL Query", msg), // Log SQL queries only in DEBUG level
+  logging: (msg) => log.debug("SQL Query", msg), // Logs SQL queries only at DEBUG level
 });
 
-// Function to test and establish a connection to the database
+/**
+ * Establishes a connection to the database and verifies authentication.
+ * Logs success or failure messages.
+ * @async
+ * @function
+ * @returns {Promise<void>} Resolves when the database connection is successful.
+ */
 async function connectDB() {
   try {
     await sequelize.authenticate();
@@ -32,4 +53,8 @@ async function connectDB() {
 // Connect to the database
 connectDB();
 
+/**
+ * Exports the Sequelize instance for use in other modules.
+ * @type {Sequelize}
+ */
 module.exports = sequelize;
