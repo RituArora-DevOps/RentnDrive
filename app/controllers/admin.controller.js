@@ -118,7 +118,6 @@ exports.updateCar = async (req, res) => {
 };
 
 // Delete a car (only by ID, at least one car must remain)
-// Delete a car (only by ID, at least one car must remain)
 exports.deleteCar = async (req, res) => {
   try {
     const { id } = req.params;
@@ -154,11 +153,12 @@ exports.deleteCar = async (req, res) => {
 };
 
 
+
 // Retrieve all orders (with sorting support)
 exports.getAllOrders = async (req, res) => {
   try {
     const { sortBy = "id", order = "ASC" } = req.query;
-    const validSortFields = ["id", "user_id", "car_id", "start_date", "end_date", "total_amount", "status", "payment_status", "created_at"];
+    const validSortFields = ["id", "user_id", "car_id", "start_date", "end_date", "total_amount", "status", "payment_status", "created_at", "updated_at"];
     if (!validSortFields.includes(sortBy)) {
       return res.status(400).json({ error: "Invalid sort field." });
     }
@@ -175,28 +175,36 @@ exports.getAllOrders = async (req, res) => {
 };
 
 // Cancel a booking (only by ID)
-exports.cancelOrder = async (req, res) => {
+exports.deleteOrder = async (req, res) => {
   try {
     const { id } = req.params;
-
     const rental = await Rental.findByPk(id);
     if (!rental) {
       return res.status(404).json({ error: "Order not found." });
     }
 
-    if (rental.status === "cancelled") {
-      return res.status(400).json({ error: "Order is already cancelled." });
+    // 新增验证：只能取消还未开始的订单
+    const today = new Date();
+    const startDate = new Date(rental.start_date);
+    const endDate = new Date(rental.end_date);
+
+    if (today >= startDate && today <= endDate) {
+      return res.status(400).json({ error: "Order is in progress and cannot be cancelled." });
     }
 
-    rental.status = "cancelled";
-    await rental.save();
+    if (today > endDate) {
+      return res.status(400).json({ error: "Order has been completed and cannot be cancelled." });
+    }
 
-    res.json({ message: `Order ${id} has been cancelled successfully.` });
+    await rental.destroy();
+    log.info(`Order ID ${id} deleted successfully.`);
+    res.status(200).json({ message: "Booking deleted successfully." });
   } catch (error) {
-    log.error(`Error cancelling order: ${error.message}`);
+    log.error(`Error deleting booking: ${error.message}`);
     res.status(500).json({ error: "Internal server error." });
   }
 };
+
 
 // Get booking summary
 exports.getOrderSummary = async (req, res) => {
@@ -207,22 +215,25 @@ exports.getOrderSummary = async (req, res) => {
 
     switch (period) {
       case "week":
-        startDate = new Date(today.setDate(today.getDate() - 7));
+        startDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
         break;
       case "month":
-        startDate = new Date(today.setMonth(today.getMonth() - 1));
+        startDate = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
         break;
       case "year":
-        startDate = new Date(today.setFullYear(today.getFullYear() - 1));
+        startDate = new Date(today.getTime() - 365 * 24 * 60 * 60 * 1000);
         break;
       default:
         return res.status(400).json({ error: "Invalid period. Use 'week', 'month', or 'year'." });
     }
 
+    // 将 startDate 转换为 yyyy-mm-dd 格式
+    const formattedStartDate = startDate.toISOString().slice(0, 10);
+
     const orders = await Rental.findAll({
       where: {
         created_at: {
-          [Op.gte]: startDate,
+          [Op.gte]: formattedStartDate,
         },
       },
       order: [["created_at", "DESC"]],
@@ -234,6 +245,7 @@ exports.getOrderSummary = async (req, res) => {
     res.status(500).json({ error: "Internal server error." });
   }
 };
+
 
 // Retrieve all customers (with sorting support)
 exports.getAllCustomers = async (req, res) => {
@@ -303,16 +315,39 @@ exports.addCustomer = async (req, res) => {
 // Add a new rental order (only for testing)
 exports.addOrder = async (req, res) => {
   try {
+    let {
+      user_id,
+      car_id,
+      start_date,
+      end_date,
+      total_amount,
+      status,
+      payment_method,
+      payment_status,
+      amount,
+      payment_date,
+      extra,
+      created_at,
+      updated_at,
+    } = req.body;
 
-    // Extract order data from the request body
-    const { user_id, car_id, start_date, end_date, total_amount, status, payment_method, payment_status, amount, payment_date, extra } = req.body;
+    const startDateObj = new Date(start_date);
+    const endDateObj = new Date(end_date);
 
-    // Validate that the start date is before the end date
-    if (new Date(end_date) <= new Date(start_date)) {
-      return res.status(400).json({ message: "End date must be after the start date." });
+
+    if (!created_at) {
+      const createdAtObj = new Date(startDateObj);
+      createdAtObj.setDate(createdAtObj.getDate() - 2);
+      created_at = createdAtObj.toISOString().slice(0, 19).replace("T", " ");
     }
 
-    // Create a new rental order
+
+    if (!updated_at) {
+      const updatedAtObj = new Date(endDateObj);
+      updatedAtObj.setDate(updatedAtObj.getDate() - 1);
+      updated_at = updatedAtObj.toISOString().slice(0, 19).replace("T", " ");
+    }
+
     const newRental = await Rental.create({
       user_id,
       car_id,
@@ -325,12 +360,12 @@ exports.addOrder = async (req, res) => {
       amount,
       payment_date,
       extra,
+      created_at,
+      updated_at,
     });
 
-    // Return the newly created rental order information
     res.status(201).json(newRental);
   } catch (err) {
-    // Return a 400 status with an error message if something goes wrong
     res.status(400).json({ message: err.message });
   }
 };
