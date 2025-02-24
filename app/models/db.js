@@ -12,11 +12,10 @@ log.addLevel('debug', 1500, { fg: 'blue', bold: true });
 // Log the current logging level to confirm it's set correctly
 log.info("Logging Level", `Current logging level: ${log.level}`);
 
-// Create a new Sequelize instance to connect to the MySQL database
+// Create a new Sequelize instance to connect to the MySQL database (without SSL)
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
-  dialectOptions: dbConfig.ssl ? { ssl: { require: true, rejectUnauthorized: false } } : {}, // Enable SSL for Azure
   logging: (msg) => log.debug("SQL Query", msg), // Log SQL queries only in DEBUG level
 });
 
