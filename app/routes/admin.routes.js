@@ -18,7 +18,7 @@ router.delete("/cars/:id", adminController.deleteCar);
 router.get("/orders", adminController.getAllOrders);
 
 // Route to cancel a booking (cannot cancel all bookings)
-router.put("/orders/:id/cancel", adminController.cancelOrder);
+router.delete("/orders/:id", adminController.deleteOrder);
 
 // Route to get booking summary (last week/month/year)
 router.get("/orders/summary", adminController.getOrderSummary);
