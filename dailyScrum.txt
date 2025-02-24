@@ -147,12 +147,18 @@ worked on backend for user
 
 -----------------------------------------------
 Wang Haitao
-1. Done since last scrum
-
+1. Done/not done since last scrum
+Frontend for manage bookings
+Fetch api from backend for bookings
+Modify add and update features in manage cars
+Test frontend features
+ 
+ 
 2. Plan until next Scrum
-
-
-
+Frontend for manage customers
+Fetch api from backend for customers
+Test frontend features
+ 
 3. Need assistance / figure things out
 
 
