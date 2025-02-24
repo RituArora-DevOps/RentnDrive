@@ -359,3 +359,202 @@ function showError(inputId, message) {
   errorMessage.textContent = message;
   inputField.parentNode.insertBefore(errorMessage, inputField.nextSibling);
 }
+
+
+
+//manage bookins part
+// Global variables
+let selectedBookingId = null;
+const bookingList = [];
+
+// When clicking "Manage Bookings", display the booking list and hide other sections
+document.getElementById('manage-bookings').addEventListener('click', () => {
+  document.getElementById('booking-list').style.display = 'block';
+  document.getElementById('car-list').style.display = 'none';
+  document.getElementById('customer-list').style.display = 'none';
+
+  // Fetch and render the booking list
+  fetchBookings();
+
+  // Reset selected booking
+  selectedBookingId = null;
+  document.getElementById('cancel-booking').disabled = true;
+});
+
+// Filter button: When clicked, re-fetch the filtered data
+document.getElementById('filter-bookings').addEventListener('click', () => {
+  fetchBookings();
+});
+
+// Fetch booking data and apply filters
+function fetchBookings() {
+  fetch('http://localhost:8088/api/orders')
+    .then(response => response.json())
+    .then(data => {
+      bookingList.length = 0; // Clear the existing booking array
+      bookingList.push(...data); // Populate with new data
+
+      // Filter booking data based on dropdown selection
+      const period = document.getElementById('booking-period').value;
+      let filteredBookings = bookingList;
+      if (period) {
+        const today = new Date();
+        let filterDate;
+        if (period === 'week') {
+          filterDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+        } else if (period === 'month') {
+          filterDate = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
+        } else if (period === 'year') {
+          filterDate = new Date(today.getTime() - 365 * 24 * 60 * 60 * 1000);
+        }
+        filteredBookings = bookingList.filter(booking => {
+          const startDate = new Date(booking.start_date);
+          return startDate >= filterDate;
+        });
+      }
+
+      updateBookingList(filteredBookings);
+      // Update the "Total Bookings" count
+      document.getElementById('total-bookings').querySelector('p').textContent = filteredBookings.length;
+    })
+    .catch(error => {
+      console.error('Error fetching bookings:', error);
+    });
+}
+
+// Render the booking list; parameter `bookings` is the filtered array (if omitted, uses `bookingList`)
+function updateBookingList(bookings) {
+  const list = bookings || bookingList;
+  const bookingTable = document.getElementById('booking-table');
+  bookingTable.innerHTML = ''; // Clear table content
+
+  // Add table headers
+  const headerRow = document.createElement('tr');
+  headerRow.innerHTML = `
+    <th>Select</th>
+    <th>ID</th>
+    <th>User ID</th>
+    <th>Car ID</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th>Total Amount</th>
+    <th>Status</th>
+    <th>Payment Status</th>
+    <th>Created At</th>
+    <th>Updated At</th>
+  `;
+  bookingTable.appendChild(headerRow);
+
+  // Populate the table with booking data
+  list.forEach((booking, index) => {
+    const row = document.createElement('tr');
+
+    const radioCell = document.createElement('td');
+    const idCell = document.createElement('td');
+    const userIdCell = document.createElement('td');
+    const carIdCell = document.createElement('td');
+    const startDateCell = document.createElement('td');
+    const endDateCell = document.createElement('td');
+    const totalAmountCell = document.createElement('td');
+    const statusCell = document.createElement('td');
+    const paymentStatusCell = document.createElement('td');
+    const createdAtCell = document.createElement('td');
+    const updatedAtCell = document.createElement('td');
+
+    // Create a radio button for selecting a booking
+    const radioButton = document.createElement('input');
+    radioButton.type = 'radio';
+    radioButton.name = 'booking-select';
+    radioButton.addEventListener('click', () => selectBooking(index));
+
+    radioCell.appendChild(radioButton);
+    idCell.textContent = booking.id;
+    userIdCell.textContent = booking.user_id;
+    carIdCell.textContent = booking.car_id;
+    startDateCell.textContent = formatDate(booking.start_date);
+    endDateCell.textContent = formatDate(booking.end_date);
+    totalAmountCell.textContent = `$${booking.total_amount}`;
+    statusCell.textContent = booking.status;
+    paymentStatusCell.textContent = booking.payment_status;
+    createdAtCell.textContent = formatDate(booking.created_at);
+    updatedAtCell.textContent = formatDate(booking.updated_at);
+
+    row.appendChild(radioCell);
+    row.appendChild(idCell);
+    row.appendChild(userIdCell);
+    row.appendChild(carIdCell);
+    row.appendChild(startDateCell);
+    row.appendChild(endDateCell);
+    row.appendChild(totalAmountCell);
+    row.appendChild(statusCell);
+    row.appendChild(paymentStatusCell);
+    row.appendChild(createdAtCell);
+    row.appendChild(updatedAtCell);
+
+    bookingTable.appendChild(row);
+  });
+
+  // Update the "Total Bookings" count
+  document.getElementById('total-bookings').querySelector('p').textContent = list.length;
+}
+
+// Helper function: Format date as "yyyy-mm-dd"
+function formatDate(dateStr) {
+  if (!dateStr) return "";
+  const date = new Date(dateStr);
+  return date.toISOString().slice(0, 10);
+}
+
+// Select a booking entry
+function selectBooking(index) {
+  selectedBookingId = index;
+  document.getElementById('cancel-booking').disabled = false;
+}
+
+// Cancel a booking
+document.getElementById('cancel-booking').addEventListener('click', async () => {
+  // Get the selected booking
+  const booking = bookingList[selectedBookingId];
+  if (!booking) {
+    alert('No booking selected.');
+    return;
+  }
+
+  // Convert the start and end dates to Date objects
+  const today = new Date();
+  const startDate = new Date(booking.start_date);
+  const endDate = new Date(booking.end_date);
+
+  // Check if the booking is currently active
+  if (today >= startDate && today <= endDate) {
+    alert('Order is in progress and cannot be cancelled.');
+    return;
+  }
+  // If the booking is completed, prevent cancellation
+  if (today > endDate) {
+    alert('Order has been completed and cannot be cancelled.');
+    return;
+  }
+
+  const confirmCancel = confirm('Are you sure you want to cancel this booking?');
+  if (!confirmCancel) return;
+
+  try {
+    const response = await fetch(`http://localhost:8088/api/orders/${booking.id}`, {
+      method: 'DELETE'
+    });
+    if (response.ok) {
+      // Remove the canceled booking from the list
+      bookingList.splice(selectedBookingId, 1);
+      alert('Booking canceled successfully');
+      updateBookingList(bookingList);
+      document.getElementById('total-bookings').querySelector('p').textContent = bookingList.length;
+    } else {
+      const errorData = await response.json();
+      alert(`Failed to cancel booking: ${errorData.error}`);
+    }
+  } catch (error) {
+    console.error('Error deleting booking:', error);
+    alert('An error occurred while deleting the booking.');
+  }
+});
