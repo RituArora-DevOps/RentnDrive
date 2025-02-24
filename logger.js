@@ -1,11 +1,26 @@
 const log = require("npmlog");
+const fs = require("fs");
+const path = require("path");
 
-log.level = process.env.LOG_LEVEL || "info"; // Default to "info" if LOG_LEVEL is not set
+log.level = process.env.LOG_LEVEL || "info";
+log.heading = "CarRentalSystem";
+log.addLevel("trace", 1000, { fg: "blue", bold: true });
+log.addLevel("notice", 2000, { fg: "green", bold: true });
 
-log.heading = "CarRentalSystem"; // Custom heading for log entries
-log.addLevel("trace", 1000, { fg: "blue", bold: true }); // Adding a custom log level (optional)
+const logFilePath = path.join(__dirname, "./app/logs/app.log"); 
 
-log.addLevel("notice", 2000, { fg: "green", bold: true }); // Custom log level 'notice'
+const originalLog = log.log;
 
-// Export the log instance so other files can use it
+log.log = function (level, prefix, message, ...args) {
+    originalLog.call(this, level, prefix, message, ...args);
+
+    const logMessage = `${new Date().toISOString()} - ${level.toUpperCase()} - ${prefix} - ${message} ${args.join(" ")}\n`;
+
+    fs.appendFile(logFilePath, logMessage, (err) => {
+        if (err) {
+            console.error("Error writing to log file:", err);
+        }
+    });
+};
+
 module.exports = log;

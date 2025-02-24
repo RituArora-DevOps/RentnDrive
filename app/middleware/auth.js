@@ -2,7 +2,7 @@
 The file to handle JWT authentication. This middleware will verify JWT tokens and attach the decoded user information to the request object. 
 */
 const jwt = require("jsonwebtoken");
-const log = require("../logger");
+const log = require("../../logger");
 
 const verifyToken = (req, res, next) => {
     const token = req.header("Authorization");

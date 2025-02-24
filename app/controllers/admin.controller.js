@@ -299,6 +299,7 @@ exports.addCustomer = async (req, res) => {
   }
 };
 
+/* created by Haitao, commented by me
 
 // Add a new rental order (only for testing)
 exports.addOrder = async (req, res) => {
@@ -334,3 +335,5 @@ exports.addOrder = async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 };
+
+*/
