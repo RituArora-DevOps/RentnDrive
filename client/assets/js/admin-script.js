@@ -1,6 +1,8 @@
-// Event listener for "Manage Cars" button
+/**
+ * Event listener for the "Manage Cars" button.
+ * Displays the car list and actions while hiding other sections.
+ */
 document.getElementById('manage-cars').addEventListener('click', () => {
-  // Display car list and car actions, hide other lists (booking & customer)
   document.getElementById('car-list').style.display = 'block';
   document.getElementById('car-actions').style.display = 'block';
   document.getElementById('booking-list').style.display = 'none';
@@ -17,10 +19,21 @@ document.getElementById('manage-cars').addEventListener('click', () => {
   document.getElementById('delete-car').disabled = true;
 });
 
+/**
+ * Selected car ID (null if no car is selected).
+ * @type {number|null}
+ */
 let selectedCarId = null;
+
+/**
+ * Array holding the list of cars.
+ * @type {Array<Object>}
+ */
 const carList = [];
 
-// Fetch car data from the API and update the car list
+/**
+ * Fetches car data from the API and updates the car list.
+ */
 function fetchCars() {
   fetch('http://localhost:8088/api/cars')
     .then(response => response.json())
@@ -34,7 +47,9 @@ function fetchCars() {
     });
 }
 
-// Update the car table UI with the latest data
+/**
+ * Updates the UI to display the latest car data.
+ */
 function updateCarList() {
   console.log("Updated car list:", carList); // Log the updated car list for debugging
   const carTable = document.getElementById('car-table');
@@ -96,14 +111,22 @@ function updateCarList() {
   document.getElementById('total-cars').querySelector('p').textContent = carList.length;
 }
 
-// Set the selected car index and enable the update and delete buttons
+/**
+ * Sets the selected car index and enables the "Update" and "Delete" buttons.
+ * @param {number} index - The index of the selected car in `carList`.
+ */
 function selectCar(index) {
   selectedCarId = index;
   document.getElementById('update-car').disabled = false;
   document.getElementById('delete-car').disabled = false;
 }
 
-// Event listener for "Add Car" button
+
+
+/**
+ * Event listener for the "Add Car" button.
+ * Displays the add/update car form and overlay.
+ */
 document.getElementById('add-car').addEventListener('click', () => {
 
   selectedCarId = null;
@@ -120,7 +143,10 @@ document.getElementById('add-car').addEventListener('click', () => {
   document.querySelector('label[for="car-id"]').style.display = 'none';
 });
 
-// Event listener for "Cancel" button in car actions
+/**
+ * Event listener for the "Cancel" button inside the car actions section.
+ * Hides the car list, actions, form, and overlay.
+ */
 document.getElementById('cancel-car').addEventListener('click', () => {
   // Hide the car list, actions, form, and overlay
   document.getElementById('car-list').style.display = 'none';
@@ -132,12 +158,16 @@ document.getElementById('cancel-car').addEventListener('click', () => {
   clearErrorMessages(); // Clear any displayed error messages
 });
 
-// Remove all error messages from the form
+/**
+ * Removes all error messages from the form.
+ */
 function clearErrorMessages() {
   document.querySelectorAll('.error-message').forEach(el => el.remove());
 }
 
-// Reset all fields in the car form to their default state
+/**
+ * Resets all fields in the car form to their default values.
+ */
 function resetCarForm() {
   document.getElementById('car-id').value = '';      // Clear the ID field
   document.getElementById('car-make').value = '';      // Clear the Make field
@@ -156,7 +186,10 @@ function resetCarForm() {
   document.getElementById('delete-car').disabled = true;
 }
 
-// Event listener for "Update Car" button
+/**
+ * Event listener for the "Update Car" button.
+ * Fills the form with selected car details and displays it.
+ */
 document.getElementById('update-car').addEventListener('click', () => {
   clearErrorMessages();
   const car = carList[selectedCarId];
@@ -178,7 +211,10 @@ document.getElementById('update-car').addEventListener('click', () => {
   document.getElementById('overlay').style.display = 'block';
 });
 
-// Event listener for "Delete Car" button
+/**
+ * Event listener for the "Delete Car" button.
+ * Confirms and deletes the selected car from the database.
+ */
 document.getElementById('delete-car').addEventListener('click', () => {
   // Confirm deletion of the selected car
   const confirmDelete = confirm('Are you sure you want to delete this car?');
@@ -224,7 +260,11 @@ document.getElementById('overlay').addEventListener('click', () => {
   document.getElementById('overlay').style.display = 'none';
 });
 
-// Event listener for submitting the car form (for both add and update)
+/**
+ * Event listener for submitting the car form (both for adding and updating cars).
+ * Prevents default form submission and validates input data before sending it to the server.
+ * @param {Event} event - The form submission event.
+ */
 document.getElementById('submit-car').addEventListener('click', (event) => {
   event.preventDefault(); // 阻止默认提交
 
@@ -353,7 +393,11 @@ document.getElementById('submit-car').addEventListener('click', (event) => {
 
 
 
-// Function to display error messages next to form inputs
+/**
+ * Displays an error message next to a form field.
+ * @param {string} inputId - The ID of the input field.
+ * @param {string} message - The error message to display.
+ */
 function showError(inputId, message) {
   const inputField = document.getElementById(inputId);
   const errorMessage = document.createElement('div');
@@ -367,12 +411,22 @@ function showError(inputId, message) {
 
 
 
-//manage bookins part
-// Global variables
+/**
+ * Global variables for managing bookings.
+ * @type {number|null}
+ */
 let selectedBookingId = null;
+
+/**
+ * Array storing the list of bookings.
+ * @type {Array<Object>}
+ */
 const bookingList = [];
 
-// When clicking "Manage Bookings", display the booking list and hide other sections
+/**
+ * Event listener for "Manage Bookings" button.
+ * Displays the booking list and hides other sections.
+ */
 document.getElementById('manage-bookings').addEventListener('click', () => {
   document.getElementById('booking-list').style.display = 'block';
   document.getElementById('car-list').style.display = 'none';
@@ -391,7 +445,9 @@ document.getElementById('filter-bookings').addEventListener('click', () => {
   fetchBookings();
 });
 
-// Fetch booking data and apply filters
+/**
+ * Fetches booking data from the API and applies filters.
+ */
 function fetchBookings() {
   fetch('http://localhost:8088/api/orders')
     .then(response => response.json())
@@ -510,13 +566,19 @@ function formatDate(dateStr) {
   return date.toISOString().slice(0, 10);
 }
 
-// Select a booking entry
+/**
+ * Selects a booking entry and enables the "Cancel Booking" button.
+ * @param {number} index - The index of the selected booking in `bookingList`.
+ */
 function selectBooking(index) {
   selectedBookingId = index;
   document.getElementById('cancel-booking').disabled = false;
 }
 
-// Cancel a booking
+/**
+ * Event listener for the "Cancel Booking" button.
+ * Cancels a selected booking if it has not started or been completed.
+ */
 document.getElementById('cancel-booking').addEventListener('click', async () => {
   // Get the selected booking
   const booking = bookingList[selectedBookingId];
@@ -565,7 +627,10 @@ document.getElementById('cancel-booking').addEventListener('click', async () => 
 });
 
 
-//manage customers
+/**
+ * Event listener for the "Manage Customers" button.
+ * Displays the customer list and hides other sections.
+ */
 document.getElementById('manage-customers').addEventListener('click', () => {
   // Show the customer list section and hide other sections
   document.getElementById('customer-list').style.display = 'block';
@@ -580,10 +645,21 @@ document.getElementById('manage-customers').addEventListener('click', () => {
   document.getElementById('delete-customer').disabled = true;
 });
 
+/**
+ * Selected customer ID (null if no customer is selected).
+ * @type {number|null}
+ */
 let selectedCustomerId = null;
+
+/**
+ * Array holding the list of customers.
+ * @type {Array<Object>}
+ */
 const customerList = [];
 
-// Fetch customer data
+/**
+ * Fetches customer data from the API and updates the customer list.
+ */
 function fetchCustomers() {
   fetch('http://localhost:8088/api/customers')
     .then(response => response.json())
@@ -600,7 +676,9 @@ function fetchCustomers() {
     });
 }
 
-// Render the customer list
+/**
+ * Updates the UI to display the latest customer data.
+ */
 function updateCustomerList() {
   const customerTable = document.getElementById('customer-table');
   customerTable.innerHTML = ''; // Clear table content
@@ -654,13 +732,19 @@ function updateCustomerList() {
   });
 }
 
-// Select a customer
+/**
+ * Selects a customer entry and enables the "Delete Customer" button.
+ * @param {number} index - The index of the selected customer in `customerList`.
+ */
 function selectCustomer(index) {
   selectedCustomerId = index;
   document.getElementById('delete-customer').disabled = false;
 }
 
-// Delete a customer
+/**
+ * Event listener for the "Delete Customer" button.
+ * Confirms and deletes the selected customer from the database.
+ */
 document.getElementById('delete-customer').addEventListener('click', async () => {
   const confirmDelete = confirm('Are you sure you want to delete this customer?');
   if (!confirmDelete) return;
@@ -684,7 +768,11 @@ document.getElementById('delete-customer').addEventListener('click', async () =>
   }
 });
 
-// Helper function: Format date to "yyyy-mm-dd"
+/**
+ * Formats a date string as "yyyy-mm-dd".
+ * @param {string} dateStr - The date string to format.
+ * @returns {string} The formatted date.
+ */
 function formatDate(dateStr) {
   if (!dateStr) return "";
   const date = new Date(dateStr);
