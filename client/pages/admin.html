@@ -36,7 +36,7 @@
         </div>
         <div class="summary-card" id="total-customers">
           <h3>Total Customers</h3>
-          <p>150</p>
+          <p></p>
         </div>
       </section>
 
@@ -116,8 +116,14 @@
 
       <section class="list" id="customer-list" style="display: none;">
         <h2>Customer List</h2>
-        <table id="customer-table"></table>
+        <table id="customer-table">
+          <!-- Customer rows will be populated here dynamically -->
+        </table>
+        <div id="customer-actions">
+          <button id="delete-customer" disabled>Delete</button>
+        </div>
       </section>
+
     </main>
   </div>
 
