@@ -150,10 +150,7 @@ Wang Haitao
 1. Done since last scrum
 
 2. Plan until next Scrum
-Insert data in the tables 
-After Ritu and Haitao pushed the Backend code, test it using Postman.
-Test the validation.
-Work on static files- html and css. (Check the styling from Haitao's file)
+
 
 
 3. Need assistance / figure things out
@@ -161,9 +158,14 @@ Work on static files- html and css. (Check the styling from Haitao's file)
 
 -----------------------------------------------
 Aliev Khadis
-1. Done since last scrum
-
-2. Plan until next Scrum
+- Watched day08 and day09 videos.
+- Familiarized with project structure and existing code
+2. Plan until next Scrum:
+- Add table data into database.
+- Test endpoints/routes/handlers.
+- Add frontend with validation for Sign In(Register)
+- Add frontend with validation for Login
+- Add frontend Booking Wizard page and connect to backend
 
 3. Need assistance / figure things out
 
@@ -173,11 +175,17 @@ Aliev Khadis
 
 Ritu Arora
 1. Done/not done since last scrum
-
+Completed server side configuration 
+Tested using Postman
 2. Plan until next Scrum
+Fix View booking by dates
+Configure frontend for booking and payment
 
 3. Need assistance / figure things out
-
+Heroku
+Blob
+Session storage
+JSDoc
 
 -----------------------------------------------
 Wang Haitao
@@ -190,17 +198,17 @@ Wang Haitao
 
 -----------------------------------------------
 Aliev Khadis
-Done/undone since last scrum:
-- Watched day08 and day09 videos.
-- Familiarized with project structure and existing code
+1. Done/undone since last scrum:
+- Add table data into database - done.
+- Test endpoints/routes/handlers - done.
+- Add frontend with validation for Sign In(Register) - done.
+- Add frontend with validation for Login - done.
+- Add frontend Booking Wizard page and connect to backend - not done yet.
+ 
 2. Plan until next Scrum:
-- Add table data into database.
-- Test endpoints/routes/handlers.
-- Add frontend with validation for Sign In(Register)
-- Add frontend with validation for Login
 - Add frontend Booking Wizard page and connect to backend
-3. Need assistance / figure things out
-
+- Add frontend for booking / payment confirmation page
+- Add main page with cards like grid
 
 =============================================================
 
