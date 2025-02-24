@@ -17,7 +17,7 @@ function handleSubmit(event) {
   }
 
   // Send the data to the server
-  fetch("/user", {
+  fetch("/api/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
