@@ -1,8 +1,11 @@
 const db = require("../models/db");
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs"); // For password hashing
-const jwt = require("../config/jwt"); // For JWT generation
+const jwt = require("jsonwebtoken"); // Import jsonwebtoken library
 const log = require("../../logger");
+const { Op } = require("sequelize");
+const jwtConfig = require("../config/jwt");
+
 
 // User registration
 exports.register = async (req, res) => {
@@ -12,7 +15,7 @@ exports.register = async (req, res) => {
         // Check if the username or email already exists
         const existingUser = await User.findOne({
             where: {
-                [db.Op.or]: [{ username }, { email }],
+                [Op.or]: [{ username }, { email }],
             },
         });
 
@@ -60,7 +63,8 @@ exports.login = async (req, res) => {
 
         // Generate a JWT token
         const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
-            expiresIn: jwtConfig.expiresIn, algorithm: jwtConfig.algorithm
+            expiresIn: jwtConfig.expiresIn,
+            algorithm: jwtConfig.algorithm
         });
 
         res.json({ token, role: user.role, username: user.username, id: user.id });

@@ -29,12 +29,13 @@ router.get("/customers", adminController.getAllCustomers);
 // Route to delete a customer (cannot delete all customers)
 router.delete("/customers/:id", adminController.deleteCustomer);
 
+/*
 //Route to add a booking (only for testing)
 router.post("/orders", adminController.addOrder);
 
 // Route to add a customer (only for testing)
 router.post("/customers", adminController.addCustomer);
-
+*/
 
 
 module.exports = router; // Export the router to be used in the main server file

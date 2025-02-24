@@ -33,8 +33,6 @@ exports.checkAvailability = async (req, res) => {
 };
 
 // Create a new booking
-// The payment processing logic (the processPayment call and the if/else block) should be placed inside the createBooking function, after the Rental.create call, but before the final res.status call. This ensures that the booking record is created before attempting payment, and the car status is updated after payment.
-// The payment processing logic is integrated directly into the createBooking function within our booking.controller.js
 exports.createBooking = async (req, res) => {
     try {
         const { carId, startDate, endDate, paymentMethod, amount, extra } = req.body;
@@ -72,7 +70,6 @@ exports.createBooking = async (req, res) => {
             return res.status(400).json({ message: "Amount is incorrect." });
         }
 
-        // Create the booking (initial state)
         const booking = await Rental.create({
             user_id: userId,
             car_id: carId,
@@ -88,7 +85,6 @@ exports.createBooking = async (req, res) => {
             updated_at: new Date()
         });
 
-        // Simulate payment processing (replace with actual gateway integration)
         const paymentSuccessful = await processPayment(amount, paymentMethod);
 
         if (paymentSuccessful) {
@@ -107,7 +103,37 @@ exports.createBooking = async (req, res) => {
     }
 };
 
+// Get a specific booking
+exports.getBooking = async (req, res) => {
+    try {
+        const booking = await Rental.findByPk(req.params.id);
+        if (!booking) {
+            return res.status(404).json({ message: "Booking not found." });
+        }
+        res.json(booking);
+    } catch (error) {
+        log.error(`Error getting booking: ${error.message}`);
+        res.status(500).json({ message: "Internal server error." });
+    }
+};
+
+// Get all bookings for a user
+exports.getUserBookings = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const bookings = await Rental.findAll({
+            where: {
+                user_id: userId
+            }
+        });
+        res.json(bookings);
+    } catch (error) {
+        log.error(`Error getting user bookings: ${error.message}`);
+        res.status(500).json({ message: "Internal server error." });
+    }
+};
+
 // Placeholder for payment processing (replace with your gateway logic)
 async function processPayment(amount, paymentMethod) {
-    return Math.random() < 0.8; // 80% chance of success (for testing)
+    return Math.random() < 0.8;
 }
