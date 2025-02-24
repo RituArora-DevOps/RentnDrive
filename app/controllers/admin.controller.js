@@ -5,7 +5,18 @@ const User = require("../models/user.model");
 const log = require("../../logger");
 const { Op } = require("sequelize");
 
-// Retrieve all cars (with sorting support)
+/**
+ * Admin controller module for managing cars, orders, and customers.
+ * @module AdminController
+ */
+
+/**
+ * Retrieves all cars with sorting support.
+ * @async
+ * @function
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ */
 exports.getAllCars = async (req, res) => {
   try {
     let { sortBy = "id", order = "ASC" } = req.query;
@@ -32,7 +43,13 @@ exports.getAllCars = async (req, res) => {
   }
 };
 
-// Add a new car (with validation)
+/**
+ * Adds a new car to the system.
+ * @async
+ * @function
+ * @param {Object} req - Express request object containing car details.
+ * @param {Object} res - Express response object.
+ */
 exports.addCar = async (req, res) => {
   try {
     const { make, model, year, price_per_day, status, type } = req.body;
@@ -76,7 +93,13 @@ exports.addCar = async (req, res) => {
   }
 };
 
-// Update car information (ID cannot be modified, with validation)
+/**
+ * Updates an existing car's information.
+ * @async
+ * @function
+ * @param {Object} req - Express request object containing updated car details.
+ * @param {Object} res - Express response object.
+ */
 exports.updateCar = async (req, res) => {
   try {
     const { id } = req.params;
@@ -117,7 +140,13 @@ exports.updateCar = async (req, res) => {
   }
 };
 
-// Delete a car (only by ID, at least one car must remain)
+/**
+ * Deletes a car by ID.
+ * @async
+ * @function
+ * @param {Object} req - Express request object containing the car ID to delete.
+ * @param {Object} res - Express response object.
+ */
 exports.deleteCar = async (req, res) => {
   try {
     const { id } = req.params;
@@ -154,7 +183,13 @@ exports.deleteCar = async (req, res) => {
 
 
 
-// Retrieve all orders (with sorting support)
+/**
+ * Retrieves all orders with sorting support.
+ * @async
+ * @function
+ * @param {Object} req - Express request object containing query parameters.
+ * @param {Object} res - Express response object.
+ */
 exports.getAllOrders = async (req, res) => {
   try {
     const { sortBy = "id", order = "ASC" } = req.query;
@@ -174,7 +209,13 @@ exports.getAllOrders = async (req, res) => {
   }
 };
 
-// Cancel a booking (only by ID)
+/**
+ * Deletes an order (booking) by ID.
+ * @async
+ * @function
+ * @param {Object} req - Express request object containing order ID.
+ * @param {Object} res - Express response object.
+ */
 exports.deleteOrder = async (req, res) => {
   try {
     const { id } = req.params;
@@ -183,7 +224,6 @@ exports.deleteOrder = async (req, res) => {
       return res.status(404).json({ error: "Order not found." });
     }
 
-    // 新增验证：只能取消还未开始的订单
     const today = new Date();
     const startDate = new Date(rental.start_date);
     const endDate = new Date(rental.end_date);
@@ -206,7 +246,13 @@ exports.deleteOrder = async (req, res) => {
 };
 
 
-// Get booking summary
+/**
+ * Retrieves a summary of orders (bookings) within a specified period.
+ * @async
+ * @function
+ * @param {Object} req - Express request object containing query parameters.
+ * @param {Object} res - Express response object.
+ */
 exports.getOrderSummary = async (req, res) => {
   try {
     const { period } = req.query;
@@ -247,7 +293,13 @@ exports.getOrderSummary = async (req, res) => {
 };
 
 
-// Retrieve all customers (with sorting support)
+/**
+ * Retrieves all customers with sorting support.
+ * @async
+ * @function
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ */
 exports.getAllCustomers = async (req, res) => {
   try {
     const customers = await User.findAll({
@@ -263,7 +315,13 @@ exports.getAllCustomers = async (req, res) => {
   }
 };
 
-// Delete a customer (only by ID)
+/**
+ * Deletes a customer by ID.
+ * @async
+ * @function
+ * @param {Object} req - Express request object containing customer ID.
+ * @param {Object} res - Express response object.
+ */
 exports.deleteCustomer = async (req, res) => {
   try {
     const { id } = req.params;
@@ -281,6 +339,13 @@ exports.deleteCustomer = async (req, res) => {
   }
 };
 
+/**
+ * Adds a new customer (for testing purposes only).
+ * @async
+ * @function
+ * @param {Object} req - Express request object containing customer details.
+ * @param {Object} res - Express response object.
+ */
 // Add a new customer（only for testing）
 exports.addCustomer = async (req, res) => {
   try {
@@ -312,6 +377,13 @@ exports.addCustomer = async (req, res) => {
 };
 
 
+/**
+ * Adds a new rental order (for testing purposes only).
+ * @async
+ * @function
+ * @param {Object} req - Express request object containing rental details.
+ * @param {Object} res - Express response object.
+ */
 // Add a new rental order (only for testing)
 exports.addOrder = async (req, res) => {
   try {
