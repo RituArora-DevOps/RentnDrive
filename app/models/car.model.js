@@ -1,12 +1,39 @@
 const { DataTypes } = require("sequelize");
 const db = require("./db");
 
+/**
+ * Car model definition for the database.
+ * Represents a vehicle that can be rented.
+ * @module CarModel
+ */
+
+/**
+ * Sequelize model representing a Car.
+ * @typedef {Object} Car
+ * @property {number} id - The unique identifier for the car.
+ * @property {string} make - The manufacturer of the car (e.g., Toyota, Ford).
+ * @property {string} model - The specific model name (e.g., Camry, Mustang).
+ * @property {number} year - The manufacturing year of the car.
+ * @property {number} price_per_day - The rental price per day in USD.
+ * @property {"available" | "booked" | "maintenance"} status - The current status of the car.
+ * @property {string} type - The category/type of the car (e.g., sedan, SUV).
+ */
+
 const Car = db.define("Car", {
+  /**
+   * The unique identifier for the car.
+   * @type {number}
+   */
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
   },
+
+  /**
+   * The manufacturer of the car (e.g., Toyota, Ford).
+   * @type {string}
+   */
   make: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -18,6 +45,11 @@ const Car = db.define("Car", {
       },
     },
   },
+
+  /**
+   * The specific model name (e.g., Camry, Mustang).
+   * @type {string}
+   */
   model: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -29,6 +61,11 @@ const Car = db.define("Car", {
       },
     },
   },
+
+  /**
+   * The year the car was manufactured.
+   * @type {number}
+   */
   year: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -38,6 +75,11 @@ const Car = db.define("Car", {
       isInt: { msg: "Year must be an integer." },
     },
   },
+
+  /**
+   * The rental price per day in USD.
+   * @type {number}
+   */
   price_per_day: {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
@@ -46,6 +88,11 @@ const Car = db.define("Car", {
       min: { args: 0.01, msg: "Price per day must be greater than 0." },
     },
   },
+
+  /**
+   * The current status of the car.
+   * @type {"available" | "booked" | "maintenance"}
+   */
   status: {
     type: DataTypes.ENUM("available", "booked", "maintenance"),
     allowNull: false,
@@ -56,6 +103,11 @@ const Car = db.define("Car", {
       },
     },
   },
+
+  /**
+   * The category/type of the car (e.g., sedan, SUV).
+   * @type {string}
+   */
   type: {
     type: DataTypes.STRING,
     allowNull: false,
