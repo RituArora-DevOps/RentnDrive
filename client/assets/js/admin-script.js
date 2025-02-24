@@ -559,12 +559,6 @@ function updateBookingList(bookings) {
   document.getElementById('total-bookings').querySelector('p').textContent = list.length;
 }
 
-// Helper function: Format date as "yyyy-mm-dd"
-function formatDate(dateStr) {
-  if (!dateStr) return "";
-  const date = new Date(dateStr);
-  return date.toISOString().slice(0, 10);
-}
 
 /**
  * Selects a booking entry and enables the "Cancel Booking" button.
