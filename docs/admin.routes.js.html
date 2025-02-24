@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: admin.routes.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: admin.routes.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const express = require("express");
+const router = express.Router();
+const adminController = require("../controllers/admin.controller"); // Import admin controller
+
+/**
+ * Admin routes for managing cars, orders, and customers.
+ * @module AdminRoutes
+ */
+
+/**
+ * Express router for admin-related routes.
+ * @const {express.Router}
+ */
+
+/**
+ * Route to get a list of all cars (supports sorting).
+ * @name GET /api/admin/cars
+ * @function
+ * @memberof module:AdminRoutes
+ * @param {express.Request} req - Express request object.
+ * @param {express.Response} res - Express response object.
+ */
+router.get("/cars", adminController.getAllCars);
+
+/**
+ * Route to add a new car.
+ * @name POST /api/admin/cars
+ * @function
+ * @memberof module:AdminRoutes
+ * @param {express.Request} req - Express request object containing car details.
+ * @param {express.Response} res - Express response object.
+ */
+router.post("/cars", adminController.addCar);
+
+/**
+ * Route to update car details (ID cannot be changed).
+ * @name PUT /api/admin/cars/:id
+ * @function
+ * @memberof module:AdminRoutes
+ * @param {express.Request} req - Express request object containing updated car details.
+ * @param {express.Response} res - Express response object.
+ */
+router.put("/cars/:id", adminController.updateCar);
+
+/**
+ * Route to delete a car (cannot delete all cars).
+ * @name DELETE /api/admin/cars/:id
+ * @function
+ * @memberof module:AdminRoutes
+ * @param {express.Request} req - Express request object containing car ID.
+ * @param {express.Response} res - Express response object.
+ */
+router.delete("/cars/:id", adminController.deleteCar);
+
+/**
+ * Route to get a list of all bookings (supports sorting).
+ * @name GET /api/admin/orders
+ * @function
+ * @memberof module:AdminRoutes
+ * @param {express.Request} req - Express request object.
+ * @param {express.Response} res - Express response object.
+ */
+router.get("/orders", adminController.getAllOrders);
+
+/**
+ * Route to cancel a booking (cannot cancel all bookings).
+ * @name DELETE /api/admin/orders/:id
+ * @function
+ * @memberof module:AdminRoutes
+ * @param {express.Request} req - Express request object containing booking ID.
+ * @param {express.Response} res - Express response object.
+ */
+router.delete("/orders/:id", adminController.deleteOrder);
+
+/**
+ * Route to get booking summary (last week/month/year).
+ * @name GET /api/admin/orders/summary
+ * @function
+ * @memberof module:AdminRoutes
+ * @param {express.Request} req - Express request object.
+ * @param {express.Response} res - Express response object.
+ */
+router.get("/orders/summary", adminController.getOrderSummary);
+
+/**
+ * Route to get a list of all customers (supports sorting).
+ * @name GET /api/admin/customers
+ * @function
+ * @memberof module:AdminRoutes
+ * @param {express.Request} req - Express request object.
+ * @param {express.Response} res - Express response object.
+ */
+router.get("/customers", adminController.getAllCustomers);
+
+/**
+ * Route to delete a customer (cannot delete all customers).
+ * @name DELETE /api/admin/customers/:id
+ * @function
+ * @memberof module:AdminRoutes
+ * @param {express.Request} req - Express request object containing customer ID.
+ * @param {express.Response} res - Express response object.
+ */
+router.delete("/customers/:id", adminController.deleteCustomer);
+
+/**
+ * Route to add a booking (only for testing).
+ * @name POST /api/admin/orders
+ * @function
+ * @memberof module:AdminRoutes
+ * @param {express.Request} req - Express request object containing booking details.
+ * @param {express.Response} res - Express response object.
+ */
+router.post("/orders", adminController.addOrder);
+
+/**
+ * Route to add a customer (only for testing).
+ * @name POST /api/admin/customers
+ * @function
+ * @memberof module:AdminRoutes
+ * @param {express.Request} req - Express request object containing customer details.
+ * @param {express.Response} res - Express response object.
+ */
+router.post("/customers", adminController.addCustomer);
+
+module.exports = router; // Export the router to be used in the main server file
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-AdminRoutes.html">AdminRoutes</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Feb 24 2025 00:20:37 GMT-0500 (北美东部标准时间)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
