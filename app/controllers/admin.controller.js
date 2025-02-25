@@ -1,4 +1,4 @@
-const db = require("../models/db");
+const sequelize = require("../models/db");
 const Car = require("../models/car.model");
 const Rental = require("../models/rental.model");
 const User = require("../models/user.model");
@@ -376,6 +376,7 @@ exports.addCustomer = async (req, res) => {
   }
 };
 
+/* created by Haitao, commented by me
 
 /**
  * Adds a new rental order (for testing purposes only).
@@ -441,3 +442,5 @@ exports.addOrder = async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 };
+
+*/

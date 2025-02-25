@@ -1,74 +1,92 @@
-const db = require("../models/db");
+const sequelize = require("../models/db");
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs"); // For password hashing
-const jwt = require("../config/jwt"); // For JWT generation
+const jwt = require("jsonwebtoken"); // Import jsonwebtoken library
 const log = require("../../logger");
+const { Op } = require("sequelize");
+const jwtConfig = require("../config/jwt");
+const { body, validationResult } = require('express-validator'); // Import express-validator
 
 // User registration
-exports.register = async (req, res) => {
-    try {
-        const { username, email, password, phone, role } = req.body;
+exports.register = [ // Use express-validator middleware
+    body('username').trim().isLength({ min: 3 }).withMessage('Username must be at least 3 characters.'),
+    body('email').isEmail().withMessage('Invalid email address.'),
+    body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters.'),
+    body('phone').trim().isLength({ min: 10 }).withMessage('Phone number must be at least 10 characters.'),
+    async (req, res) => {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
 
-        // Check if the username or email already exists
-        const existingUser = await User.findOne({
-            where: {
-                [db.Op.or]: [{ username }, { email }],
-            },
-        });
+            const { username, email, password, phone, role } = req.body;
 
-        if (existingUser) {
-            return res.status(400).json({ message: "Username or email already exists." });
+            const existingUser = await User.findOne({
+                where: {
+                    [Op.or]: [{ username }, { email }],
+                },
+            });
+
+            if (existingUser) {
+                return res.status(400).json({ message: "Username or email already exists." });
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            const newUser = await User.create({
+                username,
+                email,
+                password_hash: hashedPassword,
+                phone,
+                role: role || "customer",
+            });
+
+            res.status(201).json({ message: "User registered successfully." });
+        } catch (error) {
+            log.error(`Registration error: ${error.message}`);
+            res.status(500).json({ message: "Internal server error." });
         }
-
-        // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Create a new user
-        const newUser = await User.create({
-            username,
-            email,
-            password_hash: hashedPassword,
-            phone,
-            role: role || "customer", // Default to customer if role is not provided
-        });
-
-        res.status(201).json({ message: "User registered successfully." });
-    } catch (error) {
-        log.error(`Registration error: ${error.message}`);
-        res.status(500).json({ message: "Internal server error." });
     }
-};
+];
 
 // User login
-exports.login = async (req, res) => {
-    try {
-        const { username, password } = req.body;
+exports.login = [ // Use express-validator middleware
+    body('username').notEmpty().withMessage('Username is required.'),
+    body('password').notEmpty().withMessage('Password is required.'),
+    async (req, res) => {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
 
-        // Find the user by username
-        const user = await User.findOne({ where: { username } });
+            const { username, password } = req.body;
 
-        if (!user) {
-            return res.status(401).json({ message: "Invalid username or password." });
+            const user = await User.findOne({ where: { username } });
+
+            if (!user) {
+                return res.status(401).json({ message: "Invalid username or password." });
+            }
+
+            const passwordMatch = await bcrypt.compare(password, user.password_hash);
+
+            if (!passwordMatch) {
+                return res.status(401).json({ message: "Invalid username or password." });
+            }
+
+            const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
+                expiresIn: jwtConfig.expiresIn,
+                algorithm: jwtConfig.algorithm
+            });
+
+            res.json({ token, role: user.role, username: user.username, id: user.id });
+        } catch (error) {
+            log.error(`Login error: ${error.message}`);
+            res.status(500).json({ message: "Internal server error." });
         }
-
-        // Compare passwords
-        const passwordMatch = await bcrypt.compare(password, user.password_hash);
-
-        if (!passwordMatch) {
-            return res.status(401).json({ message: "Invalid username or password." });
-        }
-
-        // Generate a JWT token
-        const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
-            expiresIn: jwtConfig.expiresIn, algorithm: jwtConfig.algorithm
-        });
-
-        res.json({ token, role: user.role, username: user.username, id: user.id });
-    } catch (error) {
-        log.error(`Login error: ${error.message}`);
-        res.status(500).json({ message: "Internal server error." });
     }
-};
+];
 
 // Get user info
 exports.getUserInfo = async (req, res) => {

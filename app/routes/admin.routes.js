@@ -102,6 +102,7 @@ router.get("/customers", adminController.getAllCustomers);
  */
 router.delete("/customers/:id", adminController.deleteCustomer);
 
+
 /**
  * Route to add a booking (only for testing).
  * @name POST /api/admin/orders
@@ -110,6 +111,10 @@ router.delete("/customers/:id", adminController.deleteCustomer);
  * @param {express.Request} req - Express request object containing booking details.
  * @param {express.Response} res - Express response object.
  */
+
+/*
+//Route to add a booking (only for testing)
+
 router.post("/orders", adminController.addOrder);
 
 /**
@@ -121,5 +126,10 @@ router.post("/orders", adminController.addOrder);
  * @param {express.Response} res - Express response object.
  */
 router.post("/customers", adminController.addCustomer);
+
+
+*/
+
+
 
 module.exports = router; // Export the router to be used in the main server file

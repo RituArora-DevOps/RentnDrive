@@ -147,23 +147,31 @@ worked on backend for user
 
 -----------------------------------------------
 Wang Haitao
-1. Done since last scrum
-
+1. Done/not done since last scrum
+Frontend for manage bookings
+Fetch api from backend for bookings
+Modify add and update features in manage cars
+Test frontend features
+ 
+ 
 2. Plan until next Scrum
-Insert data in the tables 
-After Ritu and Haitao pushed the Backend code, test it using Postman.
-Test the validation.
-Work on static files- html and css. (Check the styling from Haitao's file)
-
-
+Frontend for manage customers
+Fetch api from backend for customers
+Test frontend features
+ 
 3. Need assistance / figure things out
 
 
 -----------------------------------------------
 Aliev Khadis
-1. Done since last scrum
-
-2. Plan until next Scrum
+- Watched day08 and day09 videos.
+- Familiarized with project structure and existing code
+2. Plan until next Scrum:
+- Add table data into database.
+- Test endpoints/routes/handlers.
+- Add frontend with validation for Sign In(Register)
+- Add frontend with validation for Login
+- Add frontend Booking Wizard page and connect to backend
 
 3. Need assistance / figure things out
 
@@ -173,34 +181,52 @@ Aliev Khadis
 
 Ritu Arora
 1. Done/not done since last scrum
+Completed server side configuration 
 
+Tested using Postman
 2. Plan until next Scrum
+Fix View booking by dates
+Configure frontend for booking and payment
+- Add frontend Booking Wizard page and connect to backend 
+Booking Calender
 
 3. Need assistance / figure things out
-
+Heroku
+Blob
+Session storage
+JSDoc
+Hashing Password
 
 -----------------------------------------------
 Wang Haitao
 1. Done since last scrum
+Frontend for admin working succesfully
 
 2. Plan until next Scrum
+Test admin dashboard using endpoints
+Configure home page and dashboard
+- Add main page with cards like grid (optional)
+add image to the home page may be as a Jumbotron using Bootstrap (optional)
+Add car grid
+
 
 3. Need assistance / figure things out
 
 
 -----------------------------------------------
 Aliev Khadis
-Done/undone since last scrum:
-- Watched day08 and day09 videos.
-- Familiarized with project structure and existing code
-2. Plan until next Scrum:
-- Add table data into database.
-- Test endpoints/routes/handlers.
-- Add frontend with validation for Sign In(Register)
-- Add frontend with validation for Login
-- Add frontend Booking Wizard page and connect to backend
-3. Need assistance / figure things out
+1. Done/undone since last scrum:
+- Add table data into database - done.
+- Test endpoints/routes/handlers - done.
+- Add frontend with validation for Sign In(Register) - done.
+- Add frontend with validation for Login - done.
 
+ 
+2. Plan until next Scrum:
+Fix registration and user authentication page 
+
+
+Test static page using endpoints
 
 =============================================================
 
@@ -208,27 +234,52 @@ Done/undone since last scrum:
 
 Ritu Arora
 1. Done/not done since last scrum
+User Authentication (login registration pages) - Frontend, Backend, Validation, Testing, used session storage 
 
 2. Plan until next Scrum
-
+Add Authentication to Haitao's code (admin dashboard) and link other pages
+Create documents table in MySQL DB to store images and store them using Azure BLOB storage
 3. Need assistance / figure things out
-
+Heroku
+Blob
+Session storage
+JSDoc
+Hashing Password
 
 -----------------------------------------------
 Wang Haitao
-1. Done since last scrum
-
+Frontend for manage customers
+Fetch api from backend for customers
+Modify summary cards features in frontend page
+Test frontend features
+Test azure database
+Add JSDoc to some files
+Create homepage for customers frontend(html css js)
+Create dashboard for customers frontend(html css js)
+Create search page frontend and backend(html css js)
+ 
 2. Plan until next Scrum
-
-3. Need assistance / figure things out
-
+Join all frontend pages together
+Modify booking and payments frontend and backend features
+Modify small features in search page
+ 
+ 
+3. Need assistance / figure things out  
+ 
 
 -----------------------------------------------
 Aliev Khadis
 1. Done since last scrum
-
+- Add frontend Booking page - done
+ 
 2. Plan until next Scrum
-
+Add frontend Payment functionality to Booking page
+Add payment successful unsuccessful message (modal or smth like that)
+Add images for cars
+Test everything
+Fix if something doesn’t work
+Prepare materials for presentation
+	•		⁃	Prepare to the presentation itself
 3. Need assistance / figure things out
 
 

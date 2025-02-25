@@ -1,37 +1,28 @@
 const log = require("npmlog");
+const fs = require("fs");
+const path = require("path");
 
-/**
- * Logger configuration module using npmlog.
- * This module sets up a customized logging system for the Car Rental System.
- * @module Logger
- */
 
-/**
- * Sets the logging level from the environment variable `LOG_LEVEL`, defaulting to `"info"` if not provided.
- * @type {string}
- */
 log.level = process.env.LOG_LEVEL || "info";
-
-/**
- * Custom heading for log entries in the Car Rental System.
- * @type {string}
- */
 log.heading = "CarRentalSystem";
-
-/**
- * Adds a custom log level `trace` with a priority of 1000.
- * This log level is used for detailed debugging information.
- */
 log.addLevel("trace", 1000, { fg: "blue", bold: true });
-
-/**
- * Adds a custom log level `notice` with a priority of 2000.
- * This log level is used for general notices and important information.
- */
 log.addLevel("notice", 2000, { fg: "green", bold: true });
 
-/**
- * Exports the configured npmlog instance for use in other modules.
- * @type {npmlog}
- */
+const logFilePath = path.join(__dirname, "./app/logs/app.log"); 
+
+const originalLog = log.log;
+
+log.log = function (level, prefix, message, ...args) {
+    originalLog.call(this, level, prefix, message, ...args);
+
+    const logMessage = `${new Date().toISOString()} - ${level.toUpperCase()} - ${prefix} - ${message} ${args.join(" ")}\n`;
+
+    fs.appendFile(logFilePath, logMessage, (err) => {
+        if (err) {
+            console.error("Error writing to log file:", err);
+        }
+    });
+};
+
 module.exports = log;
+

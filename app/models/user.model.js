@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
-const db = require("./db");
+const sequelize = require("./db");
+
 
 /**
  * User model definition for the database.
@@ -25,6 +26,9 @@ const User = db.define("User", {
    * The unique identifier for the user.
    * @type {number}
    */
+
+const User = sequelize.define("User", {
+
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,

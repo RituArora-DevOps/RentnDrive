@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
-const db = require("./db");
+const sequelize = require("./db");
+
 
 /**
  * Car model definition for the database.
@@ -24,6 +25,9 @@ const Car = db.define("Car", {
    * The unique identifier for the car.
    * @type {number}
    */
+
+const Car = sequelize.define("Car", {
+
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,

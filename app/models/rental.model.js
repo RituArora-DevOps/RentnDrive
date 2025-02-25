@@ -1,91 +1,36 @@
-const { DataTypes, Sequelize } = require("sequelize");
-const db = require("./db");
 
-/**
- * Rental model definition for the database.
- * Represents a rental transaction between a user and a car.
- * @module RentalModel
- */
+const { DataTypes } = require("sequelize");
+const sequelize = require("./db");
 
-/**
- * Sequelize model representing a Rental.
- * @typedef {Object} Rental
- * @property {number} id - The unique identifier for the rental.
- * @property {number} user_id - The ID of the user renting the car (foreign key).
- * @property {number} car_id - The ID of the rented car (foreign key).
- * @property {string} start_date - The rental start date in YYYY-MM-DD format.
- * @property {string} end_date - The rental end date in YYYY-MM-DD format.
- * @property {number} total_amount - The total cost of the rental.
- * @property {"pending" | "confirmed" | "cancelled" | "completed"} status - The rental status.
- * @property {"credit_card" | "debit_card" | "paypal" | "bank_transfer"} [payment_method] - The payment method used.
- * @property {"pending" | "completed" | "failed"} payment_status - The payment status.
- * @property {number} amount - The amount paid.
- * @property {Date} [payment_date] - The date the payment was made.
- * @property {string} [extra] - Additional information or notes about the rental.
- * @property {Date} created_at - The timestamp when the rental record was created.
- * @property {Date} updated_at - The timestamp when the rental record was last updated.
- */
+const Rental = sequelize.define("Rental", {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  user_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: { model: "users", key: "id" },
+  },
+  car_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: { model: "cars", key: "id" },
+  },
+  start_date: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+  },
+  end_date: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+    validate: {
+      isAfterStartDate(value) {
+        if (new Date(value) <= new Date(this.start_date)) {
+          throw new Error("End date must be after start date.");
+        }
 
-const Rental = db.define(
-  "Rental",
-  {
-    /**
-     * The unique identifier for the rental.
-     * @type {number}
-     */
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-
-    /**
-     * The ID of the user renting the car (foreign key).
-     * @type {number}
-     */
-    user_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: { model: "users", key: "id" },
-    },
-
-    /**
-     * The ID of the rented car (foreign key).
-     * @type {number}
-     */
-    car_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: { model: "cars", key: "id" },
-    },
-
-    /**
-     * The rental start date (YYYY-MM-DD).
-     * @type {string}
-     */
-    start_date: {
-      type: DataTypes.DATEONLY,
-      allowNull: false,
-    },
-
-    /**
-     * The rental end date (YYYY-MM-DD). Must be after `start_date`.
-     * @type {string}
-     */
-    end_date: {
-      type: DataTypes.DATEONLY,
-      allowNull: false,
-      validate: {
-        /**
-         * Validates that `end_date` is after `start_date`.
-         * @param {string} value - The end date value.
-         * @throws {Error} If `end_date` is not after `start_date`.
-         */
-        isAfterStartDate(value) {
-          if (new Date(value) <= new Date(this.start_date)) {
-            throw new Error("End date must be after start date.");
-          }
-        },
       },
     },
 
@@ -191,12 +136,33 @@ const Rental = db.define(
       },
     },
   },
-  {
-    tableName: "Rentals",
-    timestamps: true, // This ensures that Sequelize adds created_at and updated_at automatically
-    createdAt: 'created_at',  // Map the Sequelize default 'createdAt' to 'created_at'
-    updatedAt: 'updated_at',  // Map the Sequelize default 'updatedAt' to 'updated_at'
-  }
-);
+
+  status: {
+    type: DataTypes.ENUM("pending", "confirmed", "cancelled", "completed"),
+    allowNull: false,
+  },
+  payment_method: {
+    type: DataTypes.ENUM("credit_card", "debit_card", "paypal", "bank_transfer"),
+  },
+  payment_status: {
+    type: DataTypes.ENUM("pending", "completed", "failed"),
+    allowNull: false,
+  },
+  amount: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false,
+  },
+  payment_date: {
+    type: DataTypes.DATE,
+  },
+  extra: {
+    type: DataTypes.TEXT,
+  },
+}, {
+  timestamps: true, // This ensures that Sequelize adds created_at and updated_at automatically
+  createdAt: 'created_at',  // Map the Sequelize default 'createdAt' to 'created_at'
+  updatedAt: 'updated_at',  // Map the Sequelize default 'updatedAt' to 'updated_at'
+});
+
 
 module.exports = Rental;
