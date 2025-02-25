@@ -1,7 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("./db");
 
-
 /**
  * Car model definition for the database.
  * Represents a vehicle that can be rented.
@@ -20,14 +19,11 @@ const sequelize = require("./db");
  * @property {string} type - The category/type of the car (e.g., sedan, SUV).
  */
 
-const Car = db.define("Car", {
+const Car = sequelize.define("Car", {
   /**
    * The unique identifier for the car.
    * @type {number}
    */
-
-const Car = sequelize.define("Car", {
-
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,

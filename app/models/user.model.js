@@ -1,7 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("./db");
 
-
 /**
  * User model definition for the database.
  * Represents users who can interact with the system.
@@ -21,14 +20,11 @@ const sequelize = require("./db");
  * @property {Date} updated_at - The timestamp when the user account was last updated.
  */
 
-const User = db.define("User", {
+const User = sequelize.define("User", {
   /**
    * The unique identifier for the user.
    * @type {number}
    */
-
-const User = sequelize.define("User", {
-
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -67,7 +63,6 @@ const User = sequelize.define("User", {
   /**
    * The email address of the user.
    * @type {string}
-   * @throws {Error} If the email format is invalid.
    */
   email: {
     type: DataTypes.STRING,
@@ -92,8 +87,6 @@ const User = sequelize.define("User", {
 
   /**
    * Maps `createdAt` and `updatedAt` to custom column names.
-   * @property {string} createdAt - The timestamp when the user was created.
-   * @property {string} updatedAt - The timestamp when the user was last updated.
    */
   createdAt: 'created_at',
   updatedAt: 'updated_at',
