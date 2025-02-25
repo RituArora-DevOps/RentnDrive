@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // ... (other code)
+
     // Register Form
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
@@ -7,7 +9,35 @@ document.addEventListener('DOMContentLoaded', () => {
             const username = document.getElementById('username').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
             const phone = document.getElementById('phone').value;
+
+            // Client-side validations
+            if (!username || !email || !password || !confirmPassword || !phone) {
+                alert('All fields are required.');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match.');
+                return;
+            }
+
+            const phoneRegex = /^[0-9-]+$/;
+            if (!phoneRegex.test(phone)) {
+                alert('Invalid phone number format.');
+                return;
+            }
+
+            if(username.length < 3){
+                alert('Username must be at least 3 characters.');
+                return;
+            }
+
+            if(password.length < 8){
+                alert('Password must be at least 8 characters.');
+                return;
+            }
 
             try {
                 const response = await fetch('/api/register', {
@@ -19,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
                 if (response.ok) {
                     alert('Registration successful!');
-                    window.location.href = 'login.html';
+                    window.location.href = 'login';
                 } else {
                     alert(data.message || 'Registration failed.');
                 }
@@ -38,6 +68,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
+            if(!username || !password){
+                alert("Username and password are required.");
+                return;
+            }
+
             try {
                 const response = await fetch('/api/login', {
                     method: 'POST',
@@ -47,11 +82,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const data = await response.json();
                 if (response.ok) {
-                    sessionStorage.setItem('token', data.token); // Use sessionStorage
-                    sessionStorage.setItem('role', data.role);   // Use sessionStorage
-                    sessionStorage.setItem('userId', data.id);   // Use sessionStorage
+                    sessionStorage.setItem('token', data.token);
+                    sessionStorage.setItem('role', data.role);
+                    sessionStorage.setItem('userId', data.id);
+                    sessionStorage.setItem('username', data.username);
                     alert('Login successful!');
-                    window.location.href = 'index.html'; // Or dashboard.html based on role
+                    window.location.href = 'index';
                 } else {
                     alert(data.message || 'Login failed.');
                 }
