@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Details</title>
+    <link rel="stylesheet" href="../assets/css/booking.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1 id="car-title">Car Details</h1>
+        <img id="car-image" src="" alt="Car Image">
+        <p id="price"></p>
+        <p id="price-per-day"></p>
+        <p><strong>Description:</strong> <span id="car-description"></span></p>
+
+        <h2>Book This Car</h2>
+        <form id="booking-form">
+            <label for="start-date">Start Date:</label>
+            <input type="date" id="start-date" required>
+
+            <label for="end-date">End Date:</label>
+            <input type="date" id="end-date" required>
+
+            <label for="extra">Extra ($):</label>
+            <input type="number" id="extra" value="0" min="0">
+
+            <p id="total-price"><strong>Total Price:</strong> $0</p>
+            
+            <button type="button" id="book-button">Make a Booking</button>
+        </form>
+    </div>
+
+    <script src="../assets/js/booking.js"></script>
+</body>
+</html>
