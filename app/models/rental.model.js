@@ -193,6 +193,9 @@ const Rental = db.define(
   },
   {
     tableName: "Rentals",
+    timestamps: true, // This ensures that Sequelize adds created_at and updated_at automatically
+    createdAt: 'created_at',  // Map the Sequelize default 'createdAt' to 'created_at'
+    updatedAt: 'updated_at',  // Map the Sequelize default 'updatedAt' to 'updated_at'
   }
 );
 
