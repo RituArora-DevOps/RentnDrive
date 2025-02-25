@@ -270,9 +270,16 @@ Modify small features in search page
 -----------------------------------------------
 Aliev Khadis
 1. Done since last scrum
-
+- Add frontend Booking page - done
+ 
 2. Plan until next Scrum
-
+Add frontend Payment functionality to Booking page
+Add payment successful unsuccessful message (modal or smth like that)
+Add images for cars
+Test everything
+Fix if something doesn’t work
+Prepare materials for presentation
+	•		⁃	Prepare to the presentation itself
 3. Need assistance / figure things out
 
 
