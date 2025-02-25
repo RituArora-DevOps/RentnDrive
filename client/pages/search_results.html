@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car Search Results</title>
+  <link rel="stylesheet" href="search_results.css">
+</head>
+
+<body>
+  <header>
+    <div class="logo">RentNDrive</div>
+    <div class="search-box">
+      <label>
+        <span>Start Date</span>
+        <input type="date" id="start-date">
+      </label>
+      <label>
+        <span>End Date</span>
+        <input type="date" id="end-date">
+      </label>
+    </div>
+  </header>
+
+
+
+  <!-- Filters -->
+  <section class="filters">
+    <div class="filter-select">
+      <button id="make-filter-btn" data-filter="make">Make</button>
+    </div>
+    <div class="filter-select">
+      <button id="year-filter-btn" data-filter="year">Year</button>
+    </div>
+    <div class="filter-select">
+      <button id="type-filter-btn" data-filter="type">Type</button>
+    </div>
+    <div class="filter-select">
+      <button id="price-btn" data-filter="price">Price</button>
+    </div>
+
+    <button id="apply-filters">Apply</button>
+    <button id="resetall-filters">Reset</button>
+  </section>
+
+  <div id="make-modal" class="modal">
+    <div class="modal-content">
+      <h2>Select a Make</h2>
+      <div id="make-options" class="make-options">
+        <!-- Brands will be dynamically inserted here -->
+      </div>
+      <div class="modal-footer">
+        <button id="reset-make" class="reset-btn">Reset</button>
+        <button id="view-make-results" class="view-btn">View Results</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="year-modal" class="modal">
+    <div class="modal-content">
+      <h2>Select a Year</h2>
+      <div id="year-options" class="year-options">
+        <!-- 年份选项将动态插入 -->
+      </div>
+      <div class="modal-footer">
+        <button id="reset-year" class="reset-btn">Reset</button>
+        <button id="view-year-results" class="view-btn">View Results</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="price-modal" class="modal">
+    <div class="modal-content">
+      <h2>Select a Price Sorting</h2>
+      <div class="price-options">
+        <label>
+          <input type="radio" name="price-sort" value="asc"> Low to High
+        </label>
+        <label>
+          <input type="radio" name="price-sort" value="desc"> High to Low
+        </label>
+      </div>
+      <div class="modal-footer">
+        <button id="reset-price" class="reset-btn">Reset</button>
+        <button id="view-price-results" class="view-btn">View Results</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="type-modal" class="modal">
+    <div class="modal-content">
+      <h2>Select a Type</h2>
+      <div id="type-options" class="type-options">
+        <!-- Types will be dynamically inserted here -->
+      </div>
+      <div class="modal-footer">
+        <button id="reset-type" class="reset-btn">Reset</button>
+        <button id="view-type-results" class="view-btn">View Results</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Results -->
+  <section id="car-results">
+    <div id="car-list"></div>
+  </section>
+
+  <script src="search_results.js"></script>
+</body>
+
+</html>
