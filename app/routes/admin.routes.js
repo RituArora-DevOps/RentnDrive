@@ -127,9 +127,4 @@ router.post("/orders", adminController.addOrder);
  */
 router.post("/customers", adminController.addCustomer);
 
-
-*/
-
-
-
 module.exports = router; // Export the router to be used in the main server file

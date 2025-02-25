@@ -4,7 +4,8 @@ const bookingController = require("../controllers/booking.controller");
 const authMiddleware = require("../middleware/auth"); // Assuming you have an auth middleware
 
 // Check car availability
-router.get("/cars/available", bookingController.checkAvailability);
+console.log("Booking Routes Loaded");
+router.get("/cars/available", bookingController.getAvailableCars);
 
 // Create a new booking (includes payment processing)
 router.post("/bookings", authMiddleware.verifyToken, bookingController.createBooking);

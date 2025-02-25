@@ -7,38 +7,70 @@ const { Op } = require("sequelize");
 // const { sequelize } = require("../models/db"); // Import sequelize instance
 
 // Check car availability
-exports.checkAvailability = async (req, res) => {
+// Check car availability
+// Check car availability
+// Check car availability
+exports.getAvailableCars = async (req, res) => {
     try {
         const { startDate, endDate } = req.query;
 
+        // Validate the presence of start and end dates
         if (!startDate || !endDate) {
             return res.status(400).json({ message: "Start and end dates are required." });
         }
 
+        // Validate the format of the dates
         if (isNaN(Date.parse(startDate)) || isNaN(Date.parse(endDate))) {
             return res.status(400).json({ message: "Invalid date format." });
         }
 
-        console.log('Using sequelize:', sequelize);  // Debug log
-        
+        // Convert startDate and endDate to Date objects for comparison
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        // Validate that the end date is after the start date
+        if (start >= end) {
+            return res.status(400).json({ message: "End date must be after the start date." });
+        }
+
+        // Debugging: log the query being constructed
+        //console.log(`Running query: SELECT car_id FROM rentals WHERE (start_date <= '${new Date(endDate).toISOString()}' AND end_date >= '${new Date(startDate).toISOString()}')`);
+
+        // Get the list of car IDs that are already rented during the given date range
+        const rentedCars = await Rental.findAll({
+            attributes: ['car_id'],
+            where: {
+                start_date: { [Op.lte]: new Date(endDate) },  // Cars that start before the end date
+                end_date: { [Op.gte]: new Date(startDate) }   // Cars that end after the start date
+            }
+        });
+
+        // Extract car IDs from rentedCars
+        const rentedCarIds = rentedCars.map(rental => rental.car_id);
+
+        // Now, find cars that are NOT in the rented list
         const availableCars = await Car.findAll({
             where: {
-                status: "available",
                 id: {
-                    [Op.notIn]: sequelize.literal(`
-                        SELECT car_id FROM rentals
-                        WHERE (start_date <= '${endDate}' AND end_date >= '${startDate}')
-                    `)
+                    [Op.notIn]: rentedCarIds  // Exclude rented cars
                 }
             }
         });
 
-        res.json(availableCars);
+        // If cars found, return them, else return a message indicating no cars available
+        if (availableCars.length > 0) {
+            return res.status(200).json(availableCars);
+        } else {
+            return res.status(404).json({ message: "No cars available for the selected dates." });
+        }
+
     } catch (error) {
-        log.error(`Error checking availability: ${error.message}`);
+        console.error(`Error checking availability: ${error.message}`);
         res.status(500).json({ message: "Internal server error." });
     }
 };
+
+
 
 // Create a new booking
 exports.createBooking = async (req, res) => {

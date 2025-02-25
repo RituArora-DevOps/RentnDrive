@@ -376,7 +376,6 @@ exports.addCustomer = async (req, res) => {
   }
 };
 
-/* created by Haitao, commented by me
 
 /**
  * Adds a new rental order (for testing purposes only).
@@ -443,4 +442,3 @@ exports.addOrder = async (req, res) => {
   }
 };
 
-*/

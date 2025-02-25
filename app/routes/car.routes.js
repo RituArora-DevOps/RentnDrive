@@ -7,7 +7,7 @@ const authMiddleware = require("../middleware/auth");
 router.get("/cars", carController.getAllCars);
 
 // Get available cars for specific dates
-router.get("/cars/available", carController.getAvailableCars);
+// router.get("/cars/available", carController.getAvailableCars); // we dont want this redundant request
 
 // Add a new car (admin only)
 router.post("/cars", authMiddleware.verifyToken, carController.addCar);

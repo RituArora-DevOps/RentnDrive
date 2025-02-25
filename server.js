@@ -18,10 +18,10 @@ const carRoutes = require("./app/routes/car.routes.js");
 const bookingRoutes = require("./app/routes/booking.routes.js");
 
 // Use routes
-app.use("/api", adminRoutes);
-app.use("/api", authRoutes);
-app.use("/api", carRoutes);
-app.use("/api", bookingRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/cars", carRoutes);
+app.use("/api/booking", bookingRoutes);
 
 // Serve static files from the client directory
 app.use(express.static(path.join(__dirname, "client")));
@@ -45,7 +45,7 @@ app.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, 'client', 'pages', 'register.html'));
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 async function startServer() {
     try {

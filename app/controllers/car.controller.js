@@ -104,6 +104,7 @@ exports.deleteCar = async (req, res) => {
     }
 };
 
+/** 
 // Get available cars for specific dates
 exports.getAvailableCars = async (req, res) => {
     try {
@@ -131,3 +132,4 @@ exports.getAvailableCars = async (req, res) => {
         res.status(500).json({ message: "Internal server error." });
     }
 };
+*/
