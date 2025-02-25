@@ -234,12 +234,17 @@ Test static page using endpoints
 
 Ritu Arora
 1. Done/not done since last scrum
+User Authentication (login registration pages) - Frontend, Backend, Validation, Testing, used session storage 
 
 2. Plan until next Scrum
-
-
+Add Authentication to Haitao's code (admin dashboard) and link other pages
+Create documents table in MySQL DB to store images and store them using Azure BLOB storage
 3. Need assistance / figure things out
-
+Heroku
+Blob
+Session storage
+JSDoc
+Hashing Password
 
 -----------------------------------------------
 Wang Haitao
