@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Booking</title>
+    <link rel="stylesheet" href="../assets/css/booking2.css">
+</head>
+<body>
+    <div class="container">
+        <h1 id="car-title">Car Details</h1>
+        <img id="car-image" src="" alt="Car Image">
+        <p id="price"></p>
+        <p id="price-per-day"></p>
+        <p><strong>Description:</strong> <span id="car-description"></span></p>
+
+        <h2>Book This Car</h2>
+        <form id="booking-form">
+            <label for="start-date">Start Date:</label>
+            <input type="date" id="start-date" required>
+
+            <label for="end-date">End Date:</label>
+            <input type="date" id="end-date" required>
+
+            <label for="extra">Extra ($):</label>
+            <input type="number" id="extra" value="0" min="0">
+
+            <p id="total-price"><strong>Total Price:</strong> $0</p>
+
+            <h2>Payment Information</h2>
+            <label for="cardholder-name">Cardholder's Name:</label>
+            <input type="text" id="cardholder-name" required>
+
+            <label for="card-number">Card Number:</label>
+            <input type="text" id="card-number" maxlength="16" required>
+
+            <label for="expiry-date">Expiry Date:</label>
+            <input type="month" id="expiry-date" required>
+
+            <label for="cvv">CVV:</label>
+            <input type="text" id="cvv" maxlength="3" required>
+
+            <button type="button" id="book-button">Make a Booking & Pay</button>
+        </form>
+    </div>
+
+    <script src="../assets/js/bookings2.js"></script>
+</body>
+</html>
