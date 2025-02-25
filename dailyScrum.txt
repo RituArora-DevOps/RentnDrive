@@ -248,12 +248,24 @@ Hashing Password
 
 -----------------------------------------------
 Wang Haitao
-1. Done since last scrum
-
+Frontend for manage customers
+Fetch api from backend for customers
+Modify summary cards features in frontend page
+Test frontend features
+Test azure database
+Add JSDoc to some files
+Create homepage for customers frontend(html css js)
+Create dashboard for customers frontend(html css js)
+Create search page frontend and backend(html css js)
+ 
 2. Plan until next Scrum
-
-3. Need assistance / figure things out
-
+Join all frontend pages together
+Modify booking and payments frontend and backend features
+Modify small features in search page
+ 
+ 
+3. Need assistance / figure things out  
+ 
 
 -----------------------------------------------
 Aliev Khadis
