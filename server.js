@@ -23,7 +23,23 @@ app.use("/api", authRoutes);
 app.use("/api", carRoutes);
 app.use("/api", bookingRoutes);
 
+// Serve static files from the client directory
 app.use(express.static(path.join(__dirname, "client")));
+
+// Serve index.html for the root route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'pages', 'index.html'));
+});
+
+// Serve login.html for the /login route
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'pages', 'login.html'));
+});
+
+// Serve register.html for the /register route
+app.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'pages', 'register.html'));
+});
 
 const PORT = process.env.PORT || 3000;
 
