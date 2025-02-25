@@ -39,6 +39,15 @@ header {
   font-size: 20px;
 }
 
+.login-btn {
+  padding: 8px 16px;
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+}
+
 /* Main Section */
 main {
   display: flex;
@@ -49,7 +58,7 @@ main {
 /* Hero Section */
 .hero {
   flex: 1;
-  background: url('../assets/images/m-2.jpeg') no-repeat center center/cover;
+  background: url('../images/m-2.jpeg') no-repeat center center/cover;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -161,27 +170,27 @@ main {
 }
 
 .car-item:nth-child(1) {
-  background-image: url('../assets/images/car.jpg');
+  background-image: url('../images/car.jpg');
 }
 
 .car-item:nth-child(2) {
-  background-image: url('../assets/images/suv.jpg');
+  background-image: url('../images/suv.jpg');
 }
 
 .car-item:nth-child(3) {
-  background-image: url('../assets/images/minivan.jpg');
+  background-image: url('../images/minivan.jpg');
 }
 
 .car-item:nth-child(4) {
-  background-image: url('../assets/images/pick\ up.jpg');
+  background-image: url('../images/pick\ up.jpg');
 }
 
 .car-item:nth-child(5) {
-  background-image: url('../assets/images/van.jpg');
+  background-image: url('../images/van.jpg');
 }
 
 .car-item:nth-child(6) {
-  background-image: url('../assets/images/box\ truck.png');
+  background-image: url('../images/box\ truck.png');
 }
 
 /* Car Text */
