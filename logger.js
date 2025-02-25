@@ -2,6 +2,7 @@ const log = require("npmlog");
 const fs = require("fs");
 const path = require("path");
 
+
 log.level = process.env.LOG_LEVEL || "info";
 log.heading = "CarRentalSystem";
 log.addLevel("trace", 1000, { fg: "blue", bold: true });
@@ -24,3 +25,4 @@ log.log = function (level, prefix, message, ...args) {
 };
 
 module.exports = log;
+

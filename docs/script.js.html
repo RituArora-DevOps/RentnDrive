@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: script.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: script.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * Event listener for the "Manage Cars" button.
  * Displays the car list and actions while hiding other sections.
  */
@@ -27,7 +55,7 @@ let selectedCarId = null;
 
 /**
  * Array holding the list of cars.
- * @type {Array<Object>}
+ * @type {Array&lt;Object>}
  */
 const carList = [];
 
@@ -58,14 +86,14 @@ function updateCarList() {
   // Create and append the table header
   const headerRow = document.createElement('tr');
   headerRow.innerHTML = `
-    <th>Select</th>
-    <th>ID</th>
-    <th>Make</th>
-    <th>Model</th>
-    <th>Year</th>
-    <th>Price Per Day</th>
-    <th>Status</th>
-    <th>Type</th>
+    &lt;th>Select&lt;/th>
+    &lt;th>ID&lt;/th>
+    &lt;th>Make&lt;/th>
+    &lt;th>Model&lt;/th>
+    &lt;th>Year&lt;/th>
+    &lt;th>Price Per Day&lt;/th>
+    &lt;th>Status&lt;/th>
+    &lt;th>Type&lt;/th>
   `;
   carTable.appendChild(headerRow);
 
@@ -309,7 +337,7 @@ document.getElementById('submit-car').addEventListener('click', (event) => {
   } else if (!/^\d{4}$/.test(year)) {
     showError('car-year', 'Year must be a 4-digit number.');
     isValid = false;
-  } else if (year < 1900 || year > currentYear) {
+  } else if (year &lt; 1900 || year > currentYear) {
     showError('car-year', `Year must be between 1900 and ${currentYear}.`);
     isValid = false;
   }
@@ -318,7 +346,7 @@ document.getElementById('submit-car').addEventListener('click', (event) => {
   if (!price) {
     showError('car-price', 'Price per day is required.');
     isValid = false;
-  } else if (isNaN(price) || price <= 0) {
+  } else if (isNaN(price) || price &lt;= 0) {
     showError('car-price', 'Price per day must be a positive number.');
     isValid = false;
   }
@@ -419,7 +447,7 @@ let selectedBookingId = null;
 
 /**
  * Array storing the list of bookings.
- * @type {Array<Object>}
+ * @type {Array&lt;Object>}
  */
 const bookingList = [];
 
@@ -492,17 +520,17 @@ function updateBookingList(bookings) {
   // Add table headers
   const headerRow = document.createElement('tr');
   headerRow.innerHTML = `
-    <th>Select</th>
-    <th>ID</th>
-    <th>User ID</th>
-    <th>Car ID</th>
-    <th>Start Date</th>
-    <th>End Date</th>
-    <th>Total Amount</th>
-    <th>Status</th>
-    <th>Payment Status</th>
-    <th>Created At</th>
-    <th>Updated At</th>
+    &lt;th>Select&lt;/th>
+    &lt;th>ID&lt;/th>
+    &lt;th>User ID&lt;/th>
+    &lt;th>Car ID&lt;/th>
+    &lt;th>Start Date&lt;/th>
+    &lt;th>End Date&lt;/th>
+    &lt;th>Total Amount&lt;/th>
+    &lt;th>Status&lt;/th>
+    &lt;th>Payment Status&lt;/th>
+    &lt;th>Created At&lt;/th>
+    &lt;th>Updated At&lt;/th>
   `;
   bookingTable.appendChild(headerRow);
 
@@ -587,7 +615,7 @@ document.getElementById('cancel-booking').addEventListener('click', async () => 
   const endDate = new Date(booking.end_date);
 
   // Check if the booking is currently active
-  if (today >= startDate && today <= endDate) {
+  if (today >= startDate &amp;&amp; today &lt;= endDate) {
     alert('Order is in progress and cannot be cancelled.');
     return;
   }
@@ -647,7 +675,7 @@ let selectedCustomerId = null;
 
 /**
  * Array holding the list of customers.
- * @type {Array<Object>}
+ * @type {Array&lt;Object>}
  */
 const customerList = [];
 
@@ -662,7 +690,7 @@ function fetchCustomers() {
       customerList.push(...data); // Refill with new data
       updateCustomerList(); // Update the customer list on the page
 
-      // Update "Total Customers" count (assuming <p> tag is inside Total Customers section)
+      // Update "Total Customers" count (assuming &lt;p> tag is inside Total Customers section)
       document.getElementById('total-customers').querySelector('p').textContent = customerList.length;
     })
     .catch(error => {
@@ -680,13 +708,13 @@ function updateCustomerList() {
   // Add table header
   const headerRow = document.createElement('tr');
   headerRow.innerHTML = `
-    <th>Select</th>
-    <th>ID</th>
-    <th>Username</th>
-    <th>Email</th>
-    <th>Phone</th>
-    <th>Created At</th>
-    <th>Updated At</th>
+    &lt;th>Select&lt;/th>
+    &lt;th>ID&lt;/th>
+    &lt;th>Username&lt;/th>
+    &lt;th>Email&lt;/th>
+    &lt;th>Phone&lt;/th>
+    &lt;th>Created At&lt;/th>
+    &lt;th>Updated At&lt;/th>
   `;
   customerTable.appendChild(headerRow);
 
@@ -809,7 +837,30 @@ function updateSummaryCounts() {
     });
 }
 
-// Add click event to the Dashboard button (assuming it's the first <a> element in the sidebar)
+// Add click event to the Dashboard button (assuming it's the first &lt;a> element in the sidebar)
 document.querySelectorAll('.sidebar nav ul li a')[0].addEventListener('click', () => {
   window.location.reload();
 });
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#bookingList">bookingList</a></li><li><a href="global.html#carList">carList</a></li><li><a href="global.html#clearErrorMessages">clearErrorMessages</a></li><li><a href="global.html#customerList">customerList</a></li><li><a href="global.html#fetchBookings">fetchBookings</a></li><li><a href="global.html#fetchCars">fetchCars</a></li><li><a href="global.html#fetchCustomers">fetchCustomers</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#resetCarForm">resetCarForm</a></li><li><a href="global.html#selectBooking">selectBooking</a></li><li><a href="global.html#selectCar">selectCar</a></li><li><a href="global.html#selectCustomer">selectCustomer</a></li><li><a href="global.html#selectedBookingId">selectedBookingId</a></li><li><a href="global.html#selectedCarId">selectedCarId</a></li><li><a href="global.html#selectedCustomerId">selectedCustomerId</a></li><li><a href="global.html#showError">showError</a></li><li><a href="global.html#updateCarList">updateCarList</a></li><li><a href="global.html#updateCustomerList">updateCustomerList</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Feb 24 2025 00:15:37 GMT-0500 (北美东部标准时间)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

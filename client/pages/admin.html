@@ -18,8 +18,8 @@
         <ul>
           <li><a href="#">Dashboard</a></li>
           <li><a href="#" id="manage-cars">Manage Cars</a></li>
-          <li><a href="#">Manage Bookings</a></li>
-          <li><a href="#">Manage Customers</a></li>
+          <li><a href="#" id="manage-bookings">Manage Bookings</a></li>
+          <li><a href="#" id="manage-customers">Manage Customers</a></li>
         </ul>
       </nav>
     </aside>
@@ -32,11 +32,11 @@
         </div>
         <div class="summary-card" id="total-bookings">
           <h3>Total Bookings</h3>
-          <p>10</p>
+          <p></p>
         </div>
         <div class="summary-card" id="total-customers">
           <h3>Total Customers</h3>
-          <p>150</p>
+          <p></p>
         </div>
       </section>
 
@@ -90,20 +90,40 @@
           </div>
         </div>
 
-
-
-
       </section>
 
       <section class="list" id="booking-list" style="display: none;">
         <h2>Booking List</h2>
-        <table id="booking-table"></table>
+
+        <table id="booking-table">
+          <!-- Booking rows will be populated here dynamically -->
+        </table>
+        <div id="booking-actions">
+          <button id="cancel-booking" disabled>Cancel</button>
+          <!-- 筛选区域 -->
+          <div id="booking-filter">
+            <label for="booking-period">Bookings of last:</label>
+            <select id="booking-period">
+              <option value="">All</option>
+              <option value="week">Week</option>
+              <option value="month">Month</option>
+              <option value="year">Year</option>
+            </select>
+            <button id="filter-bookings">Filter</button>
+          </div>
+        </div>
       </section>
 
       <section class="list" id="customer-list" style="display: none;">
         <h2>Customer List</h2>
-        <table id="customer-table"></table>
+        <table id="customer-table">
+          <!-- Customer rows will be populated here dynamically -->
+        </table>
+        <div id="customer-actions">
+          <button id="delete-customer" disabled>Delete</button>
+        </div>
       </section>
+
     </main>
   </div>
 

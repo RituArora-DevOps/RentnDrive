@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: rental.model.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: rental.model.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { DataTypes, Sequelize } = require("sequelize");
+const db = require("./db");
+
+/**
+ * Rental model definition for the database.
+ * Represents a rental transaction between a user and a car.
+ * @module RentalModel
+ */
+
+/**
+ * Sequelize model representing a Rental.
+ * @typedef {Object} Rental
+ * @property {number} id - The unique identifier for the rental.
+ * @property {number} user_id - The ID of the user renting the car (foreign key).
+ * @property {number} car_id - The ID of the rented car (foreign key).
+ * @property {string} start_date - The rental start date in YYYY-MM-DD format.
+ * @property {string} end_date - The rental end date in YYYY-MM-DD format.
+ * @property {number} total_amount - The total cost of the rental.
+ * @property {"pending" | "confirmed" | "cancelled" | "completed"} status - The rental status.
+ * @property {"credit_card" | "debit_card" | "paypal" | "bank_transfer"} [payment_method] - The payment method used.
+ * @property {"pending" | "completed" | "failed"} payment_status - The payment status.
+ * @property {number} amount - The amount paid.
+ * @property {Date} [payment_date] - The date the payment was made.
+ * @property {string} [extra] - Additional information or notes about the rental.
+ * @property {Date} created_at - The timestamp when the rental record was created.
+ * @property {Date} updated_at - The timestamp when the rental record was last updated.
+ */
+
+const Rental = db.define(
+  "Rental",
+  {
+    /**
+     * The unique identifier for the rental.
+     * @type {number}
+     */
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+
+    /**
+     * The ID of the user renting the car (foreign key).
+     * @type {number}
+     */
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: { model: "users", key: "id" },
+    },
+
+    /**
+     * The ID of the rented car (foreign key).
+     * @type {number}
+     */
+    car_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: { model: "cars", key: "id" },
+    },
+
+    /**
+     * The rental start date (YYYY-MM-DD).
+     * @type {string}
+     */
+    start_date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
+
+    /**
+     * The rental end date (YYYY-MM-DD). Must be after `start_date`.
+     * @type {string}
+     */
+    end_date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+      validate: {
+        /**
+         * Validates that `end_date` is after `start_date`.
+         * @param {string} value - The end date value.
+         * @throws {Error} If `end_date` is not after `start_date`.
+         */
+        isAfterStartDate(value) {
+          if (new Date(value) &lt;= new Date(this.start_date)) {
+            throw new Error("End date must be after start date.");
+          }
+        },
+      },
+    },
+
+    /**
+     * The total amount for the rental.
+     * @type {number}
+     */
+    total_amount: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+    },
+
+    /**
+     * The rental status.
+     * @type {"pending" | "confirmed" | "cancelled" | "completed"}
+     */
+    status: {
+      type: DataTypes.ENUM("pending", "confirmed", "cancelled", "completed"),
+      allowNull: false,
+    },
+
+    /**
+     * The payment method used.
+     * @type {"credit_card" | "debit_card" | "paypal" | "bank_transfer"}
+     */
+    payment_method: {
+      type: DataTypes.ENUM("credit_card", "debit_card", "paypal", "bank_transfer"),
+    },
+
+    /**
+     * The payment status.
+     * @type {"pending" | "completed" | "failed"}
+     */
+    payment_status: {
+      type: DataTypes.ENUM("pending", "completed", "failed"),
+      allowNull: false,
+    },
+
+    /**
+     * The amount paid.
+     * @type {number}
+     */
+    amount: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+    },
+
+    /**
+     * The payment date.
+     * @type {Date}
+     */
+    payment_date: {
+      type: DataTypes.DATE,
+    },
+
+    /**
+     * Additional information or notes about the rental.
+     * @type {string}
+     */
+    extra: {
+      type: DataTypes.TEXT,
+    },
+
+    /**
+     * The timestamp when the rental record was created.
+     * Must be before the `start_date`.
+     * @type {Date}
+     */
+    created_at: {
+      type: DataTypes.DATE,
+      validate: {
+        /**
+         * Validates that `created_at` is before `start_date`.
+         * @param {Date} value - The creation timestamp.
+         * @throws {Error} If `created_at` is not before `start_date`.
+         */
+        isBeforeStartDate(value) {
+          if (value.toISOString().split("T")[0] >= this.start_date) {
+            throw new Error("Created_at must be before start date.");
+          }
+        },
+      },
+    },
+
+    /**
+     * The timestamp when the rental record was last updated.
+     * Must be before the `end_date`.
+     * @type {Date}
+     */
+    updated_at: {
+      type: DataTypes.DATE,
+      validate: {
+        /**
+         * Validates that `updated_at` is before `end_date`.
+         * @param {Date} value - The update timestamp.
+         * @throws {Error} If `updated_at` is not before `end_date`.
+         */
+        isBeforeEndDate(value) {
+          if (value.toISOString().split("T")[0] >= this.end_date) {
+            throw new Error("Updated_at must be before end date.");
+          }
+        },
+      },
+    },
+  },
+  {
+    tableName: "Rentals",
+  }
+);
+
+module.exports = Rental;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-RentalModel.html">RentalModel</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Feb 24 2025 00:19:54 GMT-0500 (北美东部标准时间)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
