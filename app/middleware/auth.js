@@ -21,8 +21,18 @@ const verifyToken = (req, res, next) => {
     }
 };
 
-module.exports = { verifyToken };
 
+
+// New middleware to check for admin role
+const isAdmin = (req, res, next) => {
+    if (req.user && req.user.role === "admin") {
+      return next();
+    } else {
+      return res.status(403).json({ message: "Access denied. Admins only." });
+    }
+  };
+
+module.exports = { verifyToken, isAdmin };
 /*
 Explanation:
 

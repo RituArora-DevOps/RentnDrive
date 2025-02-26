@@ -106,8 +106,16 @@ exports.createBooking = async (req, res) => {
             return res.status(400).json({ message: "Car is already booked for the selected dates." });
         }
 
+        console.log("Car object:", car);
+
+
         const days = (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24) + 1;
-        const totalAmount = car.price_per_day * days;
+        const totalAmount = parseFloat(car.price_per_day) * days;
+
+        // Add debug logs here:
+        console.log(`Car price per day: ${car.price_per_day} (parsed: ${parseFloat(car.price_per_day)})`);
+        console.log(`Days: ${days}`);
+        console.log(`Calculated total amount: ${totalAmount}`);
 
         if (parseFloat(amount) !== totalAmount) {
             await transaction.rollback();

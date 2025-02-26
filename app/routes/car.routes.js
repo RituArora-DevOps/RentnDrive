@@ -10,13 +10,13 @@ router.get("/cars", carController.getAllCars);
 // router.get("/cars/available", carController.getAvailableCars); // we dont want this redundant request
 
 // Add a new car (admin only)
-router.post("/cars", authMiddleware.verifyToken, carController.addCar);
+router.post("/cars", authMiddleware.verifyToken, authMiddleware.isAdmin, carController.addCar);
 
 // Update a car (admin only)
-router.put("/cars/:id", authMiddleware.verifyToken, carController.updateCar);
+router.put("/cars/:id", authMiddleware.verifyToken, authMiddleware.isAdmin, carController.updateCar);
 
 // Delete a car (admin only)
-router.delete("/cars/:id", authMiddleware.verifyToken, carController.deleteCar);
+router.delete("/cars/:id", authMiddleware.verifyToken, authMiddleware.isAdmin, carController.deleteCar);
 
 
 // Get a car by ID

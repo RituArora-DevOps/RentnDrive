@@ -19,8 +19,8 @@ const bookingRoutes = require("./app/routes/booking.routes.js");
 
 // Use routes
 app.use("/api/admin", adminRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/cars", carRoutes);
+app.use("/api", authRoutes);
+app.use("/api", carRoutes);
 app.use("/api/booking", bookingRoutes);
 
 // Serve static files from the client directory
@@ -43,6 +43,22 @@ app.get('/login', (req, res) => {
 // Serve register.html for the /register route
 app.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, 'client', 'pages', 'register.html'));
+});
+
+app.get('/search_results', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'pages', 'search_results.html'));
+});
+
+app.get('/dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'pages', 'dashboard.html'));
+});
+
+app.get('/booking-payment', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'pages', 'booking-payment.html'));
+});
+
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'pages', 'admin.html'));
 });
 
 const PORT = process.env.PORT || 8080;
