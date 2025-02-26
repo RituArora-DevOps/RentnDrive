@@ -85,11 +85,8 @@ header {
   transition: all 0.2s ease-in-out;
   display: flex;
   justify-content: center;
-  /* 让文字和箭头整体水平居中 */
   align-items: center;
-  /* 让文字和箭头垂直居中 */
   gap: 16px;
-  /* 让文字和箭头之间有间距 */
   color: #555;
 }
 
@@ -101,7 +98,6 @@ header {
 .filter-select button::after {
   content: "⌄";
   font-size: 30px;
-  /* 让箭头和文字大小匹配 */
   color: #555;
   position: relative;
   bottom: 8px;
@@ -224,11 +220,9 @@ header {
 
   display: flex;
   justify-content: center;
-  /* 水平居中 */
   align-items: center;
-  /* 垂直居中 */
   gap: 6px;
-  /* 文字与箭头间距 */
+
 }
 
 /* Price Dropdown Menu */
@@ -325,7 +319,7 @@ header {
   max-width: 90%;
 }
 
-/* Type 选项样式 */
+
 .type-options label {
   display: flex;
   align-items: center;
@@ -338,7 +332,7 @@ header {
   transform: scale(1.2);
 }
 
-/* 让年份选项纵向排列 */
+
 #year-options {
   display: flex;
   flex-direction: column;
@@ -350,17 +344,15 @@ header {
   display: flex;
   align-items: center;
   gap: 8px;
-  /* 让单选按钮和文本之间有间距 */
   font-size: 16px;
 }
 
 #car-results {
   max-width: 1100px;
-  /* 限制最大宽度，与 filters 区域相同 */
   margin: 0 auto;
 }
 
-/* 车辆列表区域 */
+
 #car-list {
   margin-top: 20px;
   display: flex;
@@ -368,7 +360,7 @@ header {
   gap: 15px;
 }
 
-/* 单个车辆项 */
+
 .car-item {
   display: flex;
   align-items: center;
@@ -379,7 +371,7 @@ header {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* 车辆图片 */
+
 .car-item img {
   width: 150px;
   height: 100px;
@@ -387,20 +379,20 @@ header {
   object-fit: cover;
 }
 
-/* 车辆信息 */
+
 .car-info {
   flex: 1;
   margin-left: 15px;
 }
 
-/* 车辆标题（品牌 + 型号 + 年份） */
+
 .car-info h3 {
   margin: 0;
   font-size: 18px;
   font-weight: bold;
 }
 
-/* 价格 */
+
 .car-price {
   font-size: 18px;
   font-weight: bold;

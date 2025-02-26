@@ -80,3 +80,20 @@ INSERT INTO booking_payments (user_id, car_id, start_date, end_date, total_amoun
 (13, 13, '2024-05-10', '2024-05-17', 504.00, 'pending', 'credit_card', 'pending', NULL, 'GPS', NOW(), NOW()),
 (14, 14, '2024-05-20', '2024-05-25', 390.00, 'confirmed', 'paypal', 'completed', 390.00, NOW(), 'Additional Driver, Child Seat', NOW(), NOW()),
 (15, 15, '2024-06-01', '2024-06-08', 700.00, 'confirmed', 'stripe', 'completed', 700.00, NOW(), 'Insurance, GPS', NOW(), NOW());
+
+ALTER TABLE cars ADD COLUMN image_url VARCHAR(1024);
+UPDATE cars SET image_url = 'https://ahr2024fsd.blob.core.windows.net/images-container/1.jpg' WHERE id = 1;
+UPDATE cars SET image_url = 'https://ahr2024fsd.blob.core.windows.net/images-container/2.jpg' WHERE id = 2;
+UPDATE cars SET image_url = 'https://ahr2024fsd.blob.core.windows.net/images-container/3.jpg' WHERE id = 3;
+UPDATE cars SET image_url = 'https://ahr2024fsd.blob.core.windows.net/images-container/4.jpg' WHERE id = 4;
+UPDATE cars SET image_url = 'https://ahr2024fsd.blob.core.windows.net/images-container/5.jpg' WHERE id = 5;
+UPDATE cars SET image_url = 'https://ahr2024fsd.blob.core.windows.net/images-container/6.jpg' WHERE id = 6;
+UPDATE cars SET image_url = 'https://ahr2024fsd.blob.core.windows.net/images-container/7.jpg' WHERE id = 7;
+UPDATE cars SET image_url = 'https://ahr2024fsd.blob.core.windows.net/images-container/8.jpg' WHERE id = 8;
+UPDATE cars SET image_url = 'https://ahr2024fsd.blob.core.windows.net/images-container/9.jpg' WHERE id = 9;
+UPDATE cars SET image_url = 'https://ahr2024fsd.blob.core.windows.net/images-container/10.jpg' WHERE id = 10;
+UPDATE cars SET image_url = 'https://ahr2024fsd.blob.core.windows.net/images-container/11.jpg' WHERE id = 11;
+UPDATE cars SET image_url = 'https://ahr2024fsd.blob.core.windows.net/images-container/12.jpg' WHERE id = 12;
+UPDATE cars SET image_url = 'https://ahr2024fsd.blob.core.windows.net/images-container/13.jpg' WHERE id = 13;
+UPDATE cars SET image_url = 'https://ahr2024fsd.blob.core.windows.net/images-container/14.jpg' WHERE id = 14;
+UPDATE cars SET image_url = 'https://ahr2024fsd.blob.core.windows.net/images-container/15.jpg' WHERE id = 15;
