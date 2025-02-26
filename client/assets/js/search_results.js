@@ -2,13 +2,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const allModals = document.querySelectorAll(".modal");
   const filterButtons = document.querySelectorAll("[data-filter]");
 
+  fetchAllCars();// Fetch and display all cars when the page loads
+
 
   let selectedMake = null;
   let selectedYear = null;
   let selectedType = null;
   let selectedPrice = null;
 
-  // **关闭所有弹窗**
+  // **Close all modal popups**
   function closeAllModals() {
     allModals.forEach(modal => {
       modal.style.display = "none";
@@ -26,42 +28,42 @@ document.addEventListener("DOMContentLoaded", function () {
     selectedPrice = null;
   }
 
-  // **监听所有 `Filter` 按钮**
+  // **Reset all selected filters**
   filterButtons.forEach(button => {
     button.addEventListener("click", function (event) {
-      closeAllModals(); // 先关闭所有弹窗
+      closeAllModals();
 
       const filterType = this.getAttribute("data-filter");
       const modal = document.getElementById(`${filterType}-modal`);
 
       if (modal) {
-        const rect = this.getBoundingClientRect(); // 获取按钮位置
+        const rect = this.getBoundingClientRect();
 
-        // **修正：确保 modal 出现在按钮正下方**
+
         modal.style.position = "absolute";
-        modal.style.top = `${rect.bottom + window.scrollY + 10}px`; // 调整弹窗和按钮的距离
+        modal.style.top = `${rect.bottom + window.scrollY + 10}px`;
         modal.style.left = `${rect.left + window.scrollX}px`;
         modal.style.display = "block";
       }
 
-      event.stopPropagation(); // 阻止冒泡，防止立即关闭
+      event.stopPropagation(); // Prevent immediate closing
     });
   });
 
-  // **点击页面空白处关闭所有弹窗**
+  // **Clicking outside should close all modals**
   document.addEventListener("click", function (event) {
     if (!event.target.closest(".filter-select") && !event.target.closest(".modal")) {
       closeAllModals();
     }
   });
 
-  // ======== **绑定 `Make` 过滤数据** ========
+  // **Fetch available car makes**
   const makeOptionsContainer = document.getElementById("make-options");
   const makeBtn = document.getElementById("make-filter-btn");
 
   async function fetchMakes() {
     try {
-      closeAllModals(); // 先关闭所有其他弹窗
+      closeAllModals();
       const response = await fetch("http://localhost:8088/api/cars");
       const cars = await response.json();
       const makes = [...new Set(cars.map(car => car.make))];
@@ -80,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
         makeOptionsContainer.appendChild(label);
       });
 
-      // **让 `modal` 出现在 `make` 按钮下方**
+      // **Position modal below the button**
       const rect = makeBtn.getBoundingClientRect();
       const modal = document.getElementById("make-modal");
       modal.style.position = "absolute";
@@ -92,20 +94,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // 绑定 `Make` 按钮点击事件
+  // **Bind make button to fetch function**
   makeBtn.addEventListener("click", fetchMakes);
 
   viewMakeResultsBtn.addEventListener("click", function () {
     if (selectedMake) {
       console.log("Filtering cars by make:", selectedMake);
-      // 触发 API 请求，根据 selectedMake 筛选车辆
+
     }
-    resetFilters(); // **重置筛选**
+    resetFilters(); // Reset filters after selection
     closeAllModals();
   });
 
 
-  // ======== **绑定 `Type` 过滤数据** ========
+
   const typeOptionsContainer = document.getElementById("type-options");
   const typeBtn = document.getElementById("type-filter-btn");
 
@@ -131,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
         typeOptionsContainer.appendChild(label);
       });
 
-      // **让 `modal` 出现在 `type` 按钮下方**
+
       const rect = typeBtn.getBoundingClientRect();
       const modal = document.getElementById("type-modal");
       modal.style.position = "absolute";
@@ -143,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // 绑定 `Type` 按钮点击事件
+  // **Apply Filters Button**
   typeBtn.addEventListener("click", fetchTypes);
 
   viewTypeResultsBtn.addEventListener("click", function () {
@@ -154,14 +156,14 @@ document.addEventListener("DOMContentLoaded", function () {
     closeAllModals();
   });
 
-  // ======== **绑定 `Price` 过滤数据** ========
+
   const priceBtn = document.getElementById("price-btn");
   const viewPriceResultsBtn = document.getElementById("view-price-results");
 
   function showPriceModal() {
     closeAllModals();
 
-    // **让 `modal` 出现在 `Price` 按钮下方**
+
     const rect = priceBtn.getBoundingClientRect();
     const modal = document.getElementById("price-modal");
     modal.style.position = "absolute";
@@ -170,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
     modal.style.display = "block";
   }
 
-  // 绑定 `Price` 按钮点击事件
+
   priceBtn.addEventListener("click", showPriceModal);
   viewPriceResultsBtn.addEventListener("click", function () {
     const selectedPrice = document.querySelector("input[name='price-sort']:checked");
@@ -181,20 +183,20 @@ document.addEventListener("DOMContentLoaded", function () {
     closeAllModals();
   });
 
-  // ======== **绑定 `Year` 过滤数据**（新增功能） ========
+
   const yearOptionsContainer = document.getElementById("year-options");
   const yearBtn = document.getElementById("year-filter-btn");
 
 
   async function fetchYears() {
     try {
-      closeAllModals(); // 先关闭所有其他弹窗
+      closeAllModals();
       const response = await fetch("http://localhost:8088/api/cars");
       const cars = await response.json();
       const years = [...new Set(cars.map(car => Number(car.year)))].sort((a, b) => b - a);
-      // 获取所有唯一年份并按降序排列
 
-      yearOptionsContainer.innerHTML = ""; // 清空旧数据
+
+      yearOptionsContainer.innerHTML = "";
 
       years.forEach(year => {
         const label = document.createElement("label");
@@ -210,7 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
         yearOptionsContainer.appendChild(label);
       });
 
-      // **让 `modal` 出现在 `year` 按钮下方**
+
       const rect = yearBtn.getBoundingClientRect();
       const modal = document.getElementById("year-modal");
       modal.style.position = "absolute";
@@ -222,7 +224,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // 绑定 `Year` 按钮点击事件
+
   yearBtn.addEventListener("click", fetchYears);
 
   viewYearResultsBtn.addEventListener("click", function () {
@@ -233,7 +235,7 @@ document.addEventListener("DOMContentLoaded", function () {
     closeAllModals();
   });
 
-  // **绑定 Reset 按钮**
+
   const resetYearBtn = document.getElementById("reset-year");
   resetYearBtn.addEventListener("click", function () {
     document.querySelectorAll("input[name='year']").forEach(radio => {
@@ -241,13 +243,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // **绑定 View Results 按钮**
+
   const viewYearResultsBtn = document.getElementById("view-year-results");
   viewYearResultsBtn.addEventListener("click", function () {
     const selectedYear = document.querySelector("input[name='year']:checked");
     if (selectedYear) {
       console.log("Filtering by Year:", selectedYear.value);
-      // 这里可以发送 API 请求，获取按年份筛选的车辆数据
+
     }
     document.getElementById("year-modal").style.display = "none"; // 关闭弹窗
   });
@@ -255,7 +257,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-// 获取元素
+
 const carListContainer = document.getElementById("car-list");
 const viewMakeResultsBtn = document.getElementById("view-make-results");
 const viewTypeResultsBtn = document.getElementById("view-type-results");
@@ -267,7 +269,7 @@ const resetTypeBtn = document.getElementById("reset-type");
 const resetYearBtn = document.getElementById("reset-year");
 const resetPriceBtn = document.getElementById("reset-price");
 
-// 记录用户的筛选条件
+
 let selectedFilters = {
   make: null,
   type: null,
@@ -275,13 +277,13 @@ let selectedFilters = {
   price: null
 };
 
-// ** 获取并展示筛选结果 **
+
 async function fetchAndDisplayCars() {
   try {
     const response = await fetch("http://localhost:8088/api/cars");
     const cars = await response.json();
 
-    // **处理筛选条件**
+
     let filteredCars = cars.filter(car => {
       return (
         (!selectedFilters.make || car.make.trim().toLowerCase() === selectedFilters.make.trim().toLowerCase()) &&
@@ -291,34 +293,35 @@ async function fetchAndDisplayCars() {
       );
     });
 
-    // **价格排序**
+
     if (selectedFilters.price === "asc") {
       filteredCars.sort((a, b) => a.price_per_day - b.price_per_day);
     } else if (selectedFilters.price === "desc") {
       filteredCars.sort((a, b) => b.price_per_day - a.price_per_day);
     }
 
-    // **清空之前的列表**
+
     carListContainer.innerHTML = "";
 
-    // **如果没有符合筛选的车辆**
+
     if (filteredCars.length === 0) {
       carListContainer.innerHTML = `<p style="text-align: center; font-size: 16px;">No cars found.</p>`;
       return;
     }
 
-    // **插入新列表**
+
     filteredCars.forEach(car => {
       const carItem = document.createElement("div");
       carItem.classList.add("car-item");
 
       carItem.innerHTML = `
-        <img src="${car.image_url}" alt="${car.make} ${car.model}">
-        <div class="car-info">
-          <h3>${car.make} ${car.model} ${car.year}</h3>
-        </div>
-        <div class="car-price">$${car.price_per_day} per day</div>
-      `;
+  <img src="${car.image_url || 'default-car.jpg'}" alt="${car.make} ${car.model}">
+  <div class="car-info">
+    <h3>${car.make} ${car.model} ${car.year}</h3>
+  </div>
+  <div class="car-price">$${car.price_per_day} per day</div>
+`;
+
 
       carListContainer.appendChild(carItem);
     });
@@ -329,7 +332,7 @@ async function fetchAndDisplayCars() {
 }
 
 
-// **绑定 "View Results" 按钮**
+
 viewMakeResultsBtn.addEventListener("click", () => {
   const selectedMake = document.querySelector("input[name='make']:checked");
   selectedFilters.make = selectedMake ? selectedMake.value : null;
@@ -354,7 +357,7 @@ viewPriceResultsBtn.addEventListener("click", () => {
   fetchAndDisplayCars();
 });
 
-// **绑定 "Reset" 按钮**
+
 resetMakeBtn.addEventListener("click", () => {
   selectedFilters.make = null;
   document.querySelectorAll("input[name='make']").forEach(input => (input.checked = false));
@@ -379,36 +382,35 @@ resetPriceBtn.addEventListener("click", () => {
   carListContainer.innerHTML = "";
 });
 
-// 🚀 获取所有 View Results 按钮
+
 const viewResultsButtons = document.querySelectorAll(".view-btn");
 
 viewResultsButtons.forEach(button => {
   button.addEventListener("click", function () {
-    // 获取当前 modal
+
     const modal = this.closest(".modal");
 
-    // 触发筛选数据
+
     fetchAndDisplayCars();
 
-    // **自动关闭 modal**
+
     modal.style.display = "none";
   });
 });
 
-// ======== **全局 Reset 逻辑** ========
-// 获取 `Reset All Filters` 按钮
+
 const resetAllFiltersBtn = document.getElementById("resetall-filters");
 
-// **🚀 绑定 `Reset All Filters` 按钮事件**
+
 resetAllFiltersBtn.addEventListener("click", function () {
   console.log("Resetting all filters...");
 
-  // **1️⃣ 清空所有 `radio` 选项**
+
   document.querySelectorAll("input[type='radio']").forEach(input => {
     input.checked = false;
   });
 
-  // **2️⃣ 清空所有 JavaScript 变量**
+
   selectedFilters = {
     make: null,
     year: null,
@@ -416,7 +418,7 @@ resetAllFiltersBtn.addEventListener("click", function () {
     price: null
   };
 
-  // **3️⃣ 清空车辆列表**
+
   carListContainer.innerHTML = "";
 
 
@@ -424,30 +426,28 @@ resetAllFiltersBtn.addEventListener("click", function () {
   console.log("All filters have been successfully reset.");
 });
 
-/**
- * **🚗 重新获取所有车辆数据**
- * **作用：** 让 `Reset` 按钮恢复到**最初未筛选的状态**，并重新获取所有的车辆数据。
- */
+
 async function fetchAllCars() {
   try {
     const response = await fetch("http://localhost:8088/api/cars");
     const cars = await response.json();
 
-    // 清空车辆列表
+
     carListContainer.innerHTML = "";
 
-    // 遍历获取的车辆数据并插入 HTML
+
     cars.forEach(car => {
       const carItem = document.createElement("div");
       carItem.classList.add("car-item");
 
       carItem.innerHTML = `
-                <img src="${car.image || 'default-car.jpg'}" alt="${car.make} ${car.model}">
-                <div class="car-info">
-                    <h3>${car.make} ${car.model}, ${car.year}</h3>
-                    <p class="price">$${car.price_per_day} / day</p>
-                </div>
-            `;
+  <img src="${car.image_url || 'default-car.jpg'}" alt="${car.make} ${car.model}" class="car-image">
+  <div class="car-info">
+    <h3>${car.make} ${car.model}, ${car.year}</h3>
+    </div>
+<div class="car-price">$${car.price_per_day} per day</div>
+`;
+
 
       carListContainer.appendChild(carItem);
     });
