@@ -16,7 +16,7 @@ router.post("/cars", authMiddleware.verifyToken, carController.addCar);
 router.put("/cars/:id", authMiddleware.verifyToken, carController.updateCar);
 
 // Delete a car (admin only)
-router.delete("/cars/:id", authMiddleware.verifyToken, carController.deleteCar);
+router.delete("/:id", authMiddleware.verifyToken, carController.deleteCar);
 
 
 // Get a car by ID

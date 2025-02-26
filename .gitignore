@@ -1,5 +1,3 @@
-
-
 # Ignore the logs folder in the app
 /app/logs/
 
@@ -69,7 +67,5 @@ Thumbs.db
 # Maven
 target/
 dist/
-
-
 
 /Day05AirportsJavaSwingClient/nbproject/private/

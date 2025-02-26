@@ -8,7 +8,7 @@ const jwtConfig = require("../config/jwt");
 const { body, validationResult } = require('express-validator'); // Import express-validator
 
 // User registration
-exports.register = [ // Use express-validator middleware
+const register = [ // Use express-validator middleware
     body('username').trim().isLength({ min: 3 }).withMessage('Username must be at least 3 characters.'),
     body('email').isEmail().withMessage('Invalid email address.'),
     body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters.'),
@@ -51,7 +51,7 @@ exports.register = [ // Use express-validator middleware
 ];
 
 // User login
-exports.login = [ // Use express-validator middleware
+const login = [ // Use express-validator middleware
     body('username').notEmpty().withMessage('Username is required.'),
     body('password').notEmpty().withMessage('Password is required.'),
     async (req, res) => {
@@ -89,7 +89,7 @@ exports.login = [ // Use express-validator middleware
 ];
 
 // Get user info
-exports.getUserInfo = async (req, res) => {
+const getUserInfo = async (req, res) => {
     try {
         const { userId } = req.params;
 
@@ -124,4 +124,67 @@ If the token is valid, the getUserInfo function is executed.
 The function retrieves the user's information from the database (excluding the password hash).
 The user's information is sent back as a JSON response.
 If the token is invalid or the user is not found, an appropriate error response is sent.
+*/
+
+// Verify Token function
+const verifyToken = (req, res, next) => {
+    const token = req.header("Authorization");
+
+    if (!token) {
+        return res.status(401).json({ message: "Access denied. No token provided." });
+    }
+
+    try {
+        const decoded = jwt.verify(token.replace("Bearer ", ""), process.env.JWT_SECRET);
+        req.user = decoded;
+        next();
+    } catch (error) {
+        log.warn(`Token verification failed: ${error.message}`);
+        res.status(400).json({ message: "Invalid token." });
+    }
+};
+
+module.exports = {
+    register,
+    login,
+    getUserInfo,
+    verifyToken, // Export verifyToken
+};
+
+/*
+Explanation:
+
+const jwt = require("jsonwebtoken"); and const log = require("../logger");
+These lines import the necessary modules: jsonwebtoken for JWT verification and your logging module.
+  
+const verifyToken = (req, res, next) => { ... }
+This defines the verifyToken middleware function.
+It takes three arguments: req (request object), res (response object), and next (function to call the next middleware or route handler).
+const token = req.header("Authorization");
+This line retrieves the JWT token from the Authorization header of the request.
+The token is expected to be in the format "Bearer <token>".
+if (!token) { ... }
+This if block checks if a token is present in the header.
+If no token is found, it sends a 401 (Unauthorized) response with an error message.
+try { ... } catch (error) { ... }
+This try-catch block handles token verification.
+const decoded = jwt.verify(token.replace("Bearer ", ""), process.env.JWT_SECRET);
+This line verifies the JWT token using jwt.verify().
+token.replace("Bearer ", "") removes the "Bearer " prefix from the token.
+process.env.JWT_SECRET is your secret key used to sign the token.
+If the token is valid, jwt.verify() returns the decoded payload (user information).
+req.user = decoded;
+This line attaches the decoded user information to the req.user property.
+This allows subsequent middleware or route handlers to access the user's information.
+next();
+This line calls the next() function, which proceeds to the next middleware or route handler.
+catch (error) { ... }
+If the token is invalid or verification fails, this catch block executes.
+It logs the error and sends a 400 (Bad Request) response with an error message.
+module.exports = { verifyToken };
+This line exports the verifyToken middleware function.
+How to Use It:
+
+Import the verifyToken middleware into your route files.
+Apply the middleware to routes that require authentication.
 */

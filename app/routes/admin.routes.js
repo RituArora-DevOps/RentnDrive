@@ -1,7 +1,24 @@
 const express = require("express");
 const router = express.Router();
+const authMiddleware = require('../middleware/auth');
 const adminController = require("../controllers/admin.controller"); // Import admin controller
 
+
+// Middleware to protect all admin routes
+const protectAdminRoute = (req, res, next) => {
+    authMiddleware.verifyToken(req, res, (err) => {
+        if (err) {
+            return; // Error handled by verifyToken
+        }
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Forbidden: Admin access required.' });
+        }
+        next();
+    });
+};
+
+// Apply protectAdminRoute middleware to all routes
+router.use(protectAdminRoute);
 /**
  * Admin routes for managing cars, orders, and customers.
  * @module AdminRoutes
