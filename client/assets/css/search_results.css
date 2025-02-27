@@ -1,4 +1,4 @@
-/* General Styles */
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -8,393 +8,155 @@ body {
 
 /* Header */
 header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 20px;
   background: #c53e93;
-  border-bottom: 1px solid #ddd;
-  position: relative;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .logo {
-  position: absolute;
-  left: 20px;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: bold;
   color: white;
   cursor: pointer;
 }
 
-.search-box {
-  background: rgba(255, 255, 255, 0.9);
-  width: 80%;
-  max-width: 500px;
-  padding: 6px 20px;
-  border-radius: 50px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  justify-content: center;
-}
-
-.search-box input {
+.auth-buttons button {
+  background: #fff;
+  color: #c53e93;
   border: none;
-  background: transparent;
-  font-size: 16px;
-  padding: 5px;
-  outline: none;
-  width: 100%;
-  border-bottom: 1px solid #ccc;
-}
-
-.search-box label {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  font-size: 12px;
-  color: #666;
-}
-
-
-
-/* Filters Section - Keep Original Styles */
-.filters {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  padding: 15px;
-  background: white;
-  border-bottom: 1px solid #ddd;
-}
-
-/* Custom Filter Button (Make) */
-.filter-select button {
-  position: relative;
-  width: 160px;
-  padding: 2px 10px;
-  font-size: 20px;
-  font-weight: 400;
-  cursor: pointer;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  background: white;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
-  outline: none;
-  transition: all 0.2s ease-in-out;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 16px;
-  color: #555;
-}
-
-
-.filter-select button:hover {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-.filter-select button::after {
-  content: "⌄";
-  font-size: 30px;
-  color: #555;
-  position: relative;
-  bottom: 8px;
-
-}
-
-/* Modal Styles */
-.modal {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 400px;
-  max-height: 500px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.15);
-  padding: 20px;
-  z-index: 1000;
-  overflow-y: auto;
-}
-
-/* Modal Header */
-.modal-content h2 {
-  font-size: 18px;
-  margin-bottom: 15px;
-}
-
-/* Make Options List */
-.make-options {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-/* Radio Button Styling */
-.make-options label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-/* Modal Footer */
-.modal-footer {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-/* Reset & View Buttons */
-.reset-btn {
-  background: #c53e93;
-  border: 1px solid #ddd;
-  padding: 8px 15px;
+  padding: 8px 16px;
   border-radius: 5px;
+  font-size: 16px;
   cursor: pointer;
-  color: white;
+  margin-left: 10px;
+  transition: background 0.3s;
 }
 
-.reset-btn:hover {
+.auth-buttons button:hover {
   background: #f0f0f0;
 }
 
-.view-btn {
-  background: #c53e93;
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.view-btn:hover {
-  background: #8a059e;
-}
-
-/* Apply Button */
-#apply-filters,
-#resetall-filters {
-  background: #c53e93;
-  width: 160px;
-  color: white;
-  border: none;
-  padding: 2px 10px;
-  border-radius: 20px;
-  font-size: 20px;
-  font-weight: 400;
-  cursor: pointer;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-  transition: all 0.2s ease-in-out;
-}
-
-#apply-filters:hover,
-#resetall-filters:hover {
-  background: #8a059e;
-}
-
-
-
-
-/* Price Button (Same as Make Button) */
-#price-btn {
-  position: relative;
-  width: 160px;
-  padding: 2px 10px;
-  font-size: 20px;
-  font-weight: 500;
-  cursor: pointer;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  background: white;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
-  outline: none;
-  transition: all 0.2s ease-in-out;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-
-}
-
-/* Price Dropdown Menu */
-.price-dropdown {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 200px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.15);
-  padding: 10px;
-  z-index: 1000;
-}
-
-/* Dropdown Content */
-.dropdown-content {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-}
-
-.price-filter.active .price-dropdown {
-  display: block;
-}
-
-.dropdown-content label {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background 0.2s;
-}
-
-.dropdown-content label:hover {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-.dropdown-content input {
-  margin-right: 10px;
-}
-
-/* Dropdown Footer */
-.dropdown-footer {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-}
-
-.dropdown-footer button {
-  border: none;
-  padding: 8px 12px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: all 0.2s ease-in-out;
-}
-
-#reset-price {
-  background: #c53e93;
-  color: white;
-}
-
-#reset-price:hover {
-  background: #bbb;
-}
-
-#apply-price {
-  background: #c53e93;
-  color: white;
-}
-
-#apply-price:hover {
-  background: #8a059e;
-}
-
-/* Show dropdown when active */
-.filter-select.active .price-dropdown {
-  display: block;
-}
-
-
-.price-options label {
-  display: block;
-  margin: 10px 0;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-#price-modal {
-  width: 250px;
-  max-width: 90%;
-}
-
-
-.type-options label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px;
-  cursor: pointer;
-}
-
-.type-options input[type="radio"] {
-  transform: scale(1.2);
-}
-
-
-#year-options {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  /* 增加每个年份之间的间距 */
-}
-
-.year-option {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 16px;
-}
-
-#car-results {
+/* Filter Form */
+.filters {
+  background: #fff;
+  padding: 20px;
+  margin: 20px auto;
   max-width: 1100px;
-  margin: 0 auto;
-}
-
-
-#car-list {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-
-.car-item {
-  display: flex;
-  align-items: center;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 10px;
-  background: white;
+  border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.filters form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: space-between;
+}
+
+.filter-group {
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-group label {
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.filter-group input,
+.filter-group select {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  justify-content: flex-end;
+  margin-top: 15px;
+}
+
+.filter-actions button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #c53e93;
+  color: #fff;
+  transition: background 0.3s;
+}
+
+.filter-actions button:hover {
+  background: #8a059e;
+}
+
+/* Car Results Grid */
+#car-results {
+  max-width: 1100px;
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.car-item {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.car-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
 
 .car-item img {
-  width: 150px;
-  height: 100px;
-  border-radius: 8px;
+  width: 100%;
+  height: 150px;
   object-fit: cover;
 }
 
-
 .car-info {
-  flex: 1;
-  margin-left: 15px;
+  padding: 10px;
 }
-
 
 .car-info h3 {
   margin: 0;
   font-size: 18px;
-  font-weight: bold;
+  color: #333;
 }
 
-
 .car-price {
-  font-size: 18px;
+  padding: 10px;
+  font-size: 16px;
   font-weight: bold;
   color: #c53e93;
+  text-align: right;
+}
+
+/* Footer */
+footer {
+  background: #c53e93;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  margin-top: 30px;
+}
+
+footer .social-icons img {
+  width: 30px;
+  margin: 0 5px;
 }

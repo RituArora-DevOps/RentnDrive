@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Car Rental</title>
   <link rel="stylesheet" href="../assets/css/index_styles.css">
-  <script defer src="../assets/js/index_script.js"></script>
+  <!--script defer src="../assets/js/index_script.js"></script-->
 </head>
 
 <body>
@@ -27,16 +27,6 @@
     <!-- Hero Section -->
     <section class="hero">
       <div class="hero-content">
-        <div class="search-box">
-          <label>
-            <span>Start Date</span>
-            <input type="date" id="start-date">
-          </label>
-          <label>
-            <span>End Date</span>
-            <input type="date" id="end-date">
-          </label>
-          <button class="search-btn" onclick="window.location.href='search_results'">🔍</button>
 
         </div>
       </div>
@@ -71,89 +61,5 @@
   </footer>
 
 </body>
-
-
-
-<!--
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RentnDrive - Home</title>
-  <link rel="stylesheet" href="../assets/css/style.css">
-</head>
-
-<body>
-  <div class="container">
-    <h1>Welcome to RentnDrive!</h1>
-    <p>This is a test index page.</p>
-
-    <div id="auth-status">
-      <p id="auth-message">You are not logged in.</p>
-      <button id="login-button">Login</button>
-      <button id="register-button">Register</button>
-      <button id="logout-button" style="display: none;">Logout</button>
-    </div>
-
-    <div id="user-info" style="display: none;">
-      <h2>User Information</h2>
-      <p><strong>Username:</strong> <span id="user-username"></span></p>
-      <p><strong>Role:</strong> <span id="user-role"></span></p>
-      <p><strong>User ID:</strong> <span id="user-id"></span></p>
-    </div>
-
-
-    <!--script src="../assets/js/main.js"></script-->
-<!--
-   <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const token = sessionStorage.getItem('token');
-        const role = sessionStorage.getItem('role');
-        const userId = sessionStorage.getItem('userId');
-
-        const authMessage = document.getElementById('auth-message');
-        const loginButton = document.getElementById('login-button');
-        const registerButton = document.getElementById('register-button');
-        const logoutButton = document.getElementById('logout-button');
-        const userInfoDiv = document.getElementById('user-info');
-        const userUsernameSpan = document.getElementById('user-username');
-        const userRoleSpan = document.getElementById('user-role');
-        const userIdSpan = document.getElementById('user-id');
-
-        if (token) {
-          authMessage.textContent = `You are logged in as ${role}.`;
-          loginButton.style.display = 'none';
-          registerButton.style.display = 'none';
-          logoutButton.style.display = 'inline-block';
-          userInfoDiv.style.display = 'block';
-
-          userUsernameSpan.textContent = sessionStorage.getItem('username');
-          userRoleSpan.textContent = role;
-          userIdSpan.textContent = userId;
-        } else {
-          authMessage.textContent = 'You are not logged in.';
-          loginButton.style.display = 'inline-block';
-          registerButton.style.display = 'inline-block';
-          logoutButton.style.display = 'none';
-          userInfoDiv.style.display = 'none';
-        }
-
-        // Corrected event listeners:
-        loginButton.addEventListener('click', () => {
-          window.location.href = 'login'; // Corrected
-        });
-
-        registerButton.addEventListener('click', () => {
-          window.location.href = 'register'; // Corrected
-        });
-
-        logoutButton.addEventListener('click', () => {
-          sessionStorage.clear();
-          window.location.reload();
-        });
-      });
-    </script>
-  </div>
-</body>
--->
 
 </html>

@@ -21,6 +21,7 @@ CREATE TABLE cars (
     status ENUM('available', 'booked', 'maintenance') NOT NULL
 );
 
+-- add a new column, imageURL, data type string -
 -- 3. Booking-payment Table
 CREATE TABLE booking_payments (
     id INT AUTO_INCREMENT PRIMARY KEY,

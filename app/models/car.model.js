@@ -119,6 +119,18 @@ const Car = sequelize.define("Car", {
       },
     },
   },
+    /**
+   * A URL pointing to an image of the car.
+   * This field is optional.
+   */
+    image_url: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        isUrl: { msg: "Image URL must be a valid URL." }
+      }
+    }
+
 }, {
   timestamps: false,
 });

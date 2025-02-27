@@ -64,22 +64,24 @@ DROP COLUMN createdAt,
 DROP COLUMN updatedAt;
 
 -- Insert 15 rentals
-INSERT INTO booking_payments (user_id, car_id, start_date, end_date, total_amount, status, payment_method, payment_status, amount, payment_date, extra, created_at, updated_at) VALUES
+INSERT INTO rentals (user_id, car_id, start_date, end_date, total_amount, status, payment_method, payment_status, amount, payment_date, extra, created_at, updated_at) VALUES
 (1, 1, '2024-01-10', '2024-01-15', 250.00, 'confirmed', 'credit_card', 'completed', 250.00, NOW(), 'GPS, Child Seat', NOW(), NOW()),
 (2, 2, '2024-01-20', '2024-01-25', 225.00, 'confirmed', 'paypal', 'completed', 225.00, NOW(), 'Additional Driver', NOW(), NOW()),
-(3, 3, '2024-02-01', '2024-02-07', 480.00, 'confirmed', 'stripe', 'completed', 480.00, NOW(), 'Insurance', NOW(), NOW()),
-(4, 4, '2024-02-10', '2024-02-15', 350.00, 'pending', 'bank_transfer', 'pending', NULL, 'None', NOW(), NOW()),
+(3, 3, '2024-02-01', '2024-02-07', 480.00, 'confirmed', 'credit_card', 'completed', 480.00, NOW(), 'Insurance', NOW(), NOW()),
+(4, 4, '2024-02-10', '2024-02-15', 350.00, 'pending', 'bank_transfer', 'pending', NULL, NOW(), 'None', NOW(), NOW()),
 (5, 5, '2024-02-20', '2024-02-28', 720.00, 'confirmed', 'credit_card', 'completed', 720.00, NOW(), 'GPS', NOW(), NOW()),
 (6, 6, '2024-03-01', '2024-03-05', 340.00, 'confirmed', 'paypal', 'completed', 340.00, NOW(), 'Additional Driver, Insurance', NOW(), NOW()),
-(7, 7, '2024-03-10', '2024-03-17', 525.00, 'pending', 'stripe', 'pending', NULL, 'None', NOW(), NOW()),
+(7, 7, '2024-03-10', '2024-03-17', 525.00, 'pending', 'credit_card', 'pending', NULL, NOW(), 'None', NOW(), NOW()),
 (8, 8, '2024-03-20', '2024-03-25', 275.00, 'confirmed', 'bank_transfer', 'completed', 275.00, NOW(), 'GPS, Child Seat', NOW(), NOW()),
 (9, 9, '2024-04-01', '2024-04-08', 420.00, 'confirmed', 'credit_card', 'completed', 420.00, NOW(), 'Additional Driver', NOW(), NOW()),
-(10, 10, '2024-04-10', '2024-04-14', 260.00, 'pending', 'paypal', 'pending', NULL, 'Insurance', NOW(), NOW()),
-(11, 11, '2024-04-20', '2024-04-27', 364.00, 'confirmed', 'stripe', 'completed', 364.00, NOW(), 'GPS, Additional Driver', NOW(), NOW()),
+(10, 10, '2024-04-10', '2024-04-14', 260.00, 'pending', 'paypal', 'pending', NULL, NOW(), 'Insurance', NOW(), NOW()),
+(11, 11, '2024-04-20', '2024-04-27', 364.00, 'confirmed', 'credit_card', 'completed', 364.00, NOW(), 'GPS, Additional Driver', NOW(), NOW()),
 (12, 12, '2024-05-01', '2024-05-06', 260.00, 'confirmed', 'bank_transfer', 'completed', 260.00, NOW(), 'None', NOW(), NOW()),
-(13, 13, '2024-05-10', '2024-05-17', 504.00, 'pending', 'credit_card', 'pending', NULL, 'GPS', NOW(), NOW()),
+(13, 13, '2024-05-10', '2024-05-17', 504.00, 'pending', 'credit_card', 'pending', NULL, NOW(), 'GPS', NOW(), NOW()),
 (14, 14, '2024-05-20', '2024-05-25', 390.00, 'confirmed', 'paypal', 'completed', 390.00, NOW(), 'Additional Driver, Child Seat', NOW(), NOW()),
-(15, 15, '2024-06-01', '2024-06-08', 700.00, 'confirmed', 'stripe', 'completed', 700.00, NOW(), 'Insurance, GPS', NOW(), NOW());
+(15, 15, '2024-06-01', '2024-06-08', 700.00, 'confirmed', 'credit_card', 'completed', 700.00, NOW(), 'Insurance, GPS', NOW(), NOW());
+
+ALTER TABLE rentals MODIFY COLUMN amount DECIMAL(10, 2) NULL;
 
 ALTER TABLE cars ADD COLUMN image_url VARCHAR(1024);
 UPDATE cars SET image_url = 'https://ahr2024fsd.blob.core.windows.net/images-container/1.jpg' WHERE id = 1;

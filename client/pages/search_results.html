@@ -1,113 +1,268 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Car Search Results</title>
+    <style>
+      /* General Styles */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: #f8f9fa;
+        /* Prevent overall page scrolling if only the results container should scroll */
+        overflow: hidden;
+      }
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Car Search Results</title>
-  <link rel="stylesheet" href="../assets/css/search_results.css">
-</head>
+      /* Fixed Header */
+      header {
+        background: #c53e93;
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+      }
 
-<body>
-  <header>
-    <div class="logo" onclick="window.location.href='index'">RentNDrive</div>
-    <div class="search-box">
-      <label>
-        <span>Start Date</span>
-        <input type="date" id="start-date">
-      </label>
-      <label>
-        <span>End Date</span>
-        <input type="date" id="end-date">
-      </label>
-    </div>
-  </header>
+      .logo {
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+      }
 
+      .auth-buttons button {
+        background: #fff;
+        color: #c53e93;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-left: 10px;
+        transition: background 0.3s;
+      }
 
+      .auth-buttons button:hover {
+        background: #f0f0f0;
+      }
 
-  <!-- Filters -->
-  <section class="filters">
-    <div class="filter-select">
-      <button id="make-filter-btn" data-filter="make">Make</button>
-    </div>
-    <div class="filter-select">
-      <button id="year-filter-btn" data-filter="year">Year</button>
-    </div>
-    <div class="filter-select">
-      <button id="type-filter-btn" data-filter="type">Type</button>
-    </div>
-    <div class="filter-select">
-      <button id="price-btn" data-filter="price">Price</button>
-    </div>
+      /* Fixed Filter Form */
+      .filters {
+        position: fixed;
+        top: 70px; /* header height plus margin */
+        left: 0;
+        right: 0;
+        background: #fff;
+        padding: 20px;
+        border-bottom: 1px solid #ddd;
+        z-index: 900;
+      }
 
-    <button id="apply-filters">Apply</button>
-    <button id="resetall-filters">Reset</button>
-  </section>
+      .filters form {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        align-items: flex-end;
+      }
 
-  <div id="make-modal" class="modal">
-    <div class="modal-content">
-      <h2>Select a Make</h2>
-      <div id="make-options" class="make-options">
-        <!-- Brands will be dynamically inserted here -->
+      .filter-group {
+        flex: 1 1 150px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .filter-group label {
+        font-size: 14px;
+        margin-bottom: 5px;
+        color: #333;
+      }
+
+      .filter-group input,
+      .filter-group select {
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      .filter-actions {
+        flex-basis: 100%;
+        text-align: right;
+        margin-top: 10px;
+      }
+
+      .filter-actions button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        background: #c53e93;
+        color: #fff;
+        transition: background 0.3s;
+        margin-left: 10px;
+      }
+
+      .filter-actions button:hover {
+        background: #8a059e;
+      }
+
+      /* Scrollable Car Results Container */
+      #car-results {
+        position: absolute;
+        top: 300px; /* Increased top offset to ensure nothing is cut off */
+        bottom: 50px; /* Leave space for footer */
+        left: 0;
+        right: 0;
+        overflow-y: auto;
+        padding: 20px;
+        box-sizing: border-box;
+        background: #f8f9fa;
+      }
+
+      /* Car Grid */
+      #car-list {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+      }
+
+      .car-item {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .car-item:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .car-item img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+      }
+
+      .car-info {
+        padding: 10px;
+      }
+
+      .car-info h3 {
+        margin: 0;
+        font-size: 18px;
+        color: #333;
+      }
+
+      .car-price {
+        padding: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #c53e93;
+        text-align: right;
+      }
+
+      /* Fixed Footer */
+      footer {
+        background: #c53e93;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+      }
+
+      footer .social-icons img {
+        width: 30px;
+        margin: 0 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Fixed Header -->
+    <header>
+      <div class="logo" onclick="window.location.href='/'">RentNDrive</div>
+      <div class="auth-buttons">
+        <button class="register-btn" onclick="window.location.href='/register'">Register</button>
+        <button class="login-btn" onclick="window.location.href='/login'">Login</button>
       </div>
-      <div class="modal-footer">
-        <button id="reset-make" class="reset-btn">Reset</button>
-        <button id="view-make-results" class="view-btn">View Results</button>
+    </header>
+
+    <!-- Fixed Filter Form -->
+    <section class="filters">
+      <form id="filters-form">
+        <div class="filter-group">
+          <label for="start-date">Start Date:</label>
+          <input type="date" id="start-date" name="start" />
+        </div>
+        <div class="filter-group">
+          <label for="end-date">End Date:</label>
+          <input type="date" id="end-date" name="end" />
+        </div>
+        <div class="filter-group">
+          <label for="make-filter">Make:</label>
+          <select id="make-filter" name="make">
+            <option value="">--Select Make--</option>
+            <!-- Options will be dynamically loaded -->
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="type-filter">Type:</label>
+          <select id="type-filter" name="type">
+            <option value="">--Select Type--</option>
+            <!-- Options will be dynamically loaded -->
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="year-filter">Year:</label>
+          <select id="year-filter" name="year">
+            <option value="">--Select Year--</option>
+            <!-- Options will be dynamically loaded -->
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="minPrice-filter">Min Price:</label>
+          <input type="number" step="0.01" id="minPrice-filter" name="minPrice" placeholder="e.g., 50" />
+        </div>
+        <div class="filter-group">
+          <label for="maxPrice-filter">Max Price:</label>
+          <input type="number" step="0.01" id="maxPrice-filter" name="maxPrice" placeholder="e.g., 100" />
+        </div>
+        <div class="filter-actions">
+          <button type="submit">Apply Filters</button>
+          <button type="reset" id="reset-all">Reset All</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Scrollable Car Results Container -->
+    <section id="car-results">
+      <div id="car-list"></div>
+    </section>
+
+    <!-- Fixed Footer -->
+    <footer>
+      <p>© 2025 All rights reserved</p>
+      <div class="social-icons">
+        <img src="../assets/images/facebook.png" alt="Facebook" />
+        <img src="../assets/images/x.png" alt="X" />
+        <img src="../assets/images/instagram.png" alt="Instagram" />
       </div>
-    </div>
-  </div>
+    </footer>
 
-  <div id="year-modal" class="modal">
-    <div class="modal-content">
-      <h2>Select a Year</h2>
-      <div id="year-options" class="year-options">
-
-      </div>
-      <div class="modal-footer">
-        <button id="reset-year" class="reset-btn">Reset</button>
-        <button id="view-year-results" class="view-btn">View Results</button>
-      </div>
-    </div>
-  </div>
-
-
-  <div id="price-modal" class="modal">
-    <div class="modal-content">
-      <h2>Select a Price Sorting</h2>
-      <div class="price-options">
-        <label>
-          <input type="radio" name="price-sort" value="asc"> Low to High
-        </label>
-        <label>
-          <input type="radio" name="price-sort" value="desc"> High to Low
-        </label>
-      </div>
-      <div class="modal-footer">
-        <button id="reset-price" class="reset-btn">Reset</button>
-        <button id="view-price-results" class="view-btn">View Results</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="type-modal" class="modal">
-    <div class="modal-content">
-      <h2>Select a Type</h2>
-      <div id="type-options" class="type-options">
-        <!-- Types will be dynamically inserted here -->
-      </div>
-      <div class="modal-footer">
-        <button id="reset-type" class="reset-btn">Reset</button>
-        <button id="view-type-results" class="view-btn">View Results</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Search Results -->
-  <section id="car-results">
-    <div id="car-list"></div>
-  </section>
-
-  <script src="../assets/js/search_results.js"></script>
-</body>
-
+    <script src="../assets/js/search_results.js"></script>
+  </body>
 </html>
