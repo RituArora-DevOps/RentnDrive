@@ -35,9 +35,17 @@ const carList = [];
  * Fetches car data from the API and updates the car list.
  */
 function fetchCars() {
-  fetch('http://localhost:8088/api/cars')
+  const token = sessionStorage.getItem('token');
+  fetch('http://localhost:8080/api/admin/cars', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  })
     .then(response => response.json())
     .then(data => {
+      console.log('Fetched cars data:', data);
       carList.length = 0; // Clear the car array
       carList.push(...data); // Refill the array with new data
       updateCarList(); // Update the UI with the new car list
@@ -51,7 +59,7 @@ function fetchCars() {
  * Updates the UI to display the latest car data.
  */
 function updateCarList() {
-  console.log("Updated car list:", carList); // Log the updated car list for debugging
+  console.log("Updated car list:", carList);
   const carTable = document.getElementById('car-table');
   carTable.innerHTML = ''; // Clear the table content
 
@@ -108,7 +116,17 @@ function updateCarList() {
   });
 
   // Update the total cars count in the UI
-  document.getElementById('total-cars').querySelector('p').textContent = carList.length;
+  const totalCarsEl = document.getElementById('total-cars');
+  if (totalCarsEl) {
+    const pEl = totalCarsEl.querySelector('p');
+    if (pEl) {
+      pEl.textContent = carList.length;
+    } else {
+      console.error('No <p> element found inside #total-cars');
+    }
+  } else {
+    console.error('No element with ID "total-cars" found');
+  }
 }
 
 /**
@@ -121,41 +139,29 @@ function selectCar(index) {
   document.getElementById('delete-car').disabled = false;
 }
 
-
-
 /**
  * Event listener for the "Add Car" button.
  * Displays the add/update car form and overlay.
  */
 document.getElementById('add-car').addEventListener('click', () => {
-
   selectedCarId = null;
-
-  // Display the add/update form and overlay
   document.getElementById('car-form').style.display = 'block';
   document.getElementById('overlay').style.display = 'block';
-
-  // Reset the form fields and any error messages
   resetCarForm();
-
-  // Hide the ID field and its label (for new car entry)
   document.getElementById('car-id').style.display = 'none';
   document.querySelector('label[for="car-id"]').style.display = 'none';
 });
 
 /**
  * Event listener for the "Cancel" button inside the car actions section.
- * Hides the car list, actions, form, and overlay.
  */
 document.getElementById('cancel-car').addEventListener('click', () => {
-  // Hide the car list, actions, form, and overlay
   document.getElementById('car-list').style.display = 'none';
   document.getElementById('car-actions').style.display = 'none';
   document.getElementById('car-form').style.display = 'none';
   document.getElementById('overlay').style.display = 'none';
-
-  resetCarForm();      // Reset form fields
-  clearErrorMessages(); // Clear any displayed error messages
+  resetCarForm();
+  clearErrorMessages();
 });
 
 /**
@@ -169,18 +175,14 @@ function clearErrorMessages() {
  * Resets all fields in the car form to their default values.
  */
 function resetCarForm() {
-  document.getElementById('car-id').value = '';      // Clear the ID field
-  document.getElementById('car-make').value = '';      // Clear the Make field
-  document.getElementById('car-model').value = '';     // Clear the Model field
-  document.getElementById('car-year').value = '';      // Clear the Year field
-  document.getElementById('car-price').value = '';     // Clear the Price field
-  document.getElementById('car-type').value = '';      // Clear the Type field
-
-  // Hide the ID input field and its label
+  document.getElementById('car-id').value = '';
+  document.getElementById('car-make').value = '';
+  document.getElementById('car-model').value = '';
+  document.getElementById('car-year').value = '';
+  document.getElementById('car-price').value = '';
+  document.getElementById('car-type').value = '';
   document.getElementById('car-id').style.display = 'none';
   document.querySelector('label[for="car-id"]').style.display = 'none';
-
-  // Enable the "Add" button and disable "Update" and "Delete" buttons
   document.getElementById('add-car').disabled = false;
   document.getElementById('update-car').disabled = true;
   document.getElementById('delete-car').disabled = true;
@@ -188,42 +190,38 @@ function resetCarForm() {
 
 /**
  * Event listener for the "Update Car" button.
- * Fills the form with selected car details and displays it.
  */
 document.getElementById('update-car').addEventListener('click', () => {
   clearErrorMessages();
   const car = carList[selectedCarId];
-  document.getElementById('car-id').value = car.id;        // Populate the ID field
+  document.getElementById('car-id').value = car.id;
   document.getElementById('car-make').value = car.make;
   document.getElementById('car-model').value = car.model;
   document.getElementById('car-year').value = car.year;
   document.getElementById('car-price').value = car.price_per_day;
   document.getElementById('car-type').value = car.type;
   document.getElementById('car-status').value = car.status;
-
-  // Show the ID field and make it read-only (since ID should not be modified)
   document.querySelector('label[for="car-id"]').style.display = 'block';
   document.getElementById('car-id').style.display = 'block';
   document.getElementById('car-id').readOnly = true;
-
-  // Display the form and overlay for updating the car details
   document.getElementById('car-form').style.display = 'block';
   document.getElementById('overlay').style.display = 'block';
 });
 
 /**
  * Event listener for the "Delete Car" button.
- * Confirms and deletes the selected car from the database.
  */
 document.getElementById('delete-car').addEventListener('click', () => {
-  // Confirm deletion of the selected car
   const confirmDelete = confirm('Are you sure you want to delete this car?');
   if (confirmDelete) {
-    fetch(`http://localhost:8088/api/cars/${carList[selectedCarId].id}`, {
-      method: 'DELETE'
+    const token = sessionStorage.getItem('token');
+    fetch(`http://localhost:8080/api/admin/cars/${carList[selectedCarId].id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
     })
       .then(() => {
-        // Remove the car from the array and update the UI
         carList.splice(selectedCarId, 1);
         alert('Car deleted successfully');
         updateCarList();
@@ -236,17 +234,13 @@ document.getElementById('delete-car').addEventListener('click', () => {
 
 // Event listener for "Cancel" button in the form
 document.getElementById('cancel-form').addEventListener('click', () => {
-  // Hide the form and overlay, and show the car list and actions
   document.getElementById('car-form').style.display = 'none';
   document.getElementById('car-actions').style.display = 'block';
   document.getElementById('car-list').style.display = 'block';
   document.getElementById('overlay').style.display = 'none';
-
-  resetCarForm();       // Reset form fields
-  clearErrorMessages(); // Clear any error messages
-
-  selectedCarId = null; // Reset selected car index
-  // Uncheck all radio buttons in the car list
+  resetCarForm();
+  clearErrorMessages();
+  selectedCarId = null;
   document.querySelectorAll('input[name="car-select"]').forEach(radio => {
     radio.checked = false;
   });
@@ -262,29 +256,21 @@ document.getElementById('overlay').addEventListener('click', () => {
 
 /**
  * Event listener for submitting the car form (both for adding and updating cars).
- * Prevents default form submission and validates input data before sending it to the server.
- * @param {Event} event - The form submission event.
  */
 document.getElementById('submit-car').addEventListener('click', (event) => {
-  event.preventDefault(); // 阻止默认提交
+  event.preventDefault();
 
-  // 获取输入值
   const make = document.getElementById('car-make').value.trim();
   const model = document.getElementById('car-model').value.trim();
   const year = document.getElementById('car-year').value.trim();
   const price = document.getElementById('car-price').value.trim();
   const type = document.getElementById('car-type').value.trim();
   const status = document.getElementById('car-status').value;
-
-  // 获取当前年份
   const currentYear = new Date().getFullYear();
 
-  // 清除所有之前的错误信息
   document.querySelectorAll('.error-message').forEach(el => el.remove());
-
   let isValid = true;
 
-  // 验证 Make
   if (!make) {
     showError('car-make', 'Make is required.');
     isValid = false;
@@ -293,7 +279,6 @@ document.getElementById('submit-car').addEventListener('click', (event) => {
     isValid = false;
   }
 
-  // 验证 Model
   if (!model) {
     showError('car-model', 'Model is required.');
     isValid = false;
@@ -302,7 +287,6 @@ document.getElementById('submit-car').addEventListener('click', (event) => {
     isValid = false;
   }
 
-  // 验证 Year
   if (!year) {
     showError('car-year', 'Year is required.');
     isValid = false;
@@ -314,7 +298,6 @@ document.getElementById('submit-car').addEventListener('click', (event) => {
     isValid = false;
   }
 
-  // 验证 Price Per Day
   if (!price) {
     showError('car-price', 'Price per day is required.');
     isValid = false;
@@ -323,7 +306,6 @@ document.getElementById('submit-car').addEventListener('click', (event) => {
     isValid = false;
   }
 
-  // 验证 Type
   if (!type) {
     showError('car-type', 'Type is required.');
     isValid = false;
@@ -332,7 +314,6 @@ document.getElementById('submit-car').addEventListener('click', (event) => {
     isValid = false;
   }
 
-  // 只有在所有验证通过时才提交表单
   if (isValid) {
     const carData = {
       make,
@@ -343,32 +324,34 @@ document.getElementById('submit-car').addEventListener('click', (event) => {
       type
     };
 
+    const token = sessionStorage.getItem('token');
     if (selectedCarId === null) {
-      // 添加新车辆 (POST)
-      fetch('http://localhost:8088/api/cars', {
+      // Add new car (POST)
+      fetch('http://localhost:8080/api/admin/cars', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(carData)
       })
         .then(response => response.json())
         .then(result => {
-          // 如果返回结果中有 car 属性，则提取实际数据，否则直接使用返回结果
           const newCar = result.car ? result.car : result;
-          carList.push(newCar); // 将新车添加到数组中，新车会出现在数组的最后一项
+          carList.push(newCar);
           alert('Car added successfully');
-          updateCarList(); // 重新渲染车辆列表，立即显示新添加的车辆
+          updateCarList();
         })
         .catch(error => {
           console.error('Error adding car:', error);
         });
     } else {
-      // 更新车辆 (PUT)
-      fetch(`http://localhost:8088/api/cars/${carList[selectedCarId].id}`, {
+      // Update car (PUT)
+      fetch(`http://localhost:8080/api/admin/cars/${carList[selectedCarId].id}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(carData)
       })
@@ -384,14 +367,11 @@ document.getElementById('submit-car').addEventListener('click', (event) => {
         });
     }
 
-    // 关闭表单和 overlay
     document.getElementById('car-form').style.display = 'none';
     document.getElementById('car-actions').style.display = 'block';
     document.getElementById('overlay').style.display = 'none';
   }
 });
-
-
 
 /**
  * Displays an error message next to a form field.
@@ -408,8 +388,6 @@ function showError(inputId, message) {
   errorMessage.textContent = message;
   inputField.parentNode.insertBefore(errorMessage, inputField.nextSibling);
 }
-
-
 
 /**
  * Global variables for managing bookings.
@@ -435,12 +413,11 @@ document.getElementById('manage-bookings').addEventListener('click', () => {
   // Fetch and render the booking list
   fetchBookings();
 
-  // Reset selected booking
   selectedBookingId = null;
   document.getElementById('cancel-booking').disabled = true;
 });
 
-// Filter button: When clicked, re-fetch the filtered data
+// Filter button for bookings
 document.getElementById('filter-bookings').addEventListener('click', () => {
   fetchBookings();
 });
@@ -449,13 +426,20 @@ document.getElementById('filter-bookings').addEventListener('click', () => {
  * Fetches booking data from the API and applies filters.
  */
 function fetchBookings() {
-  fetch('http://localhost:8088/api/orders')
+  const token = sessionStorage.getItem('token');
+  fetch('http://localhost:8080/api/admin/orders', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  })
     .then(response => response.json())
     .then(data => {
-      bookingList.length = 0; // Clear the existing booking array
-      bookingList.push(...data); // Populate with new data
+      console.log('Fetched bookings data:', data);
+      bookingList.length = 0;
+      bookingList.push(...data);
 
-      // Filter booking data based on dropdown selection
       const period = document.getElementById('booking-period').value;
       let filteredBookings = bookingList;
       if (period) {
@@ -475,21 +459,32 @@ function fetchBookings() {
       }
 
       updateBookingList(filteredBookings);
-      // Update the "Total Bookings" count
-      document.getElementById('total-bookings').querySelector('p').textContent = filteredBookings.length;
+      const totalBookingsEl = document.getElementById('total-bookings');
+      if (totalBookingsEl) {
+        const pEl = totalBookingsEl.querySelector('p');
+        if (pEl) {
+          pEl.textContent = filteredBookings.length;
+        } else {
+          console.error('No <p> element found in #total-bookings');
+        }
+      } else {
+        console.error('Element with id "total-bookings" not found');
+      }
     })
     .catch(error => {
-      console.error('Error fetching bookings:', error);
+      console.error('Error fetching bookings count:', error);
     });
 }
 
-// Render the booking list; parameter `bookings` is the filtered array (if omitted, uses `bookingList`)
+/**
+ * Renders the booking list.
+ * @param {Array<Object>} bookings - The filtered booking array.
+ */
 function updateBookingList(bookings) {
   const list = bookings || bookingList;
   const bookingTable = document.getElementById('booking-table');
-  bookingTable.innerHTML = ''; // Clear table content
+  bookingTable.innerHTML = '';
 
-  // Add table headers
   const headerRow = document.createElement('tr');
   headerRow.innerHTML = `
     <th>Select</th>
@@ -506,10 +501,8 @@ function updateBookingList(bookings) {
   `;
   bookingTable.appendChild(headerRow);
 
-  // Populate the table with booking data
   list.forEach((booking, index) => {
     const row = document.createElement('tr');
-
     const radioCell = document.createElement('td');
     const idCell = document.createElement('td');
     const userIdCell = document.createElement('td');
@@ -522,7 +515,6 @@ function updateBookingList(bookings) {
     const createdAtCell = document.createElement('td');
     const updatedAtCell = document.createElement('td');
 
-    // Create a radio button for selecting a booking
     const radioButton = document.createElement('input');
     radioButton.type = 'radio';
     radioButton.name = 'booking-select';
@@ -555,14 +547,22 @@ function updateBookingList(bookings) {
     bookingTable.appendChild(row);
   });
 
-  // Update the "Total Bookings" count
-  document.getElementById('total-bookings').querySelector('p').textContent = list.length;
+  const totalBookingsEl = document.getElementById('total-bookings');
+  if (totalBookingsEl) {
+    const pEl = totalBookingsEl.querySelector('p');
+    if (pEl) {
+      pEl.textContent = list.length;
+    } else {
+      console.error('No <p> element found in #total-bookings');
+    }
+  } else {
+    console.error('Element with id "total-bookings" not found');
+  }
 }
-
 
 /**
  * Selects a booking entry and enables the "Cancel Booking" button.
- * @param {number} index - The index of the selected booking in `bookingList`.
+ * @param {number} index - The index of the selected booking.
  */
 function selectBooking(index) {
   selectedBookingId = index;
@@ -571,27 +571,22 @@ function selectBooking(index) {
 
 /**
  * Event listener for the "Cancel Booking" button.
- * Cancels a selected booking if it has not started or been completed.
  */
 document.getElementById('cancel-booking').addEventListener('click', async () => {
-  // Get the selected booking
   const booking = bookingList[selectedBookingId];
   if (!booking) {
     alert('No booking selected.');
     return;
   }
 
-  // Convert the start and end dates to Date objects
   const today = new Date();
   const startDate = new Date(booking.start_date);
   const endDate = new Date(booking.end_date);
 
-  // Check if the booking is currently active
   if (today >= startDate && today <= endDate) {
     alert('Order is in progress and cannot be cancelled.');
     return;
   }
-  // If the booking is completed, prevent cancellation
   if (today > endDate) {
     alert('Order has been completed and cannot be cancelled.');
     return;
@@ -601,15 +596,24 @@ document.getElementById('cancel-booking').addEventListener('click', async () => 
   if (!confirmCancel) return;
 
   try {
-    const response = await fetch(`http://localhost:8088/api/orders/${booking.id}`, {
-      method: 'DELETE'
+    const token = sessionStorage.getItem('token');
+    const response = await fetch(`http://localhost:8080/api/admin/orders/${booking.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
     });
     if (response.ok) {
-      // Remove the canceled booking from the list
       bookingList.splice(selectedBookingId, 1);
       alert('Booking canceled successfully');
       updateBookingList(bookingList);
-      document.getElementById('total-bookings').querySelector('p').textContent = bookingList.length;
+      const totalBookingsEl = document.getElementById('total-bookings');
+      if (totalBookingsEl) {
+        const pEl = totalBookingsEl.querySelector('p');
+        if (pEl) {
+          pEl.textContent = bookingList.length;
+        }
+      }
     } else {
       const errorData = await response.json();
       alert(`Failed to cancel booking: ${errorData.error}`);
@@ -620,21 +624,16 @@ document.getElementById('cancel-booking').addEventListener('click', async () => 
   }
 });
 
-
 /**
  * Event listener for the "Manage Customers" button.
- * Displays the customer list and hides other sections.
  */
 document.getElementById('manage-customers').addEventListener('click', () => {
-  // Show the customer list section and hide other sections
   document.getElementById('customer-list').style.display = 'block';
   document.getElementById('car-list').style.display = 'none';
   document.getElementById('booking-list').style.display = 'none';
 
-  // Fetch customer data and update the list
   fetchCustomers();
 
-  // Reset selected customer
   selectedCustomerId = null;
   document.getElementById('delete-customer').disabled = true;
 });
@@ -655,15 +654,32 @@ const customerList = [];
  * Fetches customer data from the API and updates the customer list.
  */
 function fetchCustomers() {
-  fetch('http://localhost:8088/api/customers')
+  const token = sessionStorage.getItem('token');
+  fetch('http://localhost:8080/api/admin/customers', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  })
     .then(response => response.json())
     .then(data => {
-      customerList.length = 0; // Clear the array
-      customerList.push(...data); // Refill with new data
-      updateCustomerList(); // Update the customer list on the page
+      console.log('Fetched customers data:', data);
+      customerList.length = 0;
+      customerList.push(...data);
+      updateCustomerList();
 
-      // Update "Total Customers" count (assuming <p> tag is inside Total Customers section)
-      document.getElementById('total-customers').querySelector('p').textContent = customerList.length;
+      const totalCustomersEl = document.getElementById('total-customers');
+      if (totalCustomersEl) {
+        const pEl = totalCustomersEl.querySelector('p');
+        if (pEl) {
+          pEl.textContent = customerList.length;
+        } else {
+          console.error('No <p> element found in #total-customers');
+        }
+      } else {
+        console.error('Element with id "total-customers" not found');
+      }
     })
     .catch(error => {
       console.error('Error fetching customers:', error);
@@ -675,9 +691,8 @@ function fetchCustomers() {
  */
 function updateCustomerList() {
   const customerTable = document.getElementById('customer-table');
-  customerTable.innerHTML = ''; // Clear table content
+  customerTable.innerHTML = '';
 
-  // Add table header
   const headerRow = document.createElement('tr');
   headerRow.innerHTML = `
     <th>Select</th>
@@ -690,7 +705,6 @@ function updateCustomerList() {
   `;
   customerTable.appendChild(headerRow);
 
-  // Populate table with customer data
   customerList.forEach((customer, index) => {
     const row = document.createElement('tr');
     const radioCell = document.createElement('td');
@@ -728,7 +742,7 @@ function updateCustomerList() {
 
 /**
  * Selects a customer entry and enables the "Delete Customer" button.
- * @param {number} index - The index of the selected customer in `customerList`.
+ * @param {number} index - The index of the selected customer.
  */
 function selectCustomer(index) {
   selectedCustomerId = index;
@@ -737,21 +751,30 @@ function selectCustomer(index) {
 
 /**
  * Event listener for the "Delete Customer" button.
- * Confirms and deletes the selected customer from the database.
  */
 document.getElementById('delete-customer').addEventListener('click', async () => {
   const confirmDelete = confirm('Are you sure you want to delete this customer?');
   if (!confirmDelete) return;
 
   try {
-    const response = await fetch(`http://localhost:8088/api/customers/${customerList[selectedCustomerId].id}`, {
-      method: 'DELETE'
+    const token = sessionStorage.getItem('token');
+    const response = await fetch(`http://localhost:8080/api/admin/customers/${customerList[selectedCustomerId].id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
     });
     if (response.ok) {
       customerList.splice(selectedCustomerId, 1);
       alert('Customer deleted successfully');
       updateCustomerList();
-      document.getElementById('total-customers').querySelector('p').textContent = customerList.length;
+      const totalCustomersEl = document.getElementById('total-customers');
+      if (totalCustomersEl) {
+        const pEl = totalCustomersEl.querySelector('p');
+        if (pEl) {
+          pEl.textContent = customerList.length;
+        }
+      }
     } else {
       const errorData = await response.json();
       alert(`Failed to delete customer: ${errorData.error}`);
@@ -777,32 +800,96 @@ function formatDate(dateStr) {
 window.addEventListener('load', updateSummaryCounts);
 
 function updateSummaryCounts() {
-  // Fetch the total number of cars
-  fetch('http://localhost:8088/api/cars')
+  const token = sessionStorage.getItem('token');
+
+  // Fetch total cars count
+  fetch('http://localhost:8080/api/admin/cars', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  })
     .then(response => response.json())
     .then(data => {
-      // Assuming the response is an array
-      document.getElementById('total-cars').querySelector('p').textContent = data.length;
+      console.log('Total cars data:', data);
+      if (Array.isArray(data)) {
+        const totalCarsEl = document.getElementById('total-cars');
+        if (totalCarsEl) {
+          const pEl = totalCarsEl.querySelector('p');
+          if (pEl) {
+            pEl.textContent = data.length;
+          } else {
+            console.error('No <p> element found inside #total-cars');
+          }
+        } else {
+          console.error('No element with id "total-cars" found');
+        }
+      } else {
+        console.error('Expected an array for total cars, got:', data);
+      }
     })
     .catch(error => {
       console.error('Error fetching cars count:', error);
     });
 
-  // Fetch the total number of bookings
-  fetch('http://localhost:8088/api/orders')
+  // Fetch total bookings count
+  fetch('http://localhost:8080/api/admin/orders', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  })
     .then(response => response.json())
     .then(data => {
-      document.getElementById('total-bookings').querySelector('p').textContent = data.length;
+      console.log('Total bookings data:', data);
+      if (Array.isArray(data)) {
+        const totalBookingsEl = document.getElementById('total-bookings');
+        if (totalBookingsEl) {
+          const pEl = totalBookingsEl.querySelector('p');
+          if (pEl) {
+            pEl.textContent = data.length;
+          } else {
+            console.error('No <p> element found inside #total-bookings');
+          }
+        } else {
+          console.error('No element with id "total-bookings" found');
+        }
+      } else {
+        console.error('Expected an array for total bookings, got:', data);
+      }
     })
     .catch(error => {
       console.error('Error fetching bookings count:', error);
     });
 
-  // Fetch the total number of customers
-  fetch('http://localhost:8088/api/customers')
+  // Fetch total customers count
+  fetch('http://localhost:8080/api/admin/customers', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  })
     .then(response => response.json())
     .then(data => {
-      document.getElementById('total-customers').querySelector('p').textContent = data.length;
+      console.log('Total customers data:', data);
+      if (Array.isArray(data)) {
+        const totalCustomersEl = document.getElementById('total-customers');
+        if (totalCustomersEl) {
+          const pEl = totalCustomersEl.querySelector('p');
+          if (pEl) {
+            pEl.textContent = data.length;
+          } else {
+            console.error('No <p> element found inside #total-customers');
+          }
+        } else {
+          console.error('No element with id "total-customers" found');
+        }
+      } else {
+        console.error('Expected an array for total customers, got:', data);
+      }
     })
     .catch(error => {
       console.error('Error fetching customers count:', error);

@@ -7,9 +7,7 @@ const { Op } = require("sequelize");
 // const { sequelize } = require("../models/db"); // Import sequelize instance
 
 // Check car availability
-// Check car availability
-// Check car availability
-// Check car availability
+
 exports.getAvailableCars = async (req, res) => {
     try {
         const { startDate, endDate } = req.query;

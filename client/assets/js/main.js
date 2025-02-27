@@ -61,40 +61,46 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Login Form
-    const loginForm = document.getElementById('loginForm');
-    if (loginForm) {
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+const loginForm = document.getElementById('loginForm');
+if (loginForm) {
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
 
-            if(!username || !password){
-                alert("Username and password are required.");
-                return;
-            }
+        if (!username || !password) {
+            alert("Username and password are required.");
+            return;
+        }
 
-            try {
-                const response = await fetch('/api/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password }),
-                });
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
+            });
 
-                const data = await response.json();
-                if (response.ok) {
-                    sessionStorage.setItem('token', data.token);
-                    sessionStorage.setItem('role', data.role);
-                    sessionStorage.setItem('userId', data.id);
-                    sessionStorage.setItem('username', data.username);
-                    alert('Login successful!');
-                    window.location.href = 'index';
+            const data = await response.json();
+            if (response.ok) {
+                sessionStorage.setItem('token', data.token);
+                sessionStorage.setItem('role', data.role);
+                sessionStorage.setItem('userId', data.id);
+                sessionStorage.setItem('username', data.username);
+                alert('Login successful!');
+
+                // Role-based redirection using absolute paths client\pages\admin.html
+                if (data.role === 'admin') {
+                    window.location.href = '/admin';
                 } else {
-                    alert(data.message || 'Login failed.');
+                    window.location.href = '/search_results'; 
                 }
-            } catch (error) {
-                console.error('Login error:', error);
-                alert('An error occurred during login.');
+            } else {
+                alert(data.message || 'Login failed.');
             }
-        });
-    }
+        } catch (error) {
+            console.error('Login error:', error);
+            alert('An error occurred during login.');
+        }
+    });
+}
 });

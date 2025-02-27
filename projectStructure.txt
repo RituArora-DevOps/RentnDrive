@@ -30,16 +30,26 @@ RentnDrive/
 │   ├── assets/                        # Static assets like images, fonts, etc.
 │   │   ├── css/
 │   │   │   └── style.css              # General styles for the website
+│   │   │   └── admin-style.css              # General styles for the website
+│   │   │   └── dashboard_style.css              # General styles for the website
+│   │   │   └── index_style.css              # General styles for the website
+│   │   │   └── search_results.css              # General styles for the website
 │   │   ├── js/
 │   │   │   └── main.js                # JavaScript file for handling frontend logic (AJAX, form validation, etc.)
-│   │   │   └── imageUpload.js         # JavaScript file for handling image upload and resizing images
+│   │   │   └── admin-script.js         # JavaScript file for handling image upload and resizing images
+│   │   │   └── booking-payment.js         # JavaScript file for handling image upload and resizing images
+│   │   │   └── dashboard_script.js         # JavaScript file for handling image upload and resizing images
+│   │   │   └── index_script.js         # JavaScript file for handling image upload and resizing images
+│   │   │   └── .js         # JavaScript file for handling image upload and resizing images
 │   │   └── images/                    # Folder for storing images (e.g., car images)
 │   ├── pages/                         # HTML pages
 │   │   ├── index.html                 # Home page
 │   │   ├── login.html                 # Login page
 │   │   ├── register.html              # Register page
 │   │   ├── dashboard.html             # Admin dashboard for managing cars and bookings
-│   │   └── booking.html               # Customer booking page
+│   │   ├── search_results.html          
+│   │   ├── dashboard.html             # Admin dashboard for managing cars and bookings
+│   │   └── booking-payment.html               # Customer booking page
 │   └── api/                           # API interaction (AJAX/Fetch API)
 │       └── api.js                     # Handles API calls (login, registration, fetching car data, etc.)
 ├── .env                               # Environment variables (DB credentials, JWT secret, etc.)
