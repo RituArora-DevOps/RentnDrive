@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
   async function fetchMakes() {
     try {
       closeAllModals();
-      const response = await fetch("http://localhost:8088/api/cars");
+      const response = await fetch("http://localhost:8080/api/car/cars");
       const cars = await response.json();
       const makes = [...new Set(cars.map(car => car.make))];
 
@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
   async function fetchTypes() {
     try {
       closeAllModals();
-      const response = await fetch("http://localhost:8088/api/cars");
+      const response = await fetch("http://localhost:8080/api/car/cars");
       const cars = await response.json();
       const types = [...new Set(cars.map(car => car.type))];
 
@@ -191,7 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
   async function fetchYears() {
     try {
       closeAllModals();
-      const response = await fetch("http://localhost:8088/api/cars");
+      const response = await fetch("http://localhost:8080/api/car/cars");
       const cars = await response.json();
       const years = [...new Set(cars.map(car => Number(car.year)))].sort((a, b) => b - a);
 
@@ -280,7 +280,7 @@ let selectedFilters = {
 
 async function fetchAndDisplayCars() {
   try {
-    const response = await fetch("http://localhost:8088/api/cars");
+    const response = await fetch("http://localhost:8080/api/car/cars");
     const cars = await response.json();
 
 
@@ -429,7 +429,7 @@ resetAllFiltersBtn.addEventListener("click", function () {
 
 async function fetchAllCars() {
   try {
-    const response = await fetch("http://localhost:8088/api/cars");
+    const response = await fetch("http://localhost:8080/api/car/cars");
     const cars = await response.json();
 
 

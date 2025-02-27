@@ -20,7 +20,7 @@ const bookingRoutes = require("./app/routes/booking.routes.js");
 // Use routes
 app.use("/api/admin", adminRoutes);
 app.use("/api", authRoutes);
-app.use("/api", carRoutes);
+app.use("/api/car", carRoutes);
 app.use("/api/booking", bookingRoutes);
 
 // Serve static files from the client directory
