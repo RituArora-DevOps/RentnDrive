@@ -53,6 +53,10 @@ app.get('/dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, 'client', 'pages', 'dashboard.html'));
 });
 
+app.get('/booking/:carId', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'pages', 'booking.html'));
+});
+
 app.get('/booking-payment', (req, res) => {
     res.sendFile(path.join(__dirname, 'client', 'pages', 'booking-payment.html'));
 });

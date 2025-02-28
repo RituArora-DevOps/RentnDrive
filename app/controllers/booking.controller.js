@@ -10,63 +10,67 @@ const { Op } = require("sequelize");
 
 exports.getAvailableCars = async (req, res) => {
     try {
-        const { startDate, endDate } = req.query;
-
-        // Validate the presence of start and end dates
-        if (!startDate || !endDate) {
-            return res.status(400).json({ message: "Start and end dates are required." });
+      const { startDate, endDate, make, type, year, minPrice, maxPrice } = req.query;
+  
+      // Validate the presence and format of dates
+      if (!startDate || !endDate) {
+        return res.status(400).json({ message: "Start and end dates are required." });
+      }
+      if (isNaN(Date.parse(startDate)) || isNaN(Date.parse(endDate))) {
+        return res.status(400).json({ message: "Invalid date format." });
+      }
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      if (start >= end) {
+        return res.status(400).json({ message: "End date must be after start date." });
+      }
+  
+      // Build additional filters for the Car model
+      let carWhere = { status: "available" };
+      if (make) {
+        carWhere.make = { [Op.like]: `%${make}%` };
+      }
+      if (type) {
+        carWhere.type = { [Op.like]: `%${type}%` };
+      }
+      if (year) {
+        carWhere.year = parseInt(year, 10);
+      }
+      if (minPrice || maxPrice) {
+        carWhere.price_per_day = {};
+        if (minPrice) {
+          carWhere.price_per_day[Op.gte] = parseFloat(minPrice);
         }
-
-        // Validate the format of the dates
-        if (isNaN(Date.parse(startDate)) || isNaN(Date.parse(endDate))) {
-            return res.status(400).json({ message: "Invalid date format." });
+        if (maxPrice) {
+          carWhere.price_per_day[Op.lte] = parseFloat(maxPrice);
         }
-
-        // Convert startDate and endDate to Date objects for comparison
-        const start = new Date(startDate);
-        const end = new Date(endDate);
-
-        // Validate that the end date is after the start date
-        if (start >= end) {
-            return res.status(400).json({ message: "End date must be after the start date." });
+      }
+  
+      // Get the list of car IDs already booked in the given date range
+      const rentedCars = await Rental.findAll({
+        attributes: ['car_id'],
+        where: {
+          start_date: { [Op.lte]: end },
+          end_date: { [Op.gte]: start }
         }
-
-        // Debugging: log the query being constructed
-        //console.log(`Running query: SELECT car_id FROM rentals WHERE (start_date <= '${new Date(endDate).toISOString()}' AND end_date >= '${new Date(startDate).toISOString()}')`);
-
-        // Get the list of car IDs that are already rented during the given date range
-        const rentedCars = await Rental.findAll({
-            attributes: ['car_id'],
-            where: {
-                start_date: { [Op.lte]: new Date(endDate) },  // Cars that start before the end date
-                end_date: { [Op.gte]: new Date(startDate) }   // Cars that end after the start date
-            }
-        });
-
-        // Extract car IDs from rentedCars
-        const rentedCarIds = rentedCars.map(rental => rental.car_id);
-
-        // Now, find cars that are NOT in the rented list
-        const availableCars = await Car.findAll({
-            where: {
-                id: {
-                    [Op.notIn]: rentedCarIds  // Exclude rented cars
-                }
-            }
-        });
-
-        // If cars found, return them, else return a message indicating no cars available
-        if (availableCars.length > 0) {
-            return res.status(200).json(availableCars);
-        } else {
-            return res.status(404).json({ message: "No cars available for the selected dates." });
+      });
+      const rentedCarIds = rentedCars.map(rental => rental.car_id);
+  
+      // Find cars that match the extra filters and are NOT booked
+      const availableCars = await Car.findAll({
+        where: {
+          ...carWhere,
+          id: { [Op.notIn]: rentedCarIds }
         }
-
+      });
+  
+      res.json(availableCars);
     } catch (error) {
-        console.error(`Error checking availability: ${error.message}`);
-        res.status(500).json({ message: "Internal server error." });
+      log.error(`Error getting available cars: ${error.message}`);
+      res.status(500).json({ message: "Internal server error." });
     }
-};
+  };
+  
 
 
 

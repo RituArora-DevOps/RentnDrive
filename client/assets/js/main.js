@@ -1,6 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // ... (other code)
 
+      // ----------------- Display Login Message if Needed -----------------
+    const urlParams = new URLSearchParams(window.location.search);
+    const next = urlParams.get('next');
+    if (next && next.includes('/booking-payment')) {
+        const loginMessageEl = document.getElementById('login-message');
+        if (loginMessageEl) {
+        loginMessageEl.textContent = "Please login to continue with your booking.";
+        loginMessageEl.style.display = 'block';
+        }
+    }
     // Register Form
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
@@ -61,46 +70,54 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Login Form
-const loginForm = document.getElementById('loginForm');
-if (loginForm) {
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
 
-        if (!username || !password) {
-            alert("Username and password are required.");
-            return;
-        }
-
-        try {
-            const response = await fetch('/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password }),
-            });
-
-            const data = await response.json();
-            if (response.ok) {
-                sessionStorage.setItem('token', data.token);
-                sessionStorage.setItem('role', data.role);
-                sessionStorage.setItem('userId', data.id);
-                sessionStorage.setItem('username', data.username);
-                alert('Login successful!');
-
-                // Role-based redirection using absolute paths client\pages\admin.html
-                if (data.role === 'admin') {
-                    window.location.href = '/admin';
-                } else {
-                    window.location.href = '/search_results'; 
-                }
-            } else {
-                alert(data.message || 'Login failed.');
+            if (!username || !password) {
+                alert("Username and password are required.");
+                return;
             }
-        } catch (error) {
-            console.error('Login error:', error);
-            alert('An error occurred during login.');
-        }
-    });
-}
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password }),
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    sessionStorage.setItem('token', data.token);
+                    sessionStorage.setItem('role', data.role);
+                    sessionStorage.setItem('userId', data.id);
+                    sessionStorage.setItem('username', data.username);
+                    alert('Login successful!');
+
+                    // Check if a "next" query parameter exists in the URL
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const next = urlParams.get('next');
+
+                    // Role-based or "next" redirection:
+                    if (next) {
+                        window.location.href = next;
+                    } else if (data.role === 'admin') {
+                        window.location.href = '/admin';
+                    } else {
+                        // For non-admin users, redirect to booking-payment page by default.
+                        window.location.href = '/booking-payment';
+                    }
+                } else {
+                    alert(data.message || 'Login failed.');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('An error occurred during login.');
+            }
+        });
+    }
+
 });

@@ -1,11 +1,11 @@
-const Car = require("../models/car.model");
+/*const Car = require("../models/car.model");
 const Rental = require("../models/rental.model"); // Import the Rental model
 const log = require("../../logger");
 const { Op } = require("sequelize");
 
 // Get all cars
 // Get all cars with optional filtering and sorting via query parameters
-/*exports.getAllCars = async (req, res) => {
+exports.getAllCars = async (req, res) => {
     try {
       // Build a "where" clause object based on query parameters.
       const whereClause = {};
@@ -67,12 +67,12 @@ const { Op } = require("sequelize");
   
       // Filter by make if provided (case-insensitive partial match)
       if (req.query.make) {
-        whereClause.make = { [Op.iLike]: `%${req.query.make}%` };
+        whereClause.make = { [Op.like]: `%${req.query.make}%` };
       }
   
       // Filter by type if provided (case-insensitive partial match)
       if (req.query.type) {
-        whereClause.type = { [Op.iLike]: `%${req.query.type}%` };
+        whereClause.type = { [Op.like]: `%${req.query.type}%` };
       }
   
       // Filter by year if provided (exact match)

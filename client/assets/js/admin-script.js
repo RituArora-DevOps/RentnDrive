@@ -1,3 +1,33 @@
+document.addEventListener("DOMContentLoaded", () => {
+  // Retrieve token and username for display
+  const token = sessionStorage.getItem("token");
+  const username = sessionStorage.getItem("username");
+  
+  // If not logged in, redirect to login page
+  if (!token || !username) {
+    window.location.href = "/login";
+    return;
+  }
+  
+  // Update header: display welcome message in the element with id "welcome-message"
+  const welcomeEl = document.getElementById("welcome-message");
+  if (welcomeEl) {
+    welcomeEl.textContent = `Welcome, ${username}`;
+  }
+  
+  // Attach the logout handler to the logout button
+  const logoutBtn = document.getElementById("logout-btn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      // Clear sessionStorage
+      sessionStorage.removeItem("token");
+      sessionStorage.removeItem("username");
+      sessionStorage.removeItem("role");
+      sessionStorage.removeItem("userId");
+      // Redirect to home page (index.html)
+      window.location.href = "/";
+    });
+  }
 /**
  * Event listener for the "Manage Cars" button.
  * Displays the car list and actions while hiding other sections.
@@ -899,4 +929,5 @@ function updateSummaryCounts() {
 // Add click event to the Dashboard button (assuming it's the first <a> element in the sidebar)
 document.querySelectorAll('.sidebar nav ul li a')[0].addEventListener('click', () => {
   window.location.reload();
+});
 });

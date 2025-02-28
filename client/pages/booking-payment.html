@@ -1,44 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Car Booking</title>
+  <title>Car Booking & Payment</title>
   <link rel="stylesheet" href="../assets/css/booking-payment.css">
 </head>
-
 <body>
+  <!-- Header -->
+  <header>
+    <div class="logo" onclick="window.location.href='/'">RentNDrive</div>
+    <div class="user-info">
+      <span id="welcome-message"></span>
+      <button id="logout-btn">Logout</button>
+    </div>
+    <div class="explore-more">
+      <button onclick="window.location.href='/search_results'">Explore More Cars</button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
   <div class="container">
-    <h1 id="car-title">Booking and payment Details</h1>
-
-    <h2>Car Information</h2>
-    <img id="car-image" src="" alt="Car Image">
-
+    <h1 id="car-title">Booking for [Car]</h1>
+    <img id="car-image" src="" alt="Car Image" width="300">
+    
+    <!-- Booking Details Form -->
     <form id="booking-form">
+      <!-- Read-only Car Details -->
       <label for="make">Make:</label>
-      <input type="text" id="make">
+      <input type="text" id="make" readonly>
 
       <label for="year">Year:</label>
-      <input type="number" id="year">
+      <input type="number" id="year" readonly>
 
       <label for="type">Type:</label>
-      <input type="text" id="type">
+      <input type="text" id="type" readonly>
 
       <label for="price-per-day">Price per Day:</label>
-      <input type="number" id="price-per-day">
+      <input type="number" id="price-per-day" readonly>
 
+      <!-- Booking Input Fields -->
       <label for="start-date">Start Date:</label>
       <input type="date" id="start-date" required>
 
       <label for="end-date">End Date:</label>
       <input type="date" id="end-date" required>
 
-      <label for="extra">Extra:</label>
+      <label for="extra">Extra (e.g. GPS, child seat):</label>
       <input type="text" id="extra">
 
       <p id="total-price"><strong>Total Price:</strong> $0</p>
 
+      <!-- Payment Information -->
       <h2>Payment Information</h2>
       <label for="cardholder-name">Cardholder's Name:</label>
       <input type="text" id="cardholder-name" required>
@@ -56,15 +69,13 @@
     </form>
   </div>
 
-  <!-- Modal -->
-  <div id="payment-modal" class="modal">
+  <!-- Modal for Feedback -->
+  <div id="payment-modal" class="modal" style="display:none;">
     <div class="modal-content">
       <p id="modal-message"></p>
       <button id="close-modal">Close</button>
     </div>
   </div>
-
   <script src="../assets/js/booking-payment.js"></script>
 </body>
-
 </html>

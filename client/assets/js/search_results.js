@@ -2,13 +2,34 @@ document.addEventListener("DOMContentLoaded", async function () {
   // ----------------- Element Declarations -----------------
   const carListContainer = document.getElementById("car-list");
   const filtersForm = document.getElementById("filters-form");
+  // Check if the user is logged in by looking for a token
+  const token = sessionStorage.getItem('token');
+  const username = sessionStorage.getItem('username');
+  const authButtonsContainer = document.querySelector('.auth-buttons');
+  
+  if (token && username && authButtonsContainer) {
+    // Replace the Register/Login buttons with a welcome message and Logout button
+    authButtonsContainer.innerHTML = `
+      <span style="margin-right: 10px;">Welcome, ${username}</span>
+      <button id="logout-btn" style="padding: 6px 12px; border: none; background-color: #ff69b4; color: #fff; border-radius: 4px; cursor: pointer;">Logout</button>
+    `;
+    
+    // Attach a click handler to the Logout button
+    document.getElementById('logout-btn').addEventListener("click", () => {
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('username');
+      sessionStorage.removeItem('role');
+      sessionStorage.removeItem('userId');
+      // Redirect to home page (index.html)
+      window.location.href = "/";
+    });
+  }
 
   // ----------------- Initial Fetch -----------------
   // By default, fetch all cars.
   await fetchAllCars();
 
   // ----------------- Populate Dropdowns -----------------
-  // Populate the "make", "type", and "year" dropdowns with unique values from the cars API.
   async function populateDropdown(selectId, fieldName) {
     try {
       const response = await fetch("http://localhost:8080/api/car/cars", {
@@ -34,6 +55,11 @@ document.addEventListener("DOMContentLoaded", async function () {
   await populateDropdown("type-filter", "type");
   await populateDropdown("year-filter", "year");
 
+  // ----------------- isLoggedIn function -----------------
+  function isLoggedIn() {
+    return !!sessionStorage.getItem('token');
+  }
+  
   // ----------------- Active Filters Object -----------------
   let activeFilters = {};
 
@@ -54,13 +80,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   async function fetchAndDisplayCars(filters) {
     let apiUrl = "";
-    // If date filters are provided, use the availability endpoint; otherwise, use the general endpoint.
     if (filters.start && filters.end) {
       apiUrl = `http://localhost:8080/api/booking/cars/available?startDate=${encodeURIComponent(filters.start)}&endDate=${encodeURIComponent(filters.end)}`;
     } else {
       apiUrl = "http://localhost:8080/api/car/cars";
     }
-    // Append additional filters if set
     const extraParams = [];
     if (filters.make) extraParams.push(`make=${encodeURIComponent(filters.make)}`);
     if (filters.type) extraParams.push(`type=${encodeURIComponent(filters.type)}`);
@@ -98,8 +122,28 @@ document.addEventListener("DOMContentLoaded", async function () {
           <h3>${car.make} ${car.model} ${car.year}</h3>
         </div>
         <div class="car-price">$${car.price_per_day} per day</div>
+        <button class="book-btn" data-car-id="${car.id}">Book Now</button>
       `;
       carListContainer.appendChild(carItem);
+    });
+
+    // Attach event listeners to the newly created "Book Now" buttons
+    attachBookButtonListeners();
+  }
+
+  function attachBookButtonListeners() {
+    const bookBtns = document.querySelectorAll(".book-btn");
+    
+    bookBtns.forEach(btn => {
+      btn.addEventListener("click", event => {
+        const carId = event.target.getAttribute("data-car-id");
+
+        if (!isLoggedIn()) {
+          window.location.href = `/login?next=${encodeURIComponent(`/booking-payment?carId=${carId}`)}`;
+        } else {
+          window.location.href = `/booking-payment?carId=${carId}`;
+        }
+      });
     });
   }
 
@@ -118,7 +162,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         maxPrice: formData.get("maxPrice") || null
       };
 
-      // Validate date range if provided.
       if (activeFilters.start && activeFilters.end) {
         if (new Date(activeFilters.start) >= new Date(activeFilters.end)) {
           alert("End date must be after start date.");

@@ -7,9 +7,52 @@
 body {
   font-family: 'Poppins', sans-serif;
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
   background-color: #f4f7fa;
 }
+
+header {
+  width: 100%;
+  background-color: #c53e93; /* Bright pink background */
+  color: #fff;
+  padding: 20px 30px; /* Increased padding */
+  min-height: 80px;   /* Slightly taller header */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header .logo {
+  font-size: 2em;      /* Larger logo text */
+  font-weight: 600;    /* Bold weight for prominence */
+  cursor: pointer;
+}
+
+header .user-info, 
+header .explore-more {
+  display: flex;
+  align-items: center;
+}
+
+header button {
+  background-color: #fff;    /* White background for contrast */
+  color: #c53e93;           /* Pink text to match header */
+  border: 2px solid #fff;    /* White border */
+  padding: 10px 20px;        /* Larger clickable area */
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 10px;         /* Space between buttons */
+}
+
+header button:hover {
+  background-color: #ffb6c1; /* Lighter pink on hover */
+  color: #fff;
+  border-color: #ffb6c1;
+}
+
 
 .admin-container {
   display: flex;
