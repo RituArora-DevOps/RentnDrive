@@ -3,23 +3,23 @@ document.addEventListener("DOMContentLoaded", async function () {
   const carListContainer = document.getElementById("car-list");
   const filtersForm = document.getElementById("filters-form");
   // Check if the user is logged in by looking for a token
-  const token = sessionStorage.getItem('token');
-  const username = sessionStorage.getItem('username');
-  const authButtonsContainer = document.querySelector('.auth-buttons');
-  
+  const token = sessionStorage.getItem("token");
+  const username = sessionStorage.getItem("username");
+  const authButtonsContainer = document.querySelector(".auth-buttons");
+
   if (token && username && authButtonsContainer) {
     // Replace the Register/Login buttons with a welcome message and Logout button
     authButtonsContainer.innerHTML = `
       <span style="margin-right: 10px;">Welcome, ${username}</span>
       <button id="logout-btn" style="padding: 6px 12px; border: none; background-color: #ff69b4; color: #fff; border-radius: 4px; cursor: pointer;">Logout</button>
     `;
-    
+
     // Attach a click handler to the Logout button
-    document.getElementById('logout-btn').addEventListener("click", () => {
-      sessionStorage.removeItem('token');
-      sessionStorage.removeItem('username');
-      sessionStorage.removeItem('role');
-      sessionStorage.removeItem('userId');
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      sessionStorage.removeItem("token");
+      sessionStorage.removeItem("username");
+      sessionStorage.removeItem("role");
+      sessionStorage.removeItem("userId");
       // Redirect to home page (index.html)
       window.location.href = "/";
     });
@@ -32,16 +32,16 @@ document.addEventListener("DOMContentLoaded", async function () {
   // ----------------- Populate Dropdowns -----------------
   async function populateDropdown(selectId, fieldName) {
     try {
-      const response = await fetch("http://localhost:8080/api/car/cars", {
+      const response = await fetch("http://localhost:8088/api/car/cars", {
         method: "GET",
-        headers: { "Content-Type": "application/json" }
+        headers: { "Content-Type": "application/json" },
       });
       const cars = await response.json();
-      const uniqueValues = [...new Set(cars.map(car => car[fieldName]))].sort();
+      const uniqueValues = [...new Set(cars.map((car) => car[fieldName]))].sort();
       const selectEl = document.getElementById(selectId);
       // Clear current options and add default option
       selectEl.innerHTML = `<option value="">--Select ${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}--</option>`;
-      uniqueValues.forEach(value => {
+      uniqueValues.forEach((value) => {
         const option = document.createElement("option");
         option.value = value;
         option.textContent = value;
@@ -57,18 +57,18 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   // ----------------- isLoggedIn function -----------------
   function isLoggedIn() {
-    return !!sessionStorage.getItem('token');
+    return !!sessionStorage.getItem("token");
   }
-  
+
   // ----------------- Active Filters Object -----------------
   let activeFilters = {};
 
   // ----------------- Fetch Functions -----------------
   async function fetchAllCars() {
     try {
-      const response = await fetch("http://localhost:8080/api/car/cars", {
+      const response = await fetch("http://localhost:8088/api/car/cars", {
         method: "GET",
-        headers: { "Content-Type": "application/json" }
+        headers: { "Content-Type": "application/json" },
       });
       const cars = await response.json();
       displayCarResults(cars);
@@ -81,9 +81,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   async function fetchAndDisplayCars(filters) {
     let apiUrl = "";
     if (filters.start && filters.end) {
-      apiUrl = `http://localhost:8080/api/booking/cars/available?startDate=${encodeURIComponent(filters.start)}&endDate=${encodeURIComponent(filters.end)}`;
+      apiUrl = `http://localhost:8088/api/booking/cars/available?startDate=${encodeURIComponent(filters.start)}&endDate=${encodeURIComponent(filters.end)}`;
     } else {
-      apiUrl = "http://localhost:8080/api/car/cars";
+      apiUrl = "http://localhost:8088/api/car/cars";
     }
     const extraParams = [];
     if (filters.make) extraParams.push(`make=${encodeURIComponent(filters.make)}`);
@@ -92,12 +92,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (filters.minPrice) extraParams.push(`minPrice=${encodeURIComponent(filters.minPrice)}`);
     if (filters.maxPrice) extraParams.push(`maxPrice=${encodeURIComponent(filters.maxPrice)}`);
     if (extraParams.length > 0) {
-      apiUrl += apiUrl.indexOf('?') !== -1 ? '&' + extraParams.join("&") : '?' + extraParams.join("&");
+      apiUrl += apiUrl.indexOf("?") !== -1 ? "&" + extraParams.join("&") : "?" + extraParams.join("&");
     }
     try {
       const response = await fetch(apiUrl, {
         method: "GET",
-        headers: { "Content-Type": "application/json" }
+        headers: { "Content-Type": "application/json" },
       });
       const cars = await response.json();
       displayCarResults(cars);
@@ -113,11 +113,11 @@ document.addEventListener("DOMContentLoaded", async function () {
       carListContainer.innerHTML = `<p style="text-align: center; font-size: 16px;">No cars available for the selected filters.</p>`;
       return;
     }
-    cars.forEach(car => {
+    cars.forEach((car) => {
       const carItem = document.createElement("div");
       carItem.classList.add("car-item");
       carItem.innerHTML = `
-        <img src="${car.image_url || '../assets/images/default-car.jpg'}" alt="${car.make} ${car.model}">
+        <img src="${car.image_url || "../assets/images/default-car.jpg"}" alt="${car.make} ${car.model}">
         <div class="car-info">
           <h3>${car.make} ${car.model} ${car.year}</h3>
         </div>
@@ -133,9 +133,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   function attachBookButtonListeners() {
     const bookBtns = document.querySelectorAll(".book-btn");
-    
-    bookBtns.forEach(btn => {
-      btn.addEventListener("click", event => {
+
+    bookBtns.forEach((btn) => {
+      btn.addEventListener("click", (event) => {
         const carId = event.target.getAttribute("data-car-id");
 
         if (!isLoggedIn()) {
@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         type: formData.get("type") || null,
         year: formData.get("year") || null,
         minPrice: formData.get("minPrice") || null,
-        maxPrice: formData.get("maxPrice") || null
+        maxPrice: formData.get("maxPrice") || null,
       };
 
       if (activeFilters.start && activeFilters.end) {
