@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   // ----------------- Populate Dropdowns -----------------
   async function populateDropdown(selectId, fieldName) {
     try {
-      const response = await fetch("http://localhost:8088/api/car/cars", {
+      const response = await fetch("/api/car/cars", {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   // ----------------- Fetch Functions -----------------
   async function fetchAllCars() {
     try {
-      const response = await fetch("http://localhost:8088/api/car/cars", {
+      const response = await fetch("/api/car/cars", {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
@@ -81,9 +81,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   async function fetchAndDisplayCars(filters) {
     let apiUrl = "";
     if (filters.start && filters.end) {
-      apiUrl = `http://localhost:8088/api/booking/cars/available?startDate=${encodeURIComponent(filters.start)}&endDate=${encodeURIComponent(filters.end)}`;
+      apiUrl = `/api/booking/cars/available?startDate=${encodeURIComponent(filters.start)}&endDate=${encodeURIComponent(filters.end)}`;
     } else {
-      apiUrl = "http://localhost:8088/api/car/cars";
+      apiUrl = "/api/car/cars";
     }
     const extraParams = [];
     if (filters.make) extraParams.push(`make=${encodeURIComponent(filters.make)}`);

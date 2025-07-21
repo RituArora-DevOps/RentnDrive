@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
    */
   function fetchCars() {
     const token = sessionStorage.getItem("token");
-    fetch("http://localhost:8088/api/admin/cars", {
+    fetch("/api/admin/cars", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -245,7 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const confirmDelete = confirm("Are you sure you want to delete this car?");
     if (confirmDelete) {
       const token = sessionStorage.getItem("token");
-      fetch(`http://localhost:8088/api/admin/cars/${carList[selectedCarId].id}`, {
+      fetch(`/api/admin/cars/${carList[selectedCarId].id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -357,7 +357,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const token = sessionStorage.getItem("token");
       if (selectedCarId === null) {
         // Add new car (POST)
-        fetch("http://localhost:8088/api/admin/cars", {
+        fetch("/api/admin/cars", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -377,7 +377,7 @@ document.addEventListener("DOMContentLoaded", () => {
           });
       } else {
         // Update car (PUT)
-        fetch(`http://localhost:8088/api/admin/cars/${carList[selectedCarId].id}`, {
+        fetch(`/api/admin/cars/${carList[selectedCarId].id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -457,7 +457,7 @@ document.addEventListener("DOMContentLoaded", () => {
    */
   function fetchBookings() {
     const token = sessionStorage.getItem("token");
-    fetch("http://localhost:8088/api/admin/orders", {
+    fetch("/api/admin/orders", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -627,7 +627,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const token = sessionStorage.getItem("token");
-      const response = await fetch(`http://localhost:8088/api/admin/orders/${booking.id}`, {
+      const response = await fetch(`/api/admin/orders/${booking.id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -685,7 +685,7 @@ document.addEventListener("DOMContentLoaded", () => {
    */
   function fetchCustomers() {
     const token = sessionStorage.getItem("token");
-    fetch("http://localhost:8088/api/admin/customers", {
+    fetch("/api/admin/customers", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -788,7 +788,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const token = sessionStorage.getItem("token");
-      const response = await fetch(`http://localhost:8088/api/admin/customers/${customerList[selectedCustomerId].id}`, {
+      const response = await fetch(`/api/admin/customers/${customerList[selectedCustomerId].id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -833,7 +833,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const token = sessionStorage.getItem("token");
 
     // Fetch total cars count
-    fetch("http://localhost:8088/api/admin/cars", {
+    fetch("/api/admin/cars", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -864,7 +864,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
     // Fetch total bookings count
-    fetch("http://localhost:8088/api/admin/orders", {
+    fetch("/api/admin/orders", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -895,7 +895,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
     // Fetch total customers count
-    fetch("http://localhost:8088/api/admin/customers", {
+    fetch("/api/admin/customers", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
